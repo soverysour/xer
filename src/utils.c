@@ -67,7 +67,7 @@ struct symbol* do_apply(struct object *k){
 
 void clean_object(struct object *a){
 	struct object *k = a->next, *reserve = a;
-	free(reserve);
+	//free(reserve);
 
 	while ( k->next ) {
 		reserve = k;
@@ -78,7 +78,7 @@ void clean_object(struct object *a){
 
 void clean_symbol(struct symbol *a){
 	struct symbol *k = a->next, *reserve = a;
-	free(reserve);
+	//free(reserve);
 
 	while ( k->next ) {
 		reserve = k;

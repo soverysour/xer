@@ -32,8 +32,9 @@ void update_engine(void){
 	else {
 		struct symbol *b = do_apply(a);
 		update_gui(b);
-		//clean_symbol(b);
+		clean_symbol(b);
 	}
+	clean_object(a);
 }
 
 int main(void){
