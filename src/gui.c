@@ -2,6 +2,9 @@
 
 #include "headers/symbol.h"
 #include "headers/main.h"
+#include "headers/utils.h"
+
+#define get_pair(a, b) ( COLOR_PAIR(a * 10 + b) )
 
 int rows, cols;
 
@@ -46,16 +49,12 @@ int get_color(int a){
 	return COLOR_BLACK;
 }
 
-int get_pair(char fg, char bg){
-	return COLOR_PAIR(fg * 10 + bg);
-}
-
 int init_gui(void){
 	initscr();
 	getmaxyx(stdscr, rows, cols);
 	
 	if ( rows < 31 || cols < 61 ){
-		end_engine("Current terminal size is too small. Minimum is 30x60.");
+		end_engine("Current terminal size is too small. Minimum is 30x60.\n");
 		return 0;
 	}
 
@@ -66,25 +65,29 @@ int init_gui(void){
 	curs_set(0);
 	start_color();
 
-	for ( int i = 0; i < 8; i++ )
-		for ( int j = 0; j < 8; j++ )
+	for ( int i = 0; i < NR_COLORS; i++ )
+		for ( int j = 0; j < NR_COLORS; j++ )
 		  init_pair(i * 10 + j, get_color(i), get_color(j));
 
 	return 1;
 }
 
+void print_symbol(struct symbol k){
+	attron(get_attribs(k.attribs) | get_pair(k.fg, k.bg));
+	mvprintw(k.y, k.x, "%s", k.identity);
+	attroff(get_attribs(k.attribs) | get_pair(k.fg, k.bg));
+}
+
 void update_gui(struct symbol *x){
 	erase();
-
 	struct symbol k = *x;
 
 	while ( k.next ) {
-		attron(get_attribs(k.attribs) | get_pair(k.fg, k.bg));
-		mvprintw(k.y, k.x, "%s", k.identity);
-		attroff(get_attribs(k.attribs) | get_pair(k.fg, k.bg));
+		print_symbol(k);
 		k = *k.next;
 	}
 
+	print_symbol(k);
 	refresh();
 }
 
