@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "headers/symbol.h"
 #include "headers/gui.h"
 #include "headers/utils.h"
@@ -26,15 +28,15 @@ void update_engine(void){
 	
 	struct object *a = logic_update(input);
 
-	if ( a->y < 0 )
+	if ( a->id == ID_QUIT )
 		end_engine("See you soon...\n");
 	
 	else {
 		struct symbol *b = do_apply(a);
+
 		update_gui(b);
 		clean_symbol(b);
 	}
-	clean_object(a);
 }
 
 int main(void){
@@ -43,5 +45,5 @@ int main(void){
 	while( running )
 		update_engine();
 	
-  return 0;
+	return 0;
 }

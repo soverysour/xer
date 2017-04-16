@@ -3,6 +3,7 @@
 #include "headers/symbol.h"
 #include "headers/main.h"
 #include "headers/utils.h"
+#include "headers/mapgen.h"
 
 #define get_pair(a, b) ( COLOR_PAIR(a * 10 + b) )
 
@@ -11,42 +12,40 @@ int rows, cols;
 int get_attribs(char *a){
 	int to_return = 0;
 
-	if ( a[normal] ) to_return |= A_NORMAL;
-	if ( a[stando] ) to_return |= A_STANDOUT;
-	if ( a[underline] ) to_return |= A_UNDERLINE;
-	if ( a[reverse] ) to_return |= A_REVERSE;
-	if ( a[blink] ) to_return |= A_BLINK;
-	if ( a[dim] ) to_return |= A_DIM;
-	if ( a[bold] ) to_return |= A_BOLD;
-	if ( a[protect] ) to_return |= A_PROTECT;
-	if ( a[invis] ) to_return |= A_INVIS;
-	if ( a[altcharset] ) to_return |= A_ALTCHARSET;
-	if ( a[chartext] ) to_return |= A_CHARTEXT;
+	if ( a[AT_NORMAL] ) to_return |= A_NORMAL;
+	if ( a[AT_STANDOUT] ) to_return |= A_STANDOUT;
+	if ( a[AT_UNDERLINE] ) to_return |= A_UNDERLINE;
+	if ( a[AT_REVERSE] ) to_return |= A_REVERSE;
+	if ( a[AT_BLINK] ) to_return |= A_BLINK;
+	if ( a[AT_DIM] ) to_return |= A_DIM;
+	if ( a[AT_BOLD] ) to_return |= A_BOLD;
+	if ( a[AT_PROTECT] ) to_return |= A_PROTECT;
+	if ( a[AT_INVIS] ) to_return |= A_INVIS;
+	if ( a[AT_ALTCHARSET] ) to_return |= A_ALTCHARSET;
+	if ( a[AT_CHARTEXT] ) to_return |= A_CHARTEXT;
 
 	return to_return;
 }
 
 int get_color(int a){
 	switch ( a ){
-		case white:
+		case C_WHITE:
 			return COLOR_WHITE;
-		case red:
+		case C_RED:
 			return COLOR_RED;
-		case green:
+		case C_GREEN:
 			return COLOR_GREEN;
-		case blue:
+		case C_BLUE:
 			return COLOR_BLUE;
-		case yellow:
+		case C_YELLOW:
 			return COLOR_YELLOW;
-		case cyan:
+		case C_CYAN:
 			return COLOR_CYAN;
-		case magenta:
+		case C_MAGENTA:
 			return COLOR_MAGENTA;
-		case black:
+		case C_BLACK:
 			return COLOR_BLACK;
 	}
-
-	return COLOR_BLACK;
 }
 
 int init_gui(void){

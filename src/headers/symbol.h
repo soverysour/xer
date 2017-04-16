@@ -3,7 +3,7 @@
 
 #define NR_ATTRIBS 11
 #define NR_COLORS 8
-#define NR_IDS 2
+#define NR_IDS 5
 #define NR_BUFFS 2
 
 struct symbol {
@@ -16,38 +16,41 @@ struct symbol {
 };
 
 enum attributes {
-	normal,
-	stando,
-	underline,
-	reverse,
-	blink,
-	dim,
-	bold,
-	protect,
-	invis,
-	altcharset,
-	chartext
+	AT_NORMAL,
+	AT_STANDOUT,
+	AT_UNDERLINE,
+	AT_REVERSE,
+	AT_BLINK,
+	AT_DIM,
+	AT_BOLD,
+	AT_PROTECT,
+	AT_INVIS,
+	AT_ALTCHARSET,
+	AT_CHARTEXT
 };
 
 enum colors {
-	black,
-	red,
-	green,
-	yellow,
-	blue,
-	magenta,
-	cyan,
-	white
+	C_BLACK,
+	C_RED,
+	C_GREEN,
+	C_YELLOW,
+	C_BLUE,
+	C_MAGENTA,
+	C_CYAN,
+	C_WHITE
 };
 
 enum ids {
-	player,
-	monster
+	ID_QUIT,
+	ID_PLAYER,
+	ID_MONSTER,
+	ID_WALL,
+	ID_FLOOR
 };
 
 enum buffs {
-	buffed,
-	poisoned
+	B_BUFFED,
+	B_POISONED
 };
 
 struct object {

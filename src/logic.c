@@ -1,31 +1,44 @@
 #include "headers/symbol.h"
+#include "headers/player.h"
+#include "headers/standard_objects.h"
+#include "headers/mapgen.h"
 
-char ef[] = { 1, 0 };
-char fe[] = { 0, 1 };
-
-struct object p = {
-	.x = 15,
-	.y = 6,
-	.id = player,
-	.hp = 5,
+char ef[] = { 1, 1 };
+struct object Oplayer = {
+	.id = ID_PLAYER,
+	.hp = 1,
+	.x = 1,
+	.y = 1,
 	.effects = ef,
 	.next = 0
 };
 
-struct object m = {
-	.x = 23,
-	.y = 9,
-	.id = monster,
-	.hp = 7,
-	.effects = fe,
-	.next = &p
-};
+struct object *Omap;
+char loaded = 0;
 
-struct object* logic_update(char input){
+void update_Oplayer(int x, int y){
+	Oplayer.x = x;
+	Oplayer.y = y;
+}
+
+struct object *logic_update(char input){
 	if ( input == 'Q' )
-		m.y = -1;
-	else 
-		m.y = 6;
+		return &Oquit;
 
-	return &m;
+	if ( !loaded ){
+		load_map();
+		Omap = get_map();
+		
+		struct object *k = Omap;
+
+		while ( k->next )
+			k = k->next;
+
+		k->next = &Oplayer;
+		loaded = 1;
+	}
+	
+	update_player(input);
+
+	return Omap;
 }
