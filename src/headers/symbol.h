@@ -4,7 +4,10 @@
 #define NR_ATTRIBS 11
 #define NR_COLORS 8
 #define NR_IDS 5
-#define NR_BUFFS 2
+#define NR_BUFFS 3
+
+#define M_ROWS 28
+#define M_COLS 80
 
 struct symbol {
 	char *identity;
@@ -50,7 +53,8 @@ enum ids {
 
 enum buffs {
 	B_BUFFED,
-	B_POISONED
+	B_POISONED,
+	B_FORCE
 };
 
 struct object {

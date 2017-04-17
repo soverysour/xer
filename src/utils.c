@@ -64,6 +64,11 @@ void silent_apply(struct object *a, struct symbol *b){
 	if ( a->effects[B_POISONED] )
 		b->attribs[AT_BLINK] = 1;
 
+	if ( a->effects[B_FORCE] )
+		b->fg = C_RED;
+	else
+		b->fg = C_WHITE;
+	
 	b->y = a->y;
 	b->x = a->x;
 }
@@ -93,9 +98,13 @@ void clean_symbol(struct symbol *a){
 	struct symbol *forward = a->next, *now = a;
 
 	while ( now->next ){
+		free(now->identity);
+		free(now->attribs);
 		free(now);
 		now = forward;
 		forward = forward->next;
 	}
+	free(now->identity);
+	free(now->attribs);
 	free(now);
 }

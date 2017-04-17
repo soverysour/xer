@@ -3,8 +3,6 @@
 #include "headers/main.h"
 #include "headers/utils.h"
 
-#define COLS 80
-#define ROWS 28
 #define NR_ROOMS 17
 
 struct room {
@@ -13,20 +11,19 @@ struct room {
 } rooms[NR_ROOMS];
 
 char level = 0;
-
-struct object map[ROWS][COLS];
+struct object map[M_ROWS][M_COLS];
 
 int check_rooms(struct room x, struct room y){
-	if ( x.x < 2 || ( x.x + x.w > COLS - 3 ) )
+	if ( x.x < 2 || ( x.x + x.w > M_COLS - 3 ) )
 		return 1;
 
-	if ( y.x < 2 || ( y.x + y.w > COLS - 3 ) )
+	if ( y.x < 2 || ( y.x + y.w > M_COLS - 3 ) )
 		return 1;
 
-	if ( x.y < 2 || ( x.y + x.h > ROWS - 3 ) )
+	if ( x.y < 2 || ( x.y + x.h > M_ROWS - 3 ) )
 		return 1;
 
-	if ( y.y < 2 || ( y.y + y.h > ROWS - 3 ) )
+	if ( y.y < 2 || ( y.y + y.h > M_ROWS - 3 ) )
 		return 1;
 
 	if ( x.x == y.x && x.y == y.y )
@@ -43,15 +40,15 @@ void load_map(void){
 		return;
 	}
 
-	for ( int i = 0; i < ROWS; i++ )
-		for ( int j = 0; j < COLS; j++ ){
+	for ( int i = 0; i < M_ROWS; i++ )
+		for ( int j = 0; j < M_COLS; j++ ){
 			map[i][j] = Owall;
 			map[i][j].x = j;
 			map[i][j].y = i;
 
-			if ( i == ROWS - 1 && j == COLS - 1 )
+			if ( i == M_ROWS - 1 && j == M_COLS - 1 )
 				map[i][j].next = 0;
-			else if ( j == COLS - 1 )
+			else if ( j == M_COLS - 1 )
 				map[i][j].next = map[i+1];
 			else map[i][j].next = map[i] + j + 1;
 		}
@@ -60,8 +57,8 @@ void load_map(void){
 	for ( int i = 0; i < NR_ROOMS; i++ ){
 		rooms[i].w = get_rand(8) + 3;
 		rooms[i].h = get_rand(4) + 5;
-		rooms[i].x = get_rand(COLS) - 4;
-		rooms[i].y = get_rand(ROWS) - 4;
+		rooms[i].x = get_rand(M_COLS) - 4;
+		rooms[i].y = get_rand(M_ROWS) - 4;
 	}
 
 	for ( int i = 0; i < NR_ROOMS - 1; i++ )
@@ -77,4 +74,8 @@ void load_map(void){
 
 struct object *get_map(void){
 	return map[0];
+}
+
+struct object get_tile(int x, int y){
+	return map[x][y];
 }

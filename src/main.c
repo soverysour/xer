@@ -14,6 +14,7 @@ void init_engine(void){
 		return;
 
 	init_seed();
+	init_logic();
 }
 
 void end_engine(char *text){
