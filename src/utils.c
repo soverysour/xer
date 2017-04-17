@@ -4,6 +4,12 @@
 
 #include "headers/symbol.h"
 
+int absolute(int x){
+	if ( x < 0 )
+		return -x;
+	return x;
+}
+
 void init_seed(void){
 	srandom(time(NULL));
 }

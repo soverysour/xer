@@ -8,4 +8,5 @@ struct object *get_object(void);
 void give_object(struct object*);
 struct symbol *do_apply(struct object*);
 void clean_symbol(struct symbol*);
+int absolute(int);
 #endif

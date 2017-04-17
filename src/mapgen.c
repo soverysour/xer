@@ -17,7 +17,6 @@ char level = 0;
 struct object map[COLS][ROWS];
 
 int check_rooms(struct room x, struct room y){
-	
 
 	return 0;
 }
@@ -53,7 +52,7 @@ void load_map(void){
 	}
 
 	for ( int i = 0; i < NR_ROOMS - 1; i++ )
-		for ( int j = 0; j < NR_ROOMS; j++ )
+		for ( int j = i + 1; j < NR_ROOMS; j++ )
 			if ( check_rooms(rooms[i], rooms[j]) )
 				goto generation;
 	
