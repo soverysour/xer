@@ -9,92 +9,130 @@
 
 int rows, cols;
 
-int get_attribs(char *a){
-	int to_return = 0;
+int get_attribs( char *a )
+{
+  int to_return = 0;
 
-	if ( a[AT_NORMAL] ) to_return |= A_NORMAL;
-	if ( a[AT_STANDOUT] ) to_return |= A_STANDOUT;
-	if ( a[AT_UNDERLINE] ) to_return |= A_UNDERLINE;
-	if ( a[AT_REVERSE] ) to_return |= A_REVERSE;
-	if ( a[AT_BLINK] ) to_return |= A_BLINK;
-	if ( a[AT_DIM] ) to_return |= A_DIM;
-	if ( a[AT_BOLD] ) to_return |= A_BOLD;
-	if ( a[AT_PROTECT] ) to_return |= A_PROTECT;
-	if ( a[AT_INVIS] ) to_return |= A_INVIS;
-	if ( a[AT_ALTCHARSET] ) to_return |= A_ALTCHARSET;
-	if ( a[AT_CHARTEXT] ) to_return |= A_CHARTEXT;
+  if ( a[AT_NORMAL] )
+    to_return |= A_NORMAL;
 
-	return to_return;
+  if ( a[AT_STANDOUT] )
+    to_return |= A_STANDOUT;
+
+  if ( a[AT_UNDERLINE] )
+    to_return |= A_UNDERLINE;
+
+  if ( a[AT_REVERSE] )
+    to_return |= A_REVERSE;
+
+  if ( a[AT_BLINK] )
+    to_return |= A_BLINK;
+
+  if ( a[AT_DIM] )
+    to_return |= A_DIM;
+
+  if ( a[AT_BOLD] )
+    to_return |= A_BOLD;
+
+  if ( a[AT_PROTECT] )
+    to_return |= A_PROTECT;
+
+  if ( a[AT_INVIS] )
+    to_return |= A_INVIS;
+
+  if ( a[AT_ALTCHARSET] )
+    to_return |= A_ALTCHARSET;
+
+  if ( a[AT_CHARTEXT] )
+    to_return |= A_CHARTEXT;
+
+  return to_return;
 }
 
-int get_color(int a){
-	switch ( a ){
-		case C_WHITE:
-			return COLOR_WHITE;
-		case C_RED:
-			return COLOR_RED;
-		case C_GREEN:
-			return COLOR_GREEN;
-		case C_BLUE:
-			return COLOR_BLUE;
-		case C_YELLOW:
-			return COLOR_YELLOW;
-		case C_CYAN:
-			return COLOR_CYAN;
-		case C_MAGENTA:
-			return COLOR_MAGENTA;
-		case C_BLACK:
-			return COLOR_BLACK;
-	}
+int get_color( int a )
+{
+  switch ( a )
+  {
+    case C_WHITE:
+      return COLOR_WHITE;
+
+    case C_RED:
+      return COLOR_RED;
+
+    case C_GREEN:
+      return COLOR_GREEN;
+
+    case C_BLUE:
+      return COLOR_BLUE;
+
+    case C_YELLOW:
+      return COLOR_YELLOW;
+
+    case C_CYAN:
+      return COLOR_CYAN;
+
+    case C_MAGENTA:
+      return COLOR_MAGENTA;
+
+    case C_BLACK:
+      return COLOR_BLACK;
+  }
 }
 
-int init_gui(void){
-	initscr();
-	getmaxyx(stdscr, rows, cols);
-	
-	if ( rows < 31 || cols < 61 ){
-		end_engine("Current terminal size is too small. Minimum is 30x60.\n");
-		return 0;
-	}
+int init_gui( void )
+{
+  initscr();
+  getmaxyx( stdscr, rows, cols );
 
-	ESCDELAY = 25;
-	noecho();
-	raw();
-	keypad(stdscr, TRUE);
-	curs_set(0);
-	start_color();
+  if ( rows < 31 || cols < 61 )
+  {
+    end_engine( "Current terminal size is too small. Minimum is 30x60.\n" );
+    return 0;
+  }
 
-	for ( int i = 0; i < NR_COLORS; i++ )
-		for ( int j = 0; j < NR_COLORS; j++ )
-		  init_pair(i * 10 + j, get_color(i), get_color(j));
+  ESCDELAY = 25;
+  noecho();
+  raw();
+  keypad( stdscr, TRUE );
+  curs_set( 0 );
+  start_color();
 
-	return 1;
+  for ( int i = 0; i < NR_COLORS; i++ )
+    for ( int j = 0; j < NR_COLORS; j++ )
+      init_pair( i * 10 + j, get_color( i ), get_color( j ) );
+
+  return 1;
 }
 
-void print_symbol(struct symbol k){
-	attron(get_attribs(k.attribs) | get_pair(k.fg, k.bg));
-	mvprintw(k.y, k.x, "%s", k.identity);
-	attroff(get_attribs(k.attribs) | get_pair(k.fg, k.bg));
+void print_symbol( struct symbol k )
+{
+  attron( get_attribs( k.attribs ) | get_pair( k.fg, k.bg ) );
+  mvprintw( k.y, k.x, "%s", k.identity );
+  attroff( get_attribs( k.attribs ) | get_pair( k.fg, k.bg ) );
 }
 
-void update_gui(struct symbol *x){
-	erase();
-	struct symbol k = *x;
+void update_gui( struct symbol *x )
+{
+  erase();
+  struct symbol k = *x;
 
-	while ( k.next ) {
-		print_symbol(k);
-		k = *k.next;
-	}
+  while ( k.next )
+  {
+    print_symbol( k );
+    k = *k.next;
+  }
 
-	print_symbol(k);
-	refresh();
+  print_symbol( k );
+  refresh();
 }
 
-void end_gui(char *text){
-	endwin();
-	printf("%s", text);
+void end_gui( char *text )
+{
+  endwin();
+  printf( "%s", text );
 }
 
-char get_input(void){
-	return getch();
+char get_input( void )
+{
+  return getch();
 }
