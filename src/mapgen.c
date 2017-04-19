@@ -28,8 +28,16 @@ int check_rooms( struct room x, struct room y )
   if ( y.y < 2 || ( y.y + y.h > M_ROWS - 3 ) )
     return 1;
 
-  if ( x.x == y.x && x.y == y.y )
+  if ( y.x <= x.x && y.x + y.w >= x.x + x.w &&
+       y.y <= x.y && y.y + y.h >= x.y + x.h )
     return 1;
+
+//  if ( x.x + x.w < y.w ||
+//       y.x + y.w < x.x ||
+//      x.y + x.h < y.y ||
+//       y.y + y.h < x.y
+//     )
+//    return 0;
 
   return 0;
 }
@@ -63,10 +71,10 @@ generation:
 
   for ( int i = 0; i < NR_ROOMS; i++ )
   {
-    rooms[i].w = get_rand( 8 ) + 3;
-    rooms[i].h = get_rand( 4 ) + 5;
-    rooms[i].x = get_rand( M_COLS ) - 4;
-    rooms[i].y = get_rand( M_ROWS ) - 4;
+    rooms[i].w = get_rand( 8 ) + 2;
+    rooms[i].h = get_rand( 5 ) + 4;
+    rooms[i].x = get_rand( M_COLS ) - 1;
+    rooms[i].y = get_rand( M_ROWS ) - 1;
   }
 
   for ( int i = 0; i < NR_ROOMS - 1; i++ )
