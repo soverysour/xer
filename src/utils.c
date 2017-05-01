@@ -14,12 +14,12 @@ int absolute( int x )
 
 void init_seed( void )
 {
-  srandom( time( NULL ) );
+  srandom( time ( NULL ) );
 }
 
 int get_rand( int x )
 {
-  return rand() % x + 1;
+  return random() % x + 1;
 }
 
 char *get_char_array( int k )
