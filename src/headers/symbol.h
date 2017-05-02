@@ -7,7 +7,7 @@
 #define NR_BUFFS 3
 
 #define M_ROWS 28
-#define M_COLS 80
+#define M_COLS 60
 
 struct symbol
 {

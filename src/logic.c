@@ -23,7 +23,9 @@ struct object *logic_update( char input )
 
   if ( !loaded )
   {
-    load_map();
+    if ( next_level() )
+      return &Oquit;
+
     loaded = 1;
     struct object *k = Omap;
 
