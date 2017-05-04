@@ -14,7 +14,8 @@ struct room
 char level = 0;
 struct object map[M_ROWS][M_COLS];
 
-int check_intersect( int i, int j){
+int check_intersect( int i, int j )
+{
   if ( rooms[i].x + rooms[i].w < rooms[j].w ||
        rooms[j].x + rooms[j].w < rooms[i].x ||
        rooms[i].y + rooms[i].h < rooms[j].y ||
@@ -36,18 +37,22 @@ int check_room( int i )
   return 0;
 }
 
-void random_room(int i){
+void random_room( int i )
+{
   rooms[i].x = get_rand( M_COLS ) - 1;
   rooms[i].y = get_rand( M_ROWS ) - 1;
-  
-  do {
-    rooms[i].w = get_rand ( 7 );
-  } while ( rooms[i].w < 2 );
-  
-  do {
-    rooms[i].h = get_rand ( 7 );
-  } while ( rooms[i].h < 2 );
 
+  do
+  {
+    rooms[i].w = get_rand ( 7 );
+  }
+  while ( rooms[i].w < 2 );
+
+  do
+  {
+    rooms[i].h = get_rand ( 7 );
+  }
+  while ( rooms[i].h < 2 );
 }
 
 int next_level( void )
@@ -78,20 +83,22 @@ int next_level( void )
   for ( int i = 0; i < NR_ROOMS; i++ )
   {
     int k = 0;
-checks:
-    random_room(i);
+  checks:
+    random_room( i );
 
-    if ( k == 50 ){
+    if ( k == 50 )
+    {
       k = 0;
       i = 0;
       goto checks;
     }
 
-    while ( check_room(i) )
-      random_room(i);
+    while ( check_room( i ) )
+      random_room( i );
 
     for ( int j = 0; j < i; j++ )
-      if ( check_intersect(i, j) ){
+      if ( check_intersect( i, j ) )
+      {
         k++;
         goto checks;
       }

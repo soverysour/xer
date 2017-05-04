@@ -37,3 +37,6 @@ clean:
 	-rm build/*.o
 	-rm build/game
 	-clear
+
+style:
+	astyle --options=.astyle -n --recursive 'src/*.c' 'src/*.h'
