@@ -1,34 +1,34 @@
-s=src/
-b=build/
-h=src/headers/
+S=src/
+B=build/
+H=src/headers/
 
-cc=gcc
-flags=-lncurses
-objects=$(b)main.o $(b)gui.o $(b)utils.o $(b)logic.o $(b)player.o $(b)mapgen.o $(b)standard_objects.o
+CC=gcc
+FLAGS=-lncursesw
+OBJECTS=$(B)main.o $(B)gui.o $(B)utils.o $(B)logic.o $(B)player.o $(B)mapgen.o $(B)standard_objects.o
 
-all: $(objects)
-	$(cc) $(objects) -o $(b)game $(flags)
+all: $(OBJECTS)
+	$(CC) $(OBJECTS) -o $(B)game $(FLAGS)
 
-$(b)main.o: $(s)main.c $(h)main.h $(h)gui.h $(h)utils.h $(h)symbol.h $(h)logic.h
-	$(cc) -c $(s)main.c -o $(b)main.o
+$(B)main.o: $(S)main.c $(H)main.h $(H)gui.h $(H)utils.h $(H)symbol.h $(H)logic.h
+	$(CC) -c $(S)main.c -o $(B)main.o
 
-$(b)gui.o: $(s)gui.c $(h)gui.h $(h)symbol.h $(h)main.h
-	$(cc) -c $(s)gui.c -o $(b)gui.o
+$(B)gui.o: $(S)gui.c $(H)gui.h $(H)symbol.h $(H)main.h
+	$(CC) -c $(S)gui.c -o $(B)gui.o
 
-$(b)utils.o: $(s)utils.c $(h)utils.h $(h)symbol.h
-	$(cc) -c $(s)utils.c -o $(b)utils.o
+$(B)utils.o: $(S)utils.c $(H)utils.h $(H)symbol.h
+	$(CC) -c $(S)utils.c -o $(B)utils.o
 
-$(b)logic.o: $(s)logic.c $(h)logic.h $(h)symbol.h $(h)player.h $(h)standard_objects.h
-	$(cc) -c $(s)logic.c -o $(b)logic.o
+$(B)logic.o: $(S)logic.c $(H)logic.h $(H)symbol.h $(H)player.h $(H)standard_objects.h
+	$(CC) -c $(S)logic.c -o $(B)logic.o
 
-$(b)player.o: $(s)player.c $(h)player.h $(h)logic.h $(h)symbol.h 
-	$(cc) -c $(s)player.c -o $(b)player.o
+$(B)player.o: $(S)player.c $(H)player.h $(H)logic.h $(H)symbol.h 
+	$(CC) -c $(S)player.c -o $(B)player.o
 
-$(b)mapgen.o: $(s)mapgen.c $(h)mapgen.h $(h)standard_objects.h
-	$(cc) -c $(s)mapgen.c -o $(b)mapgen.o
+$(B)mapgen.o: $(S)mapgen.c $(H)mapgen.h $(H)standard_objects.h
+	$(CC) -c $(S)mapgen.c -o $(B)mapgen.o
 
-$(b)standard_objects.o: $(s)standard_objects.c $(h)standard_objects.h $(h)symbol.h
-	$(cc) -c $(s)standard_objects.c -o $(b)standard_objects.o
+$(B)standard_objects.o: $(S)standard_objects.c $(H)standard_objects.h $(H)symbol.h
+	$(CC) -c $(S)standard_objects.c -o $(B)standard_objects.o
 
 run: all
 	build/game

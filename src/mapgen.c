@@ -55,16 +55,7 @@ void random_room( int i )
   while ( rooms[i].h < 2 );
 }
 
-int next_level( void )
-{
-  level++;
-
-  if ( !level )
-  {
-    end_engine( "Congratulations.\n" );
-    return 1;
-  }
-
+void generate_map(void){
   for ( int i = 0; i < M_ROWS; i++ )
     for ( int j = 0; j < M_COLS; j++ )
     {
@@ -79,7 +70,8 @@ int next_level( void )
       else
         map[i][j].next = map[i] + j + 1;
     }
-
+}
+void generate_rooms(void){
   for ( int i = 0; i < NR_ROOMS; i++ )
   {
     int k = 0;
@@ -103,11 +95,65 @@ int next_level( void )
         goto checks;
       }
   }
-
+}
+void generate_rooms_in_map(void){
   for ( int i = 0; i < NR_ROOMS; i++ )
     for ( int j = rooms[i].y; j < rooms[i].y + rooms[i].h; j++ )
       for ( int k = rooms[i].x; k < rooms[i].x + rooms[i].w; k++ )
         map[j][k].id = Ofloor.id;
+}
+
+void path_rooms(int i, int j){
+  int x1 = rooms[i].x + get_rand(rooms[i].w) - 1;
+  int x2 = rooms[j].x + get_rand(rooms[j].w) - 1;
+
+  int y1 = rooms[i].y + get_rand(rooms[i].h) - 1;
+  int y2 = rooms[j].y + get_rand(rooms[j].h) - 1;
+
+  int diffx = x2 - x1;
+
+  if ( x1 < x2 ){
+    for ( int kk = x1; kk <= x2; kk++ )
+      map[y1][kk].id = Ofloor.id;
+    if ( y1 < y2 )
+      for ( int kk = y1; kk <= y2; kk++ )
+        map[kk][x2].id = Ofloor.id;
+    else
+      for ( int kk = y2; kk <= y1; kk++ )
+        map[kk][x2].id = Ofloor.id;
+  }
+
+  else {
+    for ( int kk = x2; kk <= x1; kk++ )
+      map[y2][kk].id = Ofloor.id;
+    if ( y1 < y2 )
+      for ( int kk = y1; kk <= y2; kk++ )
+        map[kk][x1].id = Ofloor.id;
+    else
+      for ( int kk = y2; kk <= y1; kk++ )
+        map[kk][x1].id = Ofloor.id;
+  }
+}
+
+void generate_paths(void){
+  for ( int i = 0; i < NR_ROOMS - 1; i++ )
+    path_rooms(i, i + 1);
+}
+
+int next_level( void )
+{
+  level++;
+
+  if ( !level )
+  {
+    end_engine( "Congratulations.\n" );
+    return 1;
+  }
+
+  generate_map();
+  generate_rooms();
+  generate_rooms_in_map();
+  generate_paths();
 
   return 0;
 }
@@ -117,7 +163,7 @@ struct object *get_map( void )
   return map[0];
 }
 
-struct object get_tile( int x, int y )
+struct object get_tile( int y, int x )
 {
-  return map[x][y];
+  return map[y][x];
 }
