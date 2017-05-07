@@ -15,13 +15,13 @@
 #define IMPASSABLE 0
 #define PASSABLE 1
 
-char ef[] = { 1, 0, 0 };
+char ef[] = { 0, 0, 1 };
 struct object object_player =
 {
   .id = ID_PLAYER,
-  .hp = 1,
   .x = 6,
   .y = 4,
+  .visibility = V_SEEN,
   .effects = ef,
   .next = 0
 };
@@ -72,15 +72,15 @@ void update_player( char input )
       break;
 
     case 'B':
-      object_player.effects[B_FORCE] = 1;
+      object_player.effects[B_BUFFED] = 1;
       break;
 
     case 'b':
-      object_player.effects[B_FORCE] = 0;
+      object_player.effects[B_BUFFED] = 0;
       break;
   }
 
-  if ( get_tile( object_player.y + y, object_player.x + x ).id != ID_WALL )
+  if ( get_tile( object_player.y + y, object_player.x + x )->id != ID_WALL )
   {
     object_player.x += x;
     object_player.y += y;

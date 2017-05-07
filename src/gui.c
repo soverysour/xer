@@ -106,6 +106,9 @@ int init_gui( void )
 
 void print_symbol( struct symbol k )
 {
+  if ( k.status == EMPTY_SYMBOL )
+    return;
+
   attron( get_attribs( k.attribs ) | get_pair( k.fg, k.bg ) );
   mvprintw( k.y, k.x, "%s", k.identity );
   attroff( get_attribs( k.attribs ) | get_pair( k.fg, k.bg ) );

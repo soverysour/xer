@@ -4,7 +4,9 @@
 #define NR_ATTRIBS 11
 #define NR_COLORS 8
 #define NR_IDS 5
-#define NR_BUFFS 3
+#define NR_BUFFS 1
+#define NR_VISIBILITY 3
+#define EMPTY_SYMBOL 0
 
 #define M_ROWS 28
 #define M_COLS 60
@@ -15,6 +17,7 @@ struct symbol
   char *attribs;
   char fg, bg;
   int y, x;
+  char status;
 
   struct symbol *next;
 };
@@ -57,16 +60,20 @@ enum ids
 
 enum buffs
 {
-  B_BUFFED,
-  B_POISONED,
-  B_FORCE
+  B_BUFFED
+};
+
+enum visibility{
+  V_UNSEEN,
+  V_FOG,
+  V_SEEN
 };
 
 struct object
 {
   int x, y;
   int id;
-  int hp;
+  char visibility;
   char *effects;
 
   struct object *next;

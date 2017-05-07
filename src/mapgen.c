@@ -63,6 +63,7 @@ void generate_map( void )
       map[i][j] = Owall;
       map[i][j].x = j;
       map[i][j].y = i;
+      map[i][j].visibility = V_UNSEEN;
 
       if ( i == M_ROWS - 1 && j == M_COLS - 1 )
         map[i][j].next = 0;
@@ -163,12 +164,7 @@ int next_level( void )
   return 0;
 }
 
-struct object *get_map( void )
+struct object *get_tile( int y, int x )
 {
-  return map[0];
-}
-
-struct object get_tile( int y, int x )
-{
-  return map[y][x];
+  return map[y] + x;
 }

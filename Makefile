@@ -15,10 +15,10 @@ $(B)main.o: $(S)main.c $(H)main.h $(H)gui.h $(H)utils.h $(H)symbol.h $(H)logic.h
 $(B)gui.o: $(S)gui.c $(H)gui.h $(H)symbol.h $(H)main.h
 	$(CC) -c $(S)gui.c -o $(B)gui.o
 
-$(B)utils.o: $(S)utils.c $(H)utils.h $(H)symbol.h
+$(B)utils.o: $(S)utils.c $(H)utils.h $(H)symbol.h $(H)player.h $(H)mapgen.h
 	$(CC) -c $(S)utils.c -o $(B)utils.o
 
-$(B)logic.o: $(S)logic.c $(H)logic.h $(H)symbol.h $(H)player.h $(H)standard_objects.h
+$(B)logic.o: $(S)logic.c $(H)logic.h $(H)symbol.h $(H)player.h $(H)standard_objects.h $(H)utils.h
 	$(CC) -c $(S)logic.c -o $(B)logic.o
 
 $(B)player.o: $(S)player.c $(H)player.h $(H)logic.h $(H)symbol.h 

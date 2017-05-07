@@ -3,6 +3,8 @@
 #include <string.h>
 
 #include "headers/symbol.h"
+#include "headers/mapgen.h"
+#include "headers/player.h"
 
 int absolute( int x )
 {
@@ -44,6 +46,12 @@ void give_object( struct object *k )
 
 void silent_apply( struct object *a, struct symbol *b )
 {
+  if ( a->visibility == V_UNSEEN ){
+    b->status = EMPTY_SYMBOL;
+    return;
+  }
+
+  b->status = !EMPTY_SYMBOL;
   switch ( a->id )
   {
     case ID_PLAYER:
@@ -74,15 +82,19 @@ void silent_apply( struct object *a, struct symbol *b )
   b->attribs = calloc( NR_ATTRIBS, sizeof( char ) );
 
   if ( a->effects[B_BUFFED] )
-    b->attribs[AT_BOLD] = 1;
-
-  if ( a->effects[B_POISONED] )
-    b->attribs[AT_BLINK] = 1;
-
-  if ( a->effects[B_FORCE] )
     b->fg = C_RED;
   else
     b->fg = C_WHITE;
+  b->bg = C_BLACK;
+
+  switch ( a->visibility ){
+    case V_FOG:
+      b->attribs[AT_DIM] = 1;
+      break;
+    case V_SEEN:
+      b->attribs[AT_BOLD] = 1;
+      break;
+  }
 
   b->y = a->y;
   b->x = a->x;
@@ -124,4 +136,17 @@ void clean_symbol( struct symbol *a )
   free( now->identity );
   free( now->attribs );
   free( now );
+}
+
+void put_fov(void){
+  for ( int i = 0; i < M_ROWS; i++ )
+    for ( int j = 0; j < M_COLS; j++ )
+      if ( get_tile(i, j)->visibility == V_SEEN )
+        get_tile(i, j)->visibility = V_FOG;
+
+  int x = get_player()->x, y = get_player()->y;
+
+  for ( int i = x - 1; i < x + 2; i++ )
+    for ( int j = y - 1; j < y + 2; j++ )
+      get_tile(j, i)->visibility = V_SEEN;
 }

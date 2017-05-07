@@ -5,7 +5,7 @@ struct object Oquit =
   .id = ID_QUIT
 };
 
-char Ewallfloor[] = {1, 0};
+char Ewallfloor[NR_BUFFS] = { 0 };
 struct object Owall =
 {
   .id = ID_WALL,
