@@ -9,5 +9,5 @@ void give_object( struct object * );
 int absolute( int );
 struct symbol *do_apply( struct object * );
 void clean_symbol( struct symbol * );
-void put_fov(void);
+void put_fov( void );
 #endif

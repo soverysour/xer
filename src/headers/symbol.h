@@ -8,8 +8,8 @@
 #define NR_VISIBILITY 3
 #define EMPTY_SYMBOL 0
 
-#define M_ROWS 28
-#define M_COLS 60
+#define M_ROWS 33
+#define M_COLS 90
 
 struct symbol
 {
@@ -63,7 +63,8 @@ enum buffs
   B_BUFFED
 };
 
-enum visibility{
+enum visibility
+{
   V_UNSEEN,
   V_FOG,
   V_SEEN

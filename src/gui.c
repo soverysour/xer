@@ -84,9 +84,9 @@ int init_gui( void )
   initscr();
   getmaxyx( stdscr, rows, cols );
 
-  if ( rows < 31 || cols < 61 )
+  if ( rows < 36 || cols < 91 )
   {
-    end_engine( "Current terminal size is too small. Minimum is 30x60.\n" );
+    end_engine( "Current terminal size is too small. Minimum is 35x90.\n" );
     return 0;
   }
 

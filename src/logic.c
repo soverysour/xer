@@ -10,11 +10,12 @@ char loaded = 0;
 
 void init_logic( void )
 {
-  Omap = get_tile(0, 0);
+  Omap = get_tile( 0, 0 );
   Oplayer = get_player();
 }
 
-void slap_player(void){
+void slap_player( void )
+{
   struct object *k = Omap;
 
   while ( k->next )

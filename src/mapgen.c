@@ -73,6 +73,7 @@ void generate_map( void )
         map[i][j].next = map[i] + j + 1;
     }
 }
+
 void generate_rooms( void )
 {
   for ( int i = 0; i < NR_ROOMS; i++ )
