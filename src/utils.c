@@ -143,6 +143,71 @@ void clean_symbol( struct symbol *a )
   free( now );
 }
 
+int proc_unit( int target, int source )
+{
+  return ( source - target ) / absolute( source - target );
+}
+
+int backtrack_fov( int diags, int straights, int targety, int targetx, int cury, int curx )
+{
+  if ( curx == targetx && cury == targety )
+    return 1;
+
+  if ( get_tile( cury, curx )->id == ID_WALL )
+    return 0;
+
+  if ( diags == 0 && straights == 0 )
+    return 0;
+
+  if ( cury < 0 || cury > M_ROWS - 1 )
+    return 0;
+
+  if ( curx < 0 || curx > M_COLS - 1 )
+    return 0;
+
+  if ( cury != targety && straights > 0 )
+    if ( backtrack_fov( diags,
+                        straights - 1,
+                        targety,
+                        targetx,
+                        cury - proc_unit( targety, cury ),
+                        curx )
+       )
+      return 1;
+
+  if ( curx != targetx && straights > 0 )
+    if ( backtrack_fov( diags,
+                        straights - 1,
+                        targety,
+                        targetx,
+                        cury,
+                        curx - proc_unit( targetx, curx ) )
+       )
+      return 1;
+
+  if ( cury != targety && curx != targetx && diags > 0 )
+    return backtrack_fov( diags - 1,
+                          straights,
+                          targety,
+                          targetx,
+                          cury - proc_unit( targety, cury ),
+                          curx - proc_unit( targetx, curx )
+                        );
+
+  return 0;
+}
+
+void fov_line( int y, int x, int py, int px )
+{
+  int xs = absolute( px - x );
+  int ys = absolute( py - y );
+  int diags = xs > ys ? ys : xs;
+  int straights = xs > ys ? xs - ys : ys - xs;
+
+  if ( backtrack_fov( diags, straights, y, x, py, px ) )
+    get_tile( y, x )->visibility = V_SEEN;
+}
+
 void put_fov( void )
 {
   for ( int i = 0; i < M_ROWS; i++ )
@@ -152,7 +217,7 @@ void put_fov( void )
 
   int x = get_player()->x, y = get_player()->y;
 
-  for ( int i = x - 1; i < x + 2; i++ )
-    for ( int j = y - 1; j < y + 2; j++ )
-      get_tile( j, i )->visibility = V_SEEN;
+  for ( int i = y - 4; i < y + 5; i++ )
+    for ( int j = x - 4; j < x + 5; j++ )
+      fov_line( i, j, y, x );
 }

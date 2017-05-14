@@ -114,32 +114,18 @@ void path_rooms( int i, int j )
   int x2 = rooms[j].x + get_rand( rooms[j].w ) - 1;
   int y1 = rooms[i].y + get_rand( rooms[i].h ) - 1;
   int y2 = rooms[j].y + get_rand( rooms[j].h ) - 1;
-  int diffx = x2 - x1;
+  int startx = x1 < x2 ? x1 : x2;
+  int endx   = x1 < x2 ? x2 : x1;
+  int starty = y1 < y2 ? y1 : y2;
+  int endy   = y1 < y2 ? y2 : y1;
+  int firsty = x1 < x2 ? y1 : y2;
+  int lastx  = x1 < x2 ? x2 : x1;
 
-  if ( x1 < x2 )
-  {
-    for ( int kk = x1; kk <= x2; kk++ )
-      map[y1][kk].id = Ofloor.id;
+  for ( int k = startx; k <= endx; k++ )
+    map[firsty][k].id = Ofloor.id;
 
-    if ( y1 < y2 )
-      for ( int kk = y1; kk <= y2; kk++ )
-        map[kk][x2].id = Ofloor.id;
-    else
-      for ( int kk = y2; kk <= y1; kk++ )
-        map[kk][x2].id = Ofloor.id;
-  }
-  else
-  {
-    for ( int kk = x2; kk <= x1; kk++ )
-      map[y2][kk].id = Ofloor.id;
-
-    if ( y1 < y2 )
-      for ( int kk = y1; kk <= y2; kk++ )
-        map[kk][x1].id = Ofloor.id;
-    else
-      for ( int kk = y2; kk <= y1; kk++ )
-        map[kk][x1].id = Ofloor.id;
-  }
+  for ( int k = starty; k <= endy; k++ )
+    map[k][lastx].id = Ofloor.id;
 }
 
 void generate_paths( void )
