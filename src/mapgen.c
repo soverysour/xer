@@ -2,6 +2,7 @@
 #include "headers/standard_objects.h"
 #include "headers/main.h"
 #include "headers/utils.h"
+#include "headers/player.h"
 
 #define NR_ROOMS 17
 
@@ -134,6 +135,14 @@ void generate_paths( void )
     path_rooms( i, i + 1 );
 }
 
+void set_player(void){
+  int which = get_rand(NR_ROOMS) - 1;
+  int x = rooms[which].x + get_rand(rooms[which].w) - 1;
+  int y = rooms[which].y + get_rand(rooms[which].h) - 1;
+
+  teleport_player(y, x);
+}
+
 int next_level( void )
 {
   level++;
@@ -148,6 +157,7 @@ int next_level( void )
   generate_rooms();
   generate_rooms_in_map();
   generate_paths();
+  set_player();
   return 0;
 }
 

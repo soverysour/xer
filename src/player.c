@@ -91,3 +91,8 @@ struct object *get_player( void )
 {
   return &object_player;
 }
+
+void teleport_player(int y, int x){
+  object_player.x = x;
+  object_player.y = y;
+}

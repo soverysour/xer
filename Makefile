@@ -24,7 +24,7 @@ $(B)logic.o: $(S)logic.c $(H)logic.h $(H)symbol.h $(H)player.h $(H)standard_obje
 $(B)player.o: $(S)player.c $(H)player.h $(H)logic.h $(H)symbol.h 
 	$(CC) -c $(S)player.c -o $(B)player.o
 
-$(B)mapgen.o: $(S)mapgen.c $(H)mapgen.h $(H)standard_objects.h
+$(B)mapgen.o: $(S)mapgen.c $(H)mapgen.h $(H)standard_objects.h $(H)player.h
 	$(CC) -c $(S)mapgen.c -o $(B)mapgen.o
 
 $(B)standard_objects.o: $(S)standard_objects.c $(H)standard_objects.h $(H)symbol.h
