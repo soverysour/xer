@@ -217,7 +217,7 @@ void put_fov( void )
 
   int x = get_player()->x, y = get_player()->y;
 
-  for ( int i = y - 4; i < y + 5; i++ )
-    for ( int j = x - 4; j < x + 5; j++ )
+  for ( int i = y - FOV_RADIUS; i < y + FOV_RADIUS + 1; i++ )
+    for ( int j = x - FOV_RADIUS; j < x + FOV_RADIUS + 1; j++ )
       fov_line( i, j, y, x );
 }

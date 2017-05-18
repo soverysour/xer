@@ -8,8 +8,13 @@
 #define NR_VISIBILITY 3
 #define EMPTY_SYMBOL 0
 
-#define M_ROWS 33
-#define M_COLS 90
+#define TERMINAL_WIDTH 80
+#define TERMINAL_HEIGHT 24
+
+#define FOV_RADIUS 2
+
+#define M_ROWS 18
+#define M_COLS 80
 
 struct symbol
 {

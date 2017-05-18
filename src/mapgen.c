@@ -38,6 +38,13 @@ int check_room( int i )
   return 0;
 }
 
+int dist_room(struct room a, struct room b){
+  int x = (a.x - b.x) * (a.x - b.x);
+  int y = (a.y - b.y) * (a.y - b.y);
+
+  return x + y;
+}
+
 void random_room( int i )
 {
   rooms[i].x = get_rand( M_COLS ) - 1;
@@ -47,11 +54,11 @@ void random_room( int i )
   {
     rooms[i].w = get_rand ( 7 );
   }
-  while ( rooms[i].w < 2 );
+  while ( rooms[i].w < 2);
 
   do
   {
-    rooms[i].h = get_rand ( 7 );
+    rooms[i].h = get_rand ( 6 );
   }
   while ( rooms[i].h < 2 );
 }
@@ -107,6 +114,19 @@ void generate_rooms_in_map( void )
     for ( int j = rooms[i].y; j < rooms[i].y + rooms[i].h; j++ )
       for ( int k = rooms[i].x; k < rooms[i].x + rooms[i].w; k++ )
         map[j][k].id = Ofloor.id;
+
+  for ( int i = 0; i < NR_ROOMS - 1; i++ ){
+    int k = i + 1;
+    for ( int j = i + 2; j < NR_ROOMS; j++ )
+      if ( dist_room(rooms[i], rooms[j]) < dist_room(rooms[i], rooms[k]) )
+        k = j;
+    
+    if ( k != i + 1 ){
+      struct room x = rooms[i];
+      rooms[i] = rooms[k];
+      rooms[k] = rooms[i];
+    }
+  }
 }
 
 void path_rooms( int i, int j )
