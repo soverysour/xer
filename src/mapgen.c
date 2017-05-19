@@ -34,10 +34,10 @@ int check_room( int i )
   return 0;
 }
 
-int dist_room(struct room a, struct room b){
-  int x = (a.x - b.x) * (a.x - b.x);
-  int y = (a.y - b.y) * (a.y - b.y);
-
+int dist_room( struct room a, struct room b )
+{
+  int x = ( a.x - b.x ) * ( a.x - b.x );
+  int y = ( a.y - b.y ) * ( a.y - b.y );
   return x + y;
 }
 
@@ -50,7 +50,7 @@ void random_room( int i )
   {
     rooms[i].w = get_rand ( 6 );
   }
-  while ( rooms[i].w < 1);
+  while ( rooms[i].w < 1 );
 
   do
   {
@@ -108,7 +108,8 @@ void generate_rooms_in_map( void )
 {
   for ( int i = 0; i < NR_ROOMS; i++ )
     for ( int j = rooms[i].y; j < rooms[i].y + rooms[i].h; j++ )
-      for ( int k = rooms[i].x; k < rooms[i].x + rooms[i].w; k++ ){
+      for ( int k = rooms[i].x; k < rooms[i].x + rooms[i].w; k++ )
+      {
         Ofloor.x = map[j][k].x;
         Ofloor.y = map[j][k].y;
         Ofloor.effects = map[j][k].effects;
@@ -116,13 +117,16 @@ void generate_rooms_in_map( void )
         map[j][k] = Ofloor;
       }
 
-  for ( int i = 0; i < NR_ROOMS - 1; i++ ){
+  for ( int i = 0; i < NR_ROOMS - 1; i++ )
+  {
     int k = i + 1;
+
     for ( int j = i + 2; j < NR_ROOMS; j++ )
-      if ( dist_room(rooms[i], rooms[j]) < dist_room(rooms[i], rooms[k]) )
+      if ( dist_room( rooms[i], rooms[j] ) < dist_room( rooms[i], rooms[k] ) )
         k = j;
-    
-    if ( k != i + 1 ){
+
+    if ( k != i + 1 )
+    {
       struct room x = rooms[i];
       rooms[i] = rooms[k];
       rooms[k] = rooms[i];
@@ -156,12 +160,12 @@ void generate_paths( void )
     path_rooms( i, i + 1 );
 }
 
-void set_player(void){
-  int which = get_rand(NR_ROOMS) - 1;
-  int x = rooms[which].x + get_rand(rooms[which].w) - 1;
-  int y = rooms[which].y + get_rand(rooms[which].h) - 1;
-
-  teleport_player(y, x);
+void set_player( void )
+{
+  int which = get_rand( NR_ROOMS ) - 1;
+  int x = rooms[which].x + get_rand( rooms[which].w ) - 1;
+  int y = rooms[which].y + get_rand( rooms[which].h ) - 1;
+  teleport_player( y, x );
 }
 
 int next_level( void )
@@ -187,6 +191,7 @@ struct object *get_tile( int y, int x )
   return map[y] + x;
 }
 
-struct room *get_rooms(void){
+struct room *get_rooms( void )
+{
   return rooms;
 }

@@ -15,7 +15,8 @@ void init_logic( void )
   Oplayer = get_player();
 }
 
-void put_monsters(void){
+void put_monsters( void )
+{
   Oplayer->next = get_monsters();
 }
 

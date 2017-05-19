@@ -82,7 +82,8 @@ enum visibility
   V_SEEN
 };
 
-struct entity {
+struct entity
+{
   int hp;
 };
 

@@ -20,7 +20,8 @@ struct object Ofloor =
   .effects = Ewallfloor
 };
 
-struct object Ohp = {
+struct object Ohp =
+{
   .id = ID_HUD,
   .x = 2,
   .y = 18,

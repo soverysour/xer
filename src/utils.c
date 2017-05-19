@@ -45,29 +45,30 @@ void give_object( struct object *k )
   free( k );
 }
 
-struct entity *get_entity(void){
+struct entity *get_entity( void )
+{
   return calloc( 1, sizeof( struct entity ) );
 }
 
-void give_entity(struct entity *k){
-  free(k);
+void give_entity( struct entity *k )
+{
+  free( k );
 }
 
 void silent_apply( struct object *a, struct symbol *b )
 {
-  if ( a->id == ID_HUD ){
-    if ( a->y == 18 ){
-      char *hold = calloc(10, sizeof(char));
-      sprintf(hold, "HP: %i", get_player()->entity->hp);
+  if ( a->id == ID_HUD )
+  {
+    if ( a->y == 18 )
+    {
+      char *hold = calloc( 10, sizeof( char ) );
+      sprintf( hold, "HP: %i", get_player()->entity->hp );
       b->identity = hold;
       b->x = 0;
       b->y = 18;
       b->status = !EMPTY_SYMBOL;
-
-      b->attribs = calloc(NR_ATTRIBS, sizeof(char));
-
+      b->attribs = calloc( NR_ATTRIBS, sizeof( char ) );
       b->attribs[AT_BOLD] = 1;
-
       b->fg = C_WHITE;
       b->bg = C_BLACK;
     }
@@ -232,7 +233,7 @@ void fov_line( int y, int x, int py, int px )
   int ys = absolute( py - y );
   int diags = xs > ys ? ys : xs;
   int straights = xs > ys ? xs - ys : ys - xs;
-  
+
   if ( backtrack_fov( diags, straights, y, x, py, px ) )
     get_tile( y, x )->visibility = V_SEEN;
 }

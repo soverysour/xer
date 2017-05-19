@@ -18,7 +18,8 @@
 
 char ef[] = {};
 
-struct entity entity_player = {
+struct entity entity_player =
+{
   .hp = 10
 };
 
@@ -99,7 +100,8 @@ struct object *get_player( void )
   return &object_player;
 }
 
-void teleport_player(int y, int x){
+void teleport_player( int y, int x )
+{
   object_player.x = x;
   object_player.y = y;
 }
