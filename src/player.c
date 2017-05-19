@@ -1,6 +1,7 @@
 #include "headers/logic.h"
 #include "headers/symbol.h"
 #include "headers/mapgen.h"
+#include "headers/standard_objects.h"
 
 #define DOWN '2'
 #define LEFT '4'
@@ -15,15 +16,16 @@
 #define IMPASSABLE 0
 #define PASSABLE 1
 
-char ef[] = { 0, 0, 1 };
+char ef[] = {};
 struct object object_player =
 {
   .id = ID_PLAYER,
   .x = 6,
   .y = 4,
+  .hp = 10,
   .visibility = V_SEEN,
   .effects = ef,
-  .next = 0
+  .next = &Ohp
 };
 
 void update_player( char input )

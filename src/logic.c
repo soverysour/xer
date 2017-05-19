@@ -14,16 +14,6 @@ void init_logic( void )
   Oplayer = get_player();
 }
 
-void slap_player( void )
-{
-  struct object *k = Omap;
-
-  while ( k->next )
-    k = k->next;
-
-  k->next = Oplayer;
-}
-
 struct object *logic_update( char input )
 {
   if ( input == 'Q' )
@@ -38,7 +28,6 @@ struct object *logic_update( char input )
       return &Oquit;
 
     loaded = 1;
-    slap_player();
   }
 
   update_player( input );

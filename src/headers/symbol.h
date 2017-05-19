@@ -11,7 +11,7 @@
 #define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 24
 
-#define FOV_RADIUS 2
+#define FOV_RADIUS 7
 
 #define M_ROWS 18
 #define M_COLS 80
@@ -60,7 +60,8 @@ enum ids
   ID_PLAYER,
   ID_MONSTER,
   ID_WALL,
-  ID_FLOOR
+  ID_FLOOR,
+  ID_HUD
 };
 
 enum buffs
@@ -79,6 +80,7 @@ struct object
 {
   int x, y;
   int id;
+  int hp;
   char visibility;
   char *effects;
 

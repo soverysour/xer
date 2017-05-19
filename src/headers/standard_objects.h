@@ -3,4 +3,5 @@
 struct object Oquit;
 struct object Owall;
 struct object Ofloor;
+struct object Ohp;
 #endif

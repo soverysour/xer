@@ -1,6 +1,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "headers/symbol.h"
 #include "headers/mapgen.h"
@@ -46,6 +47,26 @@ void give_object( struct object *k )
 
 void silent_apply( struct object *a, struct symbol *b )
 {
+  if ( a->id == ID_HUD ){
+    if ( a->y == 18 ){
+      char *hold = calloc(19, sizeof(char));
+      sprintf(hold, "HP: %i", get_player()->hp);
+      b->identity = hold;
+      b->x = 2;
+      b->y = 18;
+      b->status = !EMPTY_SYMBOL;
+
+      b->attribs = calloc(NR_ATTRIBS, sizeof(char));
+
+      b->attribs[AT_BOLD] = 1;
+
+      b->fg = C_WHITE;
+      b->bg = C_BLACK;
+
+      return;
+    }
+  }
+
   if ( a->visibility == V_UNSEEN )
   {
     b->status = EMPTY_SYMBOL;
