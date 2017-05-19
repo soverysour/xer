@@ -224,7 +224,7 @@ void fov_line( int y, int x, int py, int px )
   int ys = absolute( py - y );
   int diags = xs > ys ? ys : xs;
   int straights = xs > ys ? xs - ys : ys - xs;
-
+  
   if ( backtrack_fov( diags, straights, y, x, py, px ) )
     get_tile( y, x )->visibility = V_SEEN;
 }
