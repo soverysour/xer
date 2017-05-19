@@ -2,4 +2,5 @@
 #define HEADER_MAPGEN
 int next_level( void );
 struct object *get_tile( int, int );
+struct room *get_rooms(void);
 #endif

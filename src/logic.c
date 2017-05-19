@@ -3,6 +3,7 @@
 #include "headers/standard_objects.h"
 #include "headers/mapgen.h"
 #include "headers/utils.h"
+#include "headers/monsters.h"
 
 struct object *Omap;
 struct object *Oplayer;
@@ -12,6 +13,10 @@ void init_logic( void )
 {
   Omap = get_tile( 0, 0 );
   Oplayer = get_player();
+}
+
+void put_monsters(void){
+  Oplayer->next = get_monsters();
 }
 
 struct object *logic_update( char input )
@@ -27,10 +32,12 @@ struct object *logic_update( char input )
     if ( next_level() )
       return &Oquit;
 
+    new_monsters();
     loaded = 1;
   }
 
   update_player( input );
   put_fov();
+  put_monsters();
   return Omap;
 }

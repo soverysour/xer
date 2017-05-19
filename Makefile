@@ -4,7 +4,8 @@ H=src/headers/
 
 CC=gcc
 FLAGS=-lncursesw
-OBJECTS=$(B)main.o $(B)gui.o $(B)utils.o $(B)logic.o $(B)player.o $(B)mapgen.o $(B)standard_objects.o
+OBJECTS=$(B)main.o $(B)gui.o $(B)utils.o $(B)logic.o $(B)player.o \
+	$(B)mapgen.o $(B)standard_objects.o $(B)monsters.o
 
 all: $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(B)game $(FLAGS)
@@ -32,13 +33,17 @@ $(B)mapgen.o: $(S)mapgen.c $(H)mapgen.h $(H)standard_objects.h \
 $(B)standard_objects.o: $(S)standard_objects.c $(H)standard_objects.h $(H)symbol.h
 	$(CC) -c $(S)standard_objects.c -o $(B)standard_objects.o
 
+$(B)monsters.o: $(S)monsters.c $(H)monsters.h $(H)symbol.h $(H)mapgen.h $(H)utils.h
+	$(CC) -c $(S)monsters.c -o $(B)monsters.o
+
 run: all
 	build/game
 
 clean:
+	-rm game.core
 	-rm build/*.o
 	-rm build/game
 	-clear
 
 style:
-	astyle --options=.astyle -n --recursive 'src/*.c' 'src/*.h'
+	astyle --options=.astyle -n --recursive 'src/*.c' 'src/headers/*.h'

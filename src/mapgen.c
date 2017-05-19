@@ -6,11 +6,7 @@
 
 #define NR_ROOMS 17
 
-struct room
-{
-  int x, y;
-  int w, h;
-} rooms[NR_ROOMS];
+struct room rooms[NR_ROOMS];
 
 char level = 0;
 struct object map[M_ROWS][M_COLS];
@@ -52,15 +48,15 @@ void random_room( int i )
 
   do
   {
-    rooms[i].w = get_rand ( 7 );
+    rooms[i].w = get_rand ( 6 );
   }
-  while ( rooms[i].w < 2);
+  while ( rooms[i].w < 1);
 
   do
   {
-    rooms[i].h = get_rand ( 6 );
+    rooms[i].h = get_rand ( 5 );
   }
-  while ( rooms[i].h < 2 );
+  while ( rooms[i].h < 1 );
 }
 
 void generate_map( void )
@@ -189,4 +185,8 @@ int next_level( void )
 struct object *get_tile( int y, int x )
 {
   return map[y] + x;
+}
+
+struct room *get_rooms(void){
+  return rooms;
 }

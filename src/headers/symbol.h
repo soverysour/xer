@@ -16,6 +16,12 @@
 #define M_ROWS 18
 #define M_COLS 80
 
+struct room
+{
+  int x, y;
+  int w, h;
+};
+
 struct symbol
 {
   char *identity;

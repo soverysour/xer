@@ -45,11 +45,19 @@ void give_object( struct object *k )
   free( k );
 }
 
+struct entity *get_entity(void){
+  return calloc( 1, sizeof( struct entity ) );
+}
+
+void give_entity(struct entity *k){
+  free(k);
+}
+
 void silent_apply( struct object *a, struct symbol *b )
 {
   if ( a->id == ID_HUD ){
     if ( a->y == 18 ){
-      char *hold = calloc(19, sizeof(char));
+      char *hold = calloc(10, sizeof(char));
       sprintf(hold, "HP: %i", get_player()->entity->hp);
       b->identity = hold;
       b->x = 0;
