@@ -50,9 +50,9 @@ void silent_apply( struct object *a, struct symbol *b )
   if ( a->id == ID_HUD ){
     if ( a->y == 18 ){
       char *hold = calloc(19, sizeof(char));
-      sprintf(hold, "HP: %i", get_player()->hp);
+      sprintf(hold, "HP: %i", get_player()->entity->hp);
       b->identity = hold;
-      b->x = 2;
+      b->x = 0;
       b->y = 18;
       b->status = !EMPTY_SYMBOL;
 
@@ -62,9 +62,9 @@ void silent_apply( struct object *a, struct symbol *b )
 
       b->fg = C_WHITE;
       b->bg = C_BLACK;
-
-      return;
     }
+
+    return;
   }
 
   if ( a->visibility == V_UNSEEN )

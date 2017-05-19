@@ -76,14 +76,18 @@ enum visibility
   V_SEEN
 };
 
+struct entity {
+  int hp;
+};
+
 struct object
 {
   int x, y;
   int id;
-  int hp;
   char visibility;
   char *effects;
 
+  struct entity *entity;
   struct object *next;
 };
 #endif

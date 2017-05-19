@@ -17,14 +17,19 @@
 #define PASSABLE 1
 
 char ef[] = {};
+
+struct entity entity_player = {
+  .hp = 10
+};
+
 struct object object_player =
 {
   .id = ID_PLAYER,
   .x = 6,
   .y = 4,
-  .hp = 10,
   .visibility = V_SEEN,
   .effects = ef,
+  .entity = &entity_player,
   .next = &Ohp
 };
 

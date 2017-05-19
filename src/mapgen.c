@@ -112,8 +112,13 @@ void generate_rooms_in_map( void )
 {
   for ( int i = 0; i < NR_ROOMS; i++ )
     for ( int j = rooms[i].y; j < rooms[i].y + rooms[i].h; j++ )
-      for ( int k = rooms[i].x; k < rooms[i].x + rooms[i].w; k++ )
-        map[j][k].id = Ofloor.id;
+      for ( int k = rooms[i].x; k < rooms[i].x + rooms[i].w; k++ ){
+        Ofloor.x = map[j][k].x;
+        Ofloor.y = map[j][k].y;
+        Ofloor.effects = map[j][k].effects;
+        Ofloor.next = map[j][k].next;
+        map[j][k] = Ofloor;
+      }
 
   for ( int i = 0; i < NR_ROOMS - 1; i++ ){
     int k = i + 1;
