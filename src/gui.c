@@ -2,8 +2,6 @@
 
 #include "headers/symbol.h"
 #include "headers/main.h"
-#include "headers/utils.h"
-#include "headers/mapgen.h"
 
 #define get_pair(a, b) ( COLOR_PAIR(a * 10 + b) )
 

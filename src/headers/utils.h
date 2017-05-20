@@ -9,7 +9,4 @@ void give_object( struct object * );
 struct entity *get_entity( void );
 void give_entity( struct entity * );
 int absolute( int );
-struct symbol *do_apply( struct object * );
-void clean_symbol( struct symbol * );
-void put_fov( void );
 #endif

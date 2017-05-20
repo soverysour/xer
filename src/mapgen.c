@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "headers/symbol.h"
 #include "headers/standard_objects.h"
 #include "headers/main.h"

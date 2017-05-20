@@ -28,9 +28,20 @@ void kill_monsters( void )
   give_object( current );
 }
 
+void plonk_monster(struct object *m, int y, int x){
+  m->x = x;
+  m->y = y;
+  m->id = ID_MONSTER;
+  m->visibility = V_SEEN;
+  m->effects = effects;
+  m->entity = get_entity();
+  m->entity->hp = 5;
+}
+
 void new_monsters( void )
 {
   kill_monsters();
+
   head_monster = get_object();
   struct object *current_monster = head_monster;
   current_monster->entity = get_entity();
@@ -38,25 +49,14 @@ void new_monsters( void )
 
   for ( int i = 0; i < MONSTER_COUNT; i++ )
   {
-    current_monster->x = x[i].x;
-    current_monster->y = x[i].y;
-    current_monster->id = ID_MONSTER;
-    current_monster->visibility = V_SEEN;
-    current_monster->effects = effects;
-    current_monster->entity = get_entity();
-    current_monster->entity->hp = 5;
+    plonk_monster(current_monster, x[i].y, x[i].x);
+
+    if ( i == MONSTER_COUNT - 1 )
+      break;
+
     current_monster->next = get_object();
     current_monster = current_monster->next;
   }
-
-  current_monster->x = x[MONSTER_COUNT].x;
-  current_monster->y = x[MONSTER_COUNT].y;
-  current_monster->id = ID_MONSTER;
-  current_monster->visibility = V_SEEN;
-  current_monster->effects = effects;
-  current_monster->entity = get_entity();
-  current_monster->entity->hp = 5;
-  struct object *a = head_monster, *b;
 }
 
 struct object *get_monsters( void )

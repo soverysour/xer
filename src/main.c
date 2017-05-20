@@ -1,6 +1,7 @@
 #include "headers/symbol.h"
 #include "headers/gui.h"
 #include "headers/utils.h"
+#include "headers/guiutils.h"
 #include "headers/logic.h"
 
 char running = 1;

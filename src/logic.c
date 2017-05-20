@@ -2,8 +2,8 @@
 #include "headers/player.h"
 #include "headers/standard_objects.h"
 #include "headers/mapgen.h"
-#include "headers/utils.h"
 #include "headers/monsters.h"
+#include "headers/guiutils.h"
 
 struct object *Omap;
 struct object *Oplayer;
@@ -38,7 +38,7 @@ struct object *logic_update( char input )
   }
 
   update_player( input );
-  put_fov();
   put_monsters();
+  put_fov();
   return Omap;
 }
