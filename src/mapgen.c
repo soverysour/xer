@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "headers/symbol.h"
 #include "headers/standard_objects.h"
 #include "headers/main.h"
@@ -13,7 +14,7 @@ struct object map[M_ROWS][M_COLS];
 
 int check_intersect( int i, int j )
 {
-  if ( rooms[i].x + rooms[i].w < rooms[j].w ||
+  if ( rooms[i].x + rooms[i].w < rooms[j].x ||
        rooms[j].x + rooms[j].w < rooms[i].x ||
        rooms[i].y + rooms[i].h < rooms[j].y ||
        rooms[j].y + rooms[j].h < rooms[i].y
@@ -50,13 +51,13 @@ void random_room( int i )
   {
     rooms[i].w = get_rand ( 6 );
   }
-  while ( rooms[i].w < 1 );
+  while ( rooms[i].w < 4 );
 
   do
   {
     rooms[i].h = get_rand ( 5 );
   }
-  while ( rooms[i].h < 1 );
+  while ( rooms[i].h < 2 );
 }
 
 void generate_map( void )
@@ -84,17 +85,16 @@ void generate_rooms( void )
   {
     int k = 0;
   checks:
-    random_room( i );
-
-    if ( k == 50 )
+    if ( k == 1000 )
     {
       k = 0;
       i = 0;
       goto checks;
     }
 
-    while ( check_room( i ) )
+    do{
       random_room( i );
+    } while ( check_room( i ) );
 
     for ( int j = 0; j < i; j++ )
       if ( check_intersect( i, j ) )
@@ -104,6 +104,25 @@ void generate_rooms( void )
       }
   }
 }
+
+void sort_rooms(void){
+  for ( int i = 0; i < NR_ROOMS - 1; i++ )
+    {
+      int k = i + 1;
+
+      for ( int j = i + 2; j < NR_ROOMS; j++ )
+        if ( dist_room( rooms[i], rooms[j] ) < dist_room( rooms[i], rooms[k] ) )
+          k = j;
+
+      if ( k != i + 1 )
+      {
+        struct room x = rooms[i];
+        rooms[i] = rooms[k];
+        rooms[k] = x;
+      }
+    }
+}
+
 void generate_rooms_in_map( void )
 {
   for ( int i = 0; i < NR_ROOMS; i++ )
@@ -115,23 +134,7 @@ void generate_rooms_in_map( void )
         Ofloor.effects = map[j][k].effects;
         Ofloor.next = map[j][k].next;
         map[j][k] = Ofloor;
-      }
-
-  for ( int i = 0; i < NR_ROOMS - 1; i++ )
-  {
-    int k = i + 1;
-
-    for ( int j = i + 2; j < NR_ROOMS; j++ )
-      if ( dist_room( rooms[i], rooms[j] ) < dist_room( rooms[i], rooms[k] ) )
-        k = j;
-
-    if ( k != i + 1 )
-    {
-      struct room x = rooms[i];
-      rooms[i] = rooms[k];
-      rooms[k] = rooms[i];
-    }
-  }
+      }  
 }
 
 void path_rooms( int i, int j )
@@ -180,9 +183,11 @@ int next_level( void )
 
   generate_map();
   generate_rooms();
+  sort_rooms();
   generate_rooms_in_map();
   generate_paths();
   set_player();
+  
   return 0;
 }
 
