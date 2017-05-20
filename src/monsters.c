@@ -28,7 +28,8 @@ void kill_monsters( void )
   give_object( current );
 }
 
-void plonk_monster(struct object *m, int y, int x){
+void plonk_monster( struct object *m, int y, int x )
+{
   m->x = x;
   m->y = y;
   m->id = ID_MONSTER;
@@ -41,7 +42,6 @@ void plonk_monster(struct object *m, int y, int x){
 void new_monsters( void )
 {
   kill_monsters();
-
   head_monster = get_object();
   struct object *current_monster = head_monster;
   current_monster->entity = get_entity();
@@ -49,7 +49,7 @@ void new_monsters( void )
 
   for ( int i = 0; i < MONSTER_COUNT; i++ )
   {
-    plonk_monster(current_monster, x[i].y, x[i].x);
+    plonk_monster( current_monster, x[i].y, x[i].x );
 
     if ( i == MONSTER_COUNT - 1 )
       break;

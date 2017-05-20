@@ -84,6 +84,7 @@ void generate_rooms( void )
   {
     int k = 0;
   checks:
+
     if ( k == 1000 )
     {
       k = 0;
@@ -91,9 +92,11 @@ void generate_rooms( void )
       goto checks;
     }
 
-    do{
+    do
+    {
       random_room( i );
-    } while ( check_room( i ) );
+    }
+    while ( check_room( i ) );
 
     for ( int j = 0; j < i; j++ )
       if ( check_intersect( i, j ) )
@@ -104,22 +107,23 @@ void generate_rooms( void )
   }
 }
 
-void sort_rooms(void){
+void sort_rooms( void )
+{
   for ( int i = 0; i < NR_ROOMS - 1; i++ )
+  {
+    int k = i + 1;
+
+    for ( int j = i + 2; j < NR_ROOMS; j++ )
+      if ( dist_room( rooms[i], rooms[j] ) < dist_room( rooms[i], rooms[k] ) )
+        k = j;
+
+    if ( k != i + 1 )
     {
-      int k = i + 1;
-
-      for ( int j = i + 2; j < NR_ROOMS; j++ )
-        if ( dist_room( rooms[i], rooms[j] ) < dist_room( rooms[i], rooms[k] ) )
-          k = j;
-
-      if ( k != i + 1 )
-      {
-        struct room x = rooms[i];
-        rooms[i] = rooms[k];
-        rooms[k] = x;
-      }
+      struct room x = rooms[i];
+      rooms[i] = rooms[k];
+      rooms[k] = x;
     }
+  }
 }
 
 void generate_rooms_in_map( void )
@@ -133,7 +137,7 @@ void generate_rooms_in_map( void )
         Ofloor.effects = map[j][k].effects;
         Ofloor.next = map[j][k].next;
         map[j][k] = Ofloor;
-      }  
+      }
 }
 
 void path_rooms( int i, int j )
@@ -186,7 +190,6 @@ int next_level( void )
   generate_rooms_in_map();
   generate_paths();
   set_player();
-  
   return 0;
 }
 
