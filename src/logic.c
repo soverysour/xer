@@ -7,17 +7,27 @@
 
 struct object *Omap;
 struct object *Oplayer;
+struct object *Ohud;
+
 char loaded = 0;
 
 void init_logic( void )
 {
   Omap = get_tile( 0, 0 );
   Oplayer = get_player();
+  Ohud = &Ohp;
 }
 
-void put_monsters( void )
+void slap_together( void )
 {
-  Oplayer->next = get_monsters();
+  get_tile(M_ROWS - 1, M_COLS - 1)->next = Oplayer;
+  Oplayer->next = Ohud;
+  struct object *k= Ohud;
+
+  while ( k->next && k->next->id == ID_HUD)
+    k = k->next;
+
+  k->next = get_monsters();
 }
 
 struct object *logic_update( char input )
@@ -38,7 +48,7 @@ struct object *logic_update( char input )
   }
 
   update_player( input );
-  put_monsters();
+  slap_together();
   put_fov();
   return Omap;
 }

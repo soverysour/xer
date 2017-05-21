@@ -70,7 +70,7 @@ void generate_map( void )
       map[i][j].visibility = V_UNSEEN;
 
       if ( i == M_ROWS - 1 && j == M_COLS - 1 )
-        map[i][j].next = get_player();
+        map[i][j].next = 0;
       else if ( j == M_COLS - 1 )
         map[i][j].next = map[i + 1];
       else
