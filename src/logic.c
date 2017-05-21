@@ -20,11 +20,11 @@ void init_logic( void )
 
 void slap_together( void )
 {
-  get_tile(M_ROWS - 1, M_COLS - 1)->next = Oplayer;
+  get_tile( M_ROWS - 1, M_COLS - 1 )->next = Oplayer;
   Oplayer->next = Ohud;
-  struct object *k= Ohud;
+  struct object *k = Ohud;
 
-  while ( k->next && k->next->id == ID_HUD)
+  while ( k->next && k->next->id == ID_HUD )
     k = k->next;
 
   k->next = get_monsters();
