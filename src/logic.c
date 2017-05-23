@@ -18,6 +18,11 @@ void init_logic( void )
   Ohud = &Ohp;
 }
 
+void go_next_level( void )
+{
+  loaded = 0;
+}
+
 void slap_together( void )
 {
   get_tile( M_ROWS - 1, M_COLS - 1 )->next = Oplayer;
@@ -35,9 +40,6 @@ struct object *logic_update( char input )
   if ( input == 'Q' )
     return &Oquit;
 
-  if ( input == 'R' )
-    loaded = 0;
-
   if ( !loaded )
   {
     if ( next_level() )
@@ -47,7 +49,9 @@ struct object *logic_update( char input )
     loaded = 1;
   }
 
-  update_player( input );
+  if ( update_player( input ) )
+    return &Owait;
+
   slap_together();
   put_fov();
   return Omap;

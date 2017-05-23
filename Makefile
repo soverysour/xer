@@ -11,7 +11,7 @@ all: $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(B)game $(FLAGS)
 
 $(B)main.o: $(S)main.c $(H)main.h $(H)gui.h $(H)utils.h \
-  	    $(H)symbol.h $(H)logic.h $(H)guiutils.h
+  	    $(H)symbol.h $(H)logic.h $(H)guiutils.h $(H)standard_objects.h
 	$(CC) -c $(S)main.c -o $(B)main.o
 
 $(B)gui.o: $(S)gui.c $(H)gui.h $(H)symbol.h $(H)main.h
@@ -25,7 +25,7 @@ $(B)logic.o: $(S)logic.c $(H)logic.h $(H)symbol.h $(H)player.h \
 	$(CC) -c $(S)logic.c -o $(B)logic.o
 
 $(B)player.o: $(S)player.c $(H)player.h $(H)symbol.h  \
-  	      $(H)mapgen.h $(H)standard_objects.h
+  	      $(H)mapgen.h $(H)standard_objects.h $(H)logic.h
 	$(CC) -c $(S)player.c -o $(B)player.o
 
 $(B)mapgen.o: $(S)mapgen.c $(H)mapgen.h $(H)standard_objects.h \

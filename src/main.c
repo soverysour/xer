@@ -3,6 +3,7 @@
 #include "headers/utils.h"
 #include "headers/guiutils.h"
 #include "headers/logic.h"
+#include "headers/standard_objects.h"
 
 char running = 1;
 
@@ -15,6 +16,9 @@ void init_engine( void )
 
   init_seed();
   init_logic();
+  struct symbol *b = do_apply( &Owait );
+  update_gui( b );
+  clean_symbol( b );
 }
 
 void end_engine( char *text )

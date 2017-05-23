@@ -16,6 +16,9 @@
 #define M_ROWS 18
 #define M_COLS 80
 
+#define POS_HP 18
+#define POS_WAIT 12
+
 struct room
 {
   int x, y;
@@ -67,6 +70,7 @@ enum ids
   ID_MONSTER,
   ID_WALL,
   ID_FLOOR,
+  ID_EXIT,
   ID_HUD
 };
 
@@ -85,6 +89,7 @@ enum visibility
 struct entity
 {
   int hp;
+  int current_hp;
   int damage;
 };
 

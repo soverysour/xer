@@ -174,6 +174,14 @@ void set_player( void )
   teleport_player( y, x );
 }
 
+void set_exit( void )
+{
+  int which = get_rand( NR_ROOMS ) - 1;
+  int x = rooms[which].x + get_rand( rooms[which].w ) - 1;
+  int y = rooms[which].y + get_rand( rooms[which].h ) - 1;
+  map[y][x].id = ID_EXIT;
+}
+
 int next_level( void )
 {
   level++;
@@ -190,6 +198,7 @@ int next_level( void )
   generate_rooms_in_map();
   generate_paths();
   set_player();
+  set_exit();
   return 0;
 }
 

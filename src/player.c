@@ -2,25 +2,26 @@
 #include "headers/mapgen.h"
 #include "headers/standard_objects.h"
 #include "headers/monsters.h"
+#include "headers/logic.h"
 
-#define DOWN 'j'
-#define LEFT 'h'
-#define	RIGHT 'l'
-#define UP 'k'
-#define LDOWN 'b'
-#define RDOWN 'n'
-#define LUP 'y'
-#define RUP 'u'
-#define CENTER '.'
+#define DOWN '2'
+#define LEFT '4'
+#define	RIGHT '6'
+#define UP '8'
+#define LDOWN '1'
+#define RDOWN '3'
+#define LUP '7'
+#define RUP '9'
+#define CENTER '5'
 
-#define IMPASSABLE 0
-#define PASSABLE 1
+#define HP 16
 
 char ef[] = {};
 
 struct entity entity_player =
 {
-  .hp = 16,
+  .hp = HP,
+  .current_hp = HP,
   .damage = 5
 };
 
@@ -35,7 +36,7 @@ struct object object_player =
   .next = &Ohp
 };
 
-void update_player( char input )
+int update_player( char input )
 {
   int x = 0, y = 0;
 
@@ -87,6 +88,15 @@ void update_player( char input )
     case 'w':
       object_player.effects[B_BUFFED] = 0;
       break;
+
+    case '>':
+      if ( get_tile( object_player.y, object_player.x )->id == ID_EXIT )
+      {
+        go_next_level();
+        return 1;
+      }
+
+      break;
   }
 
   struct object *monster = get_monster( object_player.y + y, object_player.x + x );
@@ -94,7 +104,7 @@ void update_player( char input )
   if ( monster )
   {
     if ( object_player.effects[B_BUFFED] )
-      damage_monster( monster, object_player.entity->damage * 2 );
+      damage_monster( monster, object_player.entity->damage * 9 );
     else
       damage_monster( monster, object_player.entity->damage );
   }
@@ -103,6 +113,8 @@ void update_player( char input )
     object_player.x += x;
     object_player.y += y;
   }
+
+  return 0;
 }
 
 struct object *get_player( void )

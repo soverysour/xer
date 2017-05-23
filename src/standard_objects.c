@@ -20,10 +20,18 @@ struct object Ofloor =
   .effects = Ewallfloor
 };
 
+struct object Owait =
+{
+  .id = ID_HUD,
+  .effects = Ehud,
+  .x = 20,
+  .y = POS_WAIT
+};
+
 struct object Ohp =
 {
   .id = ID_HUD,
   .x = 2,
-  .y = 18,
+  .y = POS_HP,
   .effects = Ehud
 };

@@ -10,13 +10,27 @@ void silent_apply( struct object *a, struct symbol *b )
 {
   if ( a->id == ID_HUD )
   {
-    if ( a->y == 18 )
+    if ( a->y == POS_HP )
     {
-      char *hold = calloc( 10, sizeof( char ) );
-      sprintf( hold, "HP: %i", get_player()->entity->hp );
+      char *hold = calloc( 15, sizeof( char ) );
+      sprintf( hold, "HP: %i(%i)", get_player()->entity->hp, get_player()->entity->current_hp );
       b->identity = hold;
       b->x = 0;
       b->y = 18;
+      b->status = !EMPTY_SYMBOL;
+      b->attribs = calloc( NR_ATTRIBS, sizeof( char ) );
+      b->attribs[AT_BOLD] = 1;
+      b->fg = C_WHITE;
+      b->bg = C_BLACK;
+    }
+
+    if ( a->y == POS_WAIT )
+    {
+      char *hold = calloc( 95, sizeof( char ) );
+      sprintf( hold, "Press any key to continue..." );
+      b->identity = hold;
+      b->x = 20;
+      b->y = 12;
       b->status = !EMPTY_SYMBOL;
       b->attribs = calloc( NR_ATTRIBS, sizeof( char ) );
       b->attribs[AT_BOLD] = 1;
@@ -60,6 +74,11 @@ void silent_apply( struct object *a, struct symbol *b )
       b->identity[0] = '.';
       b->identity[1] = '\0';
       break;
+
+    case ID_EXIT:
+      b->identity = calloc( 2, sizeof( char ) );
+      b->identity[0] = '>';
+      b->identity[1] = '\0';
   }
 
   b->attribs = calloc( NR_ATTRIBS, sizeof( char ) );
