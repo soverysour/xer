@@ -5,9 +5,53 @@
 #define MONSTER_COUNT 8
 
 struct object *head_monster;
-struct object *tail_monster;
 
 char effects[NR_BUFFS] = {};
+
+struct object *get_monster( int y, int x )
+{
+  if ( !head_monster )
+    return 0;
+
+  for ( struct object *current = head_monster; current; current = current->next )
+    if ( current->x == x && current->y == y )
+      return current;
+
+  return 0;
+}
+
+void kill_monster( struct object *monster )
+{
+  give_entity( monster->entity );
+  give_object( monster );
+}
+
+void destroy_monster( struct object *monster )
+{
+  if ( monster == head_monster )
+  {
+    head_monster = head_monster->next;
+    kill_monster( monster );
+    return;
+  }
+
+  struct object *p = head_monster, *k;
+
+  while ( p->next != monster )
+    p = p->next;
+
+  k = p->next;
+  p->next = p->next->next;
+  kill_monster( k );
+}
+
+int damage_monster( struct object *monster, int damage )
+{
+  monster->entity->hp -= damage;
+
+  if ( monster->entity->hp < 1 )
+    destroy_monster( monster );
+}
 
 void kill_monsters( void )
 {
@@ -36,7 +80,7 @@ void plonk_monster( struct object *m, int y, int x )
   m->visibility = V_SEEN;
   m->effects = effects;
   m->entity = get_entity();
-  m->entity->hp = 5;
+  m->entity->hp = 11;
 }
 
 void new_monsters( void )

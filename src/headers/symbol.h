@@ -85,6 +85,7 @@ enum visibility
 struct entity
 {
   int hp;
+  int damage;
 };
 
 struct object

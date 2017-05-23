@@ -1,16 +1,17 @@
 #include "headers/symbol.h"
 #include "headers/mapgen.h"
 #include "headers/standard_objects.h"
+#include "headers/monsters.h"
 
-#define DOWN '2'
-#define LEFT '4'
-#define	RIGHT '6'
-#define UP '8'
-#define LDOWN '1'
-#define RDOWN '3'
-#define LUP '7'
-#define RUP '9'
-#define CENTER '5'
+#define DOWN 'j'
+#define LEFT 'h'
+#define	RIGHT 'l'
+#define UP 'k'
+#define LDOWN 'b'
+#define RDOWN 'n'
+#define LUP 'y'
+#define RUP 'u'
+#define CENTER '.'
 
 #define IMPASSABLE 0
 #define PASSABLE 1
@@ -19,7 +20,8 @@ char ef[] = {};
 
 struct entity entity_player =
 {
-  .hp = 10
+  .hp = 16,
+  .damage = 5
 };
 
 struct object object_player =
@@ -78,16 +80,25 @@ void update_player( char input )
       y--;
       break;
 
-    case 'B':
+    case 'W':
       object_player.effects[B_BUFFED] = 1;
       break;
 
-    case 'b':
+    case 'w':
       object_player.effects[B_BUFFED] = 0;
       break;
   }
 
-  if ( get_tile( object_player.y + y, object_player.x + x )->id != ID_WALL )
+  struct object *monster = get_monster( object_player.y + y, object_player.x + x );
+
+  if ( monster )
+  {
+    if ( object_player.effects[B_BUFFED] )
+      damage_monster( monster, object_player.entity->damage * 2 );
+    else
+      damage_monster( monster, object_player.entity->damage );
+  }
+  else  if ( get_tile( object_player.y + y, object_player.x + x )->id != ID_WALL )
   {
     object_player.x += x;
     object_player.y += y;
