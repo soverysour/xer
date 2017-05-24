@@ -210,15 +210,13 @@ int backtrack_fov( int diags, int straights, int targety, int targetx, int cury,
   return 0;
 }
 
-void fov_line( int y, int x, int py, int px )
-{
+int in_reach(int y, int x, int py, int px){
   int xs = absolute( px - x );
   int ys = absolute( py - y );
   int diags = xs > ys ? ys : xs;
   int straights = xs > ys ? xs - ys : ys - xs;
-
-  if ( backtrack_fov( diags, straights, y, x, py, px ) )
-    get_tile( y, x )->visibility = V_SEEN;
+  
+  return backtrack_fov(diags, straights, y, x, py, px);
 }
 
 void put_fov( void )
@@ -232,5 +230,6 @@ void put_fov( void )
 
   for ( int i = y - FOV_RADIUS; i < y + FOV_RADIUS + 1; i++ )
     for ( int j = x - FOV_RADIUS; j < x + FOV_RADIUS + 1; j++ )
-      fov_line( i, j, y, x );
+      if ( in_reach( i, j, y, x ) )
+        get_tile( i, j )->visibility = V_SEEN;
 }

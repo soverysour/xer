@@ -54,5 +54,6 @@ struct object *logic_update( char input )
 
   slap_together();
   put_fov();
+  update_monsters();
   return Omap;
 }

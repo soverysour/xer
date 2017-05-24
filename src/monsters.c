@@ -2,6 +2,7 @@
 #include "headers/mapgen.h"
 #include "headers/utils.h"
 #include "headers/player.h"
+#include "headers/guiutils.h"
 
 #define MONSTER_COUNT 8
 
@@ -85,7 +86,7 @@ void plonk_monster( struct object *m, int y, int x, int h, int w)
   m->x = tx;
   m->y = ty;
   m->id = ID_MONSTER;
-  m->visibility = V_SEEN;
+  m->visibility = V_UNSEEN;
   m->effects = effects;
   m->entity = get_entity();
   m->entity->hp = 11;
@@ -109,6 +110,21 @@ void new_monsters( void )
     current_monster->next = get_object();
     current_monster = current_monster->next;
   }
+}
+
+void update_monsters(void){
+  for ( struct object *monster = head_monster; monster; monster = monster->next )
+    if ( absolute(monster->y - get_player()->y) <= FOV_RADIUS && 
+         absolute(monster->x - get_player()->x) <= FOV_RADIUS 
+       )
+    {
+      if ( in_reach(monster->y, monster->x, get_player()->y, get_player()->x) )
+        monster->visibility = V_SEEN;
+      else
+        monster->visibility = V_UNSEEN;
+    }
+    else
+      monster->visibility = V_UNSEEN;
 }
 
 struct object *get_monsters( void )
