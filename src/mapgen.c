@@ -5,6 +5,7 @@
 #include "headers/player.h"
 
 #define NR_ROOMS 17
+#define LAST_LEVEL 3
 
 struct room rooms[NR_ROOMS];
 
@@ -186,9 +187,9 @@ int next_level( void )
 {
   level++;
 
-  if ( !level )
+  if ( level > LAST_LEVEL )
   {
-    end_engine( "Congratulations.\n" );
+    end_engine( "Congratulations. You win, for now...\n" );
     return 1;
   }
 
@@ -205,6 +206,10 @@ int next_level( void )
 struct object *get_tile( int y, int x )
 {
   return map[y] + x;
+}
+
+char get_level(void){
+  return level;
 }
 
 struct room *get_rooms( void )

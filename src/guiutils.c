@@ -38,6 +38,19 @@ void silent_apply( struct object *a, struct symbol *b )
       b->bg = C_BLACK;
     }
 
+    if ( a->y == POS_LEVEL ){
+      char *hold = calloc( 15, sizeof( char ) );
+      sprintf( hold, "Level: %i", get_level());
+      b->identity = hold;
+      b->x = 0;
+      b->y = 19;
+      b->status = !EMPTY_SYMBOL;
+      b->attribs = calloc(NR_ATTRIBS, sizeof(char));
+      b->attribs[AT_BOLD] = 1;
+      b->fg = C_WHITE;
+      b->bg = C_BLACK;
+    }
+
     return;
   }
 

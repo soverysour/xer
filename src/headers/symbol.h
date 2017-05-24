@@ -17,6 +17,7 @@
 #define M_COLS 80
 
 #define POS_HP 18
+#define POS_LEVEL 19
 #define POS_WAIT 12
 
 struct room

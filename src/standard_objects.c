@@ -23,15 +23,20 @@ struct object Ofloor =
 struct object Owait =
 {
   .id = ID_HUD,
-  .effects = Ehud,
-  .x = 20,
-  .y = POS_WAIT
+  .y = POS_WAIT,
+  .effects = Ehud
+};
+
+struct object Olevel = {
+  .id = ID_HUD,
+  .y = POS_LEVEL,
+  .effects = Ehud
 };
 
 struct object Ohp =
 {
   .id = ID_HUD,
-  .x = 2,
   .y = POS_HP,
-  .effects = Ehud
+  .effects = Ehud,
+  .next = &Olevel
 };

@@ -1,6 +1,7 @@
 #include "headers/symbol.h"
 #include "headers/mapgen.h"
 #include "headers/utils.h"
+#include "headers/player.h"
 
 #define MONSTER_COUNT 8
 
@@ -72,10 +73,17 @@ void kill_monsters( void )
   give_object( current );
 }
 
-void plonk_monster( struct object *m, int y, int x )
+void plonk_monster( struct object *m, int y, int x, int h, int w)
 {
-  m->x = x;
-  m->y = y;
+  int tx, ty;
+
+  do {
+    tx = x + get_rand(w) - 1;
+    ty = y + get_rand(h) - 1;
+  } while ( tx == get_player()->x && ty == get_player()->y);
+
+  m->x = tx;
+  m->y = ty;
   m->id = ID_MONSTER;
   m->visibility = V_SEEN;
   m->effects = effects;
@@ -93,7 +101,7 @@ void new_monsters( void )
 
   for ( int i = 0; i < MONSTER_COUNT; i++ )
   {
-    plonk_monster( current_monster, x[i].y, x[i].x );
+    plonk_monster( current_monster, x[i].y, x[i].x, x[i].h, x[i].w);
 
     if ( i == MONSTER_COUNT - 1 )
       break;

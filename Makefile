@@ -35,7 +35,8 @@ $(B)mapgen.o: $(S)mapgen.c $(H)mapgen.h $(H)standard_objects.h \
 $(B)standard_objects.o: $(S)standard_objects.c $(H)standard_objects.h $(H)symbol.h
 	$(CC) -c $(S)standard_objects.c -o $(B)standard_objects.o
 
-$(B)monsters.o: $(S)monsters.c $(H)monsters.h $(H)symbol.h $(H)mapgen.h $(H)utils.h $(H)monsters.h
+$(B)monsters.o: $(S)monsters.c $(H)monsters.h $(H)symbol.h $(H)mapgen.h $(H)utils.h \
+  		$(H)monsters.h $(H)player.h
 	$(CC) -c $(S)monsters.c -o $(B)monsters.o
 
 $(B)guiutils.o: $(S)guiutils.c $(H)guiutils.h $(H)symbol.h $(H)utils.h $(H)player.h \

@@ -4,5 +4,6 @@ struct object Oquit;
 struct object Owall;
 struct object Ofloor;
 struct object Ohp;
+struct object Olevel;
 struct object Owait;
 #endif
