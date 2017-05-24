@@ -5,6 +5,7 @@
 #include "headers/guiutils.h"
 
 #define MONSTER_COUNT 8
+#define MONSTER_FOV 7
 
 struct object *head_monster;
 
@@ -74,14 +75,16 @@ void kill_monsters( void )
   give_object( current );
 }
 
-void plonk_monster( struct object *m, int y, int x, int h, int w)
+void plonk_monster( struct object *m, int y, int x, int h, int w )
 {
   int tx, ty;
 
-  do {
-    tx = x + get_rand(w) - 1;
-    ty = y + get_rand(h) - 1;
-  } while ( tx == get_player()->x && ty == get_player()->y);
+  do
+  {
+    tx = x + get_rand( w ) - 1;
+    ty = y + get_rand( h ) - 1;
+  }
+  while ( tx == get_player()->x && ty == get_player()->y );
 
   m->x = tx;
   m->y = ty;
@@ -90,6 +93,7 @@ void plonk_monster( struct object *m, int y, int x, int h, int w)
   m->effects = effects;
   m->entity = get_entity();
   m->entity->hp = 11;
+  m->entity->damage = 2;
 }
 
 void new_monsters( void )
@@ -102,7 +106,7 @@ void new_monsters( void )
 
   for ( int i = 0; i < MONSTER_COUNT; i++ )
   {
-    plonk_monster( current_monster, x[i].y, x[i].x, x[i].h, x[i].w);
+    plonk_monster( current_monster, x[i].y, x[i].x, x[i].h, x[i].w );
 
     if ( i == MONSTER_COUNT - 1 )
       break;
@@ -112,19 +116,43 @@ void new_monsters( void )
   }
 }
 
-void update_monsters(void){
+void go_towards( struct object *monster )
+{
+}
+
+void update_monsters( void )
+{
   for ( struct object *monster = head_monster; monster; monster = monster->next )
-    if ( absolute(monster->y - get_player()->y) <= FOV_RADIUS && 
-         absolute(monster->x - get_player()->x) <= FOV_RADIUS 
+  {
+    if ( absolute( monster->y - get_player()->y ) <= FOV_RADIUS &&
+         absolute( monster->x - get_player()->x ) <= FOV_RADIUS
        )
     {
-      if ( in_reach(monster->y, monster->x, get_player()->y, get_player()->x) )
+      if ( in_reach( monster->y, monster->x, get_player()->y, get_player()->x ) )
         monster->visibility = V_SEEN;
       else
         monster->visibility = V_UNSEEN;
     }
     else
       monster->visibility = V_UNSEEN;
+
+    if ( absolute( monster->y - get_player()->y ) <= MONSTER_FOV &&
+         absolute( monster->x - get_player()->x ) <= MONSTER_FOV
+       )
+    {
+      if (
+      absolute( monster->y - get_player()->y ) <= 1 &&
+      absolute( monster->x - get_player()->x ) <= 1
+      )
+      {
+        damage_player( monster->entity->damage );
+        continue;
+      }
+
+      if ( in_reach( monster->y, monster->x, get_player()->y, get_player()->x ) )
+        go_towards( monster );
+    }
+  }
 }
 
 struct object *get_monsters( void )

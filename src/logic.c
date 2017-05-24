@@ -37,13 +37,16 @@ void slap_together( void )
 
 struct object *logic_update( char input )
 {
+  if ( get_player()->entity->hp < 1 )
+    return &Odead;
+
   if ( input == 'Q' )
     return &Oquit;
 
   if ( !loaded )
   {
     if ( next_level() )
-      return &Oquit;
+      return &Owin;
 
     new_monsters();
     loaded = 1;

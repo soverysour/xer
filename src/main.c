@@ -37,6 +37,10 @@ void update_engine( void )
 
   if ( a->id == ID_QUIT )
     end_engine( "See you soon...\n" );
+  else if ( a->id == ID_WIN )
+    end_engine( "Congratulations. See you some other time...\n" );
+  else if ( a->id == ID_DEAD )
+    end_engine( "Farewell...\n" );
   else
   {
     struct symbol *b = do_apply( a );

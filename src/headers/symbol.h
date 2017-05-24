@@ -11,7 +11,7 @@
 #define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 24
 
-#define FOV_RADIUS 4
+#define FOV_RADIUS 8
 
 #define M_ROWS 18
 #define M_COLS 80
@@ -19,6 +19,16 @@
 #define POS_HP 18
 #define POS_LEVEL 19
 #define POS_WAIT 12
+
+#define DOWN '2'
+#define LEFT '4'
+#define	RIGHT '6'
+#define UP '8'
+#define LDOWN '1'
+#define RDOWN '3'
+#define LUP '7'
+#define RUP '9'
+#define CENTER '5'
 
 struct room
 {
@@ -67,6 +77,8 @@ enum colors
 enum ids
 {
   ID_QUIT,
+  ID_WIN,
+  ID_DEAD,
   ID_PLAYER,
   ID_MONSTER,
   ID_WALL,

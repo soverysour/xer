@@ -41,3 +41,8 @@ void give_entity( struct entity *k )
 {
   free( k );
 }
+
+int proc_unit( int target, int source )
+{
+  return ( source - target ) / absolute( source - target );
+}

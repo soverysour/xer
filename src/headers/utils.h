@@ -9,4 +9,5 @@ void give_object( struct object * );
 struct entity *get_entity( void );
 void give_entity( struct entity * );
 int absolute( int );
+int proc_unit( int, int );
 #endif

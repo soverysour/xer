@@ -188,10 +188,7 @@ int next_level( void )
   level++;
 
   if ( level > LAST_LEVEL )
-  {
-    end_engine( "Congratulations. You win, for now...\n" );
     return 1;
-  }
 
   generate_map();
   generate_rooms();
@@ -208,7 +205,8 @@ struct object *get_tile( int y, int x )
   return map[y] + x;
 }
 
-char get_level(void){
+char get_level( void )
+{
   return level;
 }
 

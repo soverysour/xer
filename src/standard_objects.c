@@ -5,6 +5,16 @@ struct object Oquit =
   .id = ID_QUIT
 };
 
+struct object Owin =
+{
+  .id = ID_WIN
+};
+
+struct object Odead =
+{
+  .id = ID_DEAD
+};
+
 char Ewallfloor[NR_BUFFS] = {};
 char Ehud[NR_BUFFS] = { 1 };
 
@@ -27,7 +37,8 @@ struct object Owait =
   .effects = Ehud
 };
 
-struct object Olevel = {
+struct object Olevel =
+{
   .id = ID_HUD,
   .y = POS_LEVEL,
   .effects = Ehud

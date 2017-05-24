@@ -3,16 +3,7 @@
 #include "headers/standard_objects.h"
 #include "headers/monsters.h"
 #include "headers/logic.h"
-
-#define DOWN '2'
-#define LEFT '4'
-#define	RIGHT '6'
-#define UP '8'
-#define LDOWN '1'
-#define RDOWN '3'
-#define LUP '7'
-#define RUP '9'
-#define CENTER '5'
+#include "headers/main.h"
 
 #define HP 16
 
@@ -120,6 +111,11 @@ int update_player( char input )
 struct object *get_player( void )
 {
   return &object_player;
+}
+
+void damage_player( int damage )
+{
+  object_player.entity->hp -= damage;
 }
 
 void teleport_player( int y, int x )

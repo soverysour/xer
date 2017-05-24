@@ -3,5 +3,5 @@
 int next_level( void );
 struct object *get_tile( int, int );
 struct room *get_rooms( void );
-char get_level(void);
+char get_level( void );
 #endif

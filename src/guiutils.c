@@ -38,14 +38,15 @@ void silent_apply( struct object *a, struct symbol *b )
       b->bg = C_BLACK;
     }
 
-    if ( a->y == POS_LEVEL ){
+    if ( a->y == POS_LEVEL )
+    {
       char *hold = calloc( 15, sizeof( char ) );
-      sprintf( hold, "Level: %i", get_level());
+      sprintf( hold, "Level: %i", get_level() );
       b->identity = hold;
       b->x = 0;
       b->y = 19;
       b->status = !EMPTY_SYMBOL;
-      b->attribs = calloc(NR_ATTRIBS, sizeof(char));
+      b->attribs = calloc( NR_ATTRIBS, sizeof( char ) );
       b->attribs[AT_BOLD] = 1;
       b->fg = C_WHITE;
       b->bg = C_BLACK;
@@ -156,11 +157,6 @@ void clean_symbol( struct symbol *a )
   free( now );
 }
 
-int proc_unit( int target, int source )
-{
-  return ( source - target ) / absolute( source - target );
-}
-
 int backtrack_fov( int diags, int straights, int targety, int targetx, int cury, int curx )
 {
   if ( curx == targetx && cury == targety )
@@ -210,13 +206,13 @@ int backtrack_fov( int diags, int straights, int targety, int targetx, int cury,
   return 0;
 }
 
-int in_reach(int y, int x, int py, int px){
+int in_reach( int y, int x, int py, int px )
+{
   int xs = absolute( px - x );
   int ys = absolute( py - y );
   int diags = xs > ys ? ys : xs;
   int straights = xs > ys ? xs - ys : ys - xs;
-  
-  return backtrack_fov(diags, straights, y, x, py, px);
+  return backtrack_fov( diags, straights, y, x, py, px );
 }
 
 void put_fov( void )

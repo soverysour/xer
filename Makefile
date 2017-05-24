@@ -25,7 +25,7 @@ $(B)logic.o: $(S)logic.c $(H)logic.h $(H)symbol.h $(H)player.h \
 	$(CC) -c $(S)logic.c -o $(B)logic.o
 
 $(B)player.o: $(S)player.c $(H)player.h $(H)symbol.h  \
-  	      $(H)mapgen.h $(H)standard_objects.h $(H)logic.h
+  	      $(H)mapgen.h $(H)standard_objects.h $(H)logic.h $(H)main.h
 	$(CC) -c $(S)player.c -o $(B)player.o
 
 $(B)mapgen.o: $(S)mapgen.c $(H)mapgen.h $(H)standard_objects.h \
