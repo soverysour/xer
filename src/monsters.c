@@ -5,7 +5,7 @@
 #include "headers/guiutils.h"
 
 #define MONSTER_COUNT 8
-#define MONSTER_FOV 7
+#define MONSTER_FOV 2
 
 struct object *head_monster;
 
@@ -118,6 +118,24 @@ void new_monsters( void )
 
 void go_towards( struct object *monster )
 {
+  int x = 0, y = 0;
+
+  if ( monster->x != get_player()->x )
+    x = proc_unit( monster->x, get_player()->x );
+
+  if ( monster->y != get_player()->y )
+    y = proc_unit( monster->y, get_player()->y );
+
+  if ( get_tile( monster->y + y, monster->x + x )->id == ID_WALL )
+  {
+    if ( get_tile( monster->y, monster->x + x )->id == ID_WALL )
+      x = 0;
+    else
+      y = 0;
+  }
+
+  monster->x += x;
+  monster->y += y;
 }
 
 void update_monsters( void )
