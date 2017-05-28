@@ -74,6 +74,7 @@ int get_color( int a )
 
     case C_BLACK:
       return COLOR_BLACK;
+
     default:
       return C_WHITE;
   }
