@@ -11,7 +11,7 @@
 #define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 24
 
-#define FOV_RADIUS 8
+#define FOV_RADIUS 3
 
 #define M_ROWS 18
 #define M_COLS 80

@@ -9,8 +9,8 @@ set (version_minor 0)
 set (version_patch 1)
 
 set (root_dir ${PROJECT_SOURCE_DIR})
-set (include_dir ${PROJECT_SOURCE_DIR}/include)
-set (source_dir ${PROJECT_SOURCE_DIR}/src)
+set (include_dir ${root_dir}/include)
+set (source_dir ${root_dir}/src)
 
 set (program_srcs 
   ${source_dir}/gui.c
