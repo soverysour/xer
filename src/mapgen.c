@@ -1,8 +1,8 @@
-#include "headers/symbol.h"
-#include "headers/standard_objects.h"
-#include "headers/main.h"
-#include "headers/utils.h"
-#include "headers/player.h"
+#include "symbol.h"
+#include "standard_objects.h"
+#include "main.h"
+#include "utils.h"
+#include "player.h"
 
 #define NR_ROOMS 17
 #define LAST_LEVEL 3

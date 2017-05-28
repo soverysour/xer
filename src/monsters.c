@@ -1,8 +1,8 @@
-#include "headers/symbol.h"
-#include "headers/mapgen.h"
-#include "headers/utils.h"
-#include "headers/player.h"
-#include "headers/guiutils.h"
+#include "symbol.h"
+#include "mapgen.h"
+#include "utils.h"
+#include "player.h"
+#include "guiutils.h"
 
 #define MONSTER_COUNT 8
 #define MONSTER_FOV 2
@@ -48,7 +48,7 @@ void destroy_monster( struct object *monster )
   kill_monster( k );
 }
 
-int damage_monster( struct object *monster, int damage )
+void damage_monster( struct object *monster, int damage )
 {
   monster->entity->hp -= damage;
 

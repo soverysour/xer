@@ -1,8 +1,8 @@
 #include <time.h>
 #include <stdlib.h>
 
-#include "headers/symbol.h"
-#include "headers/mapgen.h"
+#include "symbol.h"
+#include "mapgen.h"
 
 int absolute( int x )
 {

@@ -1,13 +1,13 @@
-#include "headers/symbol.h"
-#include "headers/mapgen.h"
-#include "headers/standard_objects.h"
-#include "headers/monsters.h"
-#include "headers/logic.h"
-#include "headers/main.h"
+#include "symbol.h"
+#include "mapgen.h"
+#include "standard_objects.h"
+#include "monsters.h"
+#include "logic.h"
+#include "main.h"
 
 #define HP 16
 
-char ef[] = {};
+char ef_player[] = {};
 
 struct entity entity_player =
 {
@@ -22,7 +22,7 @@ struct object object_player =
   .x = 6,
   .y = 4,
   .visibility = V_SEEN,
-  .effects = ef,
+  .effects = ef_player,
   .entity = &entity_player,
   .next = &Ohp
 };
@@ -95,7 +95,7 @@ int update_player( char input )
   if ( monster )
   {
     if ( object_player.effects[B_BUFFED] )
-      damage_monster( monster, object_player.entity->damage * 9 );
+      damage_monster( monster, object_player.entity->damage * 2 );
     else
       damage_monster( monster, object_player.entity->damage );
   }

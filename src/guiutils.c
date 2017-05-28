@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "headers/symbol.h"
-#include "headers/utils.h"
-#include "headers/player.h"
-#include "headers/mapgen.h"
+#include "symbol.h"
+#include "utils.h"
+#include "player.h"
+#include "mapgen.h"
 
 void silent_apply( struct object *a, struct symbol *b )
 {

@@ -1,9 +1,9 @@
-#include "headers/symbol.h"
-#include "headers/player.h"
-#include "headers/standard_objects.h"
-#include "headers/mapgen.h"
-#include "headers/monsters.h"
-#include "headers/guiutils.h"
+#include "symbol.h"
+#include "player.h"
+#include "standard_objects.h"
+#include "mapgen.h"
+#include "monsters.h"
+#include "guiutils.h"
 
 struct object *Omap;
 struct object *Oplayer;

@@ -1,7 +1,7 @@
 #include <ncurses.h>
 
-#include "headers/symbol.h"
-#include "headers/main.h"
+#include "symbol.h"
+#include "main.h"
 
 #define get_pair(a, b) ( COLOR_PAIR(a * 10 + b) )
 
@@ -74,6 +74,8 @@ int get_color( int a )
 
     case C_BLACK:
       return COLOR_BLACK;
+    default:
+      return C_WHITE;
   }
 }
 

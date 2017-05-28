@@ -1,9 +1,9 @@
-#include "headers/symbol.h"
-#include "headers/gui.h"
-#include "headers/utils.h"
-#include "headers/guiutils.h"
-#include "headers/logic.h"
-#include "headers/standard_objects.h"
+#include "symbol.h"
+#include "gui.h"
+#include "utils.h"
+#include "guiutils.h"
+#include "logic.h"
+#include "standard_objects.h"
 
 char running = 1;
 

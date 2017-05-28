@@ -1,4 +1,4 @@
-#include "headers/symbol.h"
+#include "symbol.h"
 
 struct object Oquit =
 {

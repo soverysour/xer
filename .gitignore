@@ -3,3 +3,4 @@ build/game
 *.swp
 docs/
 game.core
+bin/
