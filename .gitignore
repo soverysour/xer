@@ -2,3 +2,4 @@ build/*.o
 build/game
 *.swp
 docs/
+game.core
