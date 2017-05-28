@@ -29,8 +29,25 @@ configure_file (
   ${include_dir}/GlobalConfig.h
   )
 
+
+
+set (gcc_flags 
+  -Wextra
+  -Wall
+  -Wfloat-equal
+  -Wundef
+  -Wshadow
+  -Wpointer-arith
+  -Wcast-align
+  -Wstrict-prototypes
+  -Wwrite-strings
+  -Waggregate-return
+  )
+
+add_definitions (${gcc_flags})
+
 add_executable (${project_name} ${program_srcs})
 
-find_package(Curses REQUIRED)
-include_directories(${include_dir} ${CURSES_INCLUDE_DIRS})
-target_link_libraries(${project_name} ${CURSES_LIBRARIES})
+find_package (Curses REQUIRED)
+include_directories (${include_dir} ${CURSES_INCLUDE_DIRS})
+target_link_libraries (${project_name} ${CURSES_LIBRARIES})

@@ -130,7 +130,7 @@ void update_gui( struct symbol *x )
   refresh();
 }
 
-void end_gui( char *text )
+void end_gui(const char *text )
 {
   endwin();
   printf( "%s", text );
