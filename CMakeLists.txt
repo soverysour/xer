@@ -4,14 +4,13 @@ set (project_name Xer)
 
 project (${project_name})
 
-set (Tutorial_VERSION_MAJOR 0)
-set (Tutorial_VERSION_MINOR 0)
-set (Tutorial_VERSION_PATCH 1)
+set (${project_name}_version_major 0)
+set (${project_name}_version_minor 0)
+set (${project_name}_version_patch 1)
 
 set (root_dir ${PROJECT_SOURCE_DIR})
 set (include_dir ${PROJECT_SOURCE_DIR}/include)
 set (source_dir ${PROJECT_SOURCE_DIR}/src)
-set (build_dir ${PROJECT_SOURCE_DIR}/build)
 
 set (program_srcs 
   ${source_dir}/gui.c
