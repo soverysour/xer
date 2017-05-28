@@ -76,7 +76,7 @@ int get_color( int a )
       return COLOR_BLACK;
 
     default:
-      return C_WHITE;
+      return COLOR_WHITE;
   }
 }
 
@@ -130,7 +130,7 @@ void update_gui( struct symbol *x )
   refresh();
 }
 
-void end_gui(const char *text )
+void end_gui( const char *text )
 {
   endwin();
   printf( "%s", text );

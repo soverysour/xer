@@ -21,7 +21,7 @@ void init_engine( void )
   clean_symbol( b );
 }
 
-void end_engine(const char *text )
+void end_engine( const char *text )
 {
   if ( running )
   {
