@@ -1,5 +1,3 @@
-build/*.o
-build/game
 *.swp
 game.core
 bin/
