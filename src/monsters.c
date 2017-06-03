@@ -159,8 +159,8 @@ void update_monsters( void )
        )
     {
       if (
-      absolute( monster->y - get_player()->y ) <= 1 &&
-      absolute( monster->x - get_player()->x ) <= 1
+          absolute( monster->y - get_player()->y ) <= 1 &&
+          absolute( monster->x - get_player()->x ) <= 1
       )
       {
         damage_player( monster->entity->damage );

@@ -4,7 +4,7 @@ mode=c
 indent=spaces=2
 indent-switches
 indent-cases
-indent-continuation=0
+indent-continuation=2
 indent-labels
 indent-preproc-block
 indent-preproc-define
