@@ -101,7 +101,6 @@ void new_monsters( void )
   kill_monsters();
   head_monster = get_object();
   struct object *current_monster = head_monster;
-  current_monster->entity = get_entity();
   struct room *x = get_rooms();
 
   for ( int i = 0; i < MONSTER_COUNT; i++ )

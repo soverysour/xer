@@ -43,8 +43,8 @@ set (gcc_flags
   -Wwrite-strings
   -Waggregate-return
   )
-#
-#add_definitions (${gcc_flags})
+
+add_definitions (${gcc_flags})
 
 add_executable (${project_name} ${program_srcs})
 
