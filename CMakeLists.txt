@@ -25,13 +25,13 @@ set (program_srcs
   )
 
 configure_file (
-  ${root_dir}/GlobalConfig.h.in
-  ${include_dir}/GlobalConfig.h
+  ${root_dir}/global.h.in
+  ${include_dir}/global.h
   )
 
-
-
 set (gcc_flags 
+  -g
+  -O3
   -Wextra
   -Wall
   -Wfloat-equal
@@ -43,8 +43,8 @@ set (gcc_flags
   -Wwrite-strings
   -Waggregate-return
   )
-
-add_definitions (${gcc_flags})
+#
+#add_definitions (${gcc_flags})
 
 add_executable (${project_name} ${program_srcs})
 
