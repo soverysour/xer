@@ -4,8 +4,10 @@
 #include "monsters.h"
 #include "logic.h"
 #include "main.h"
+#include "utils.h"
 
-#define HP 16
+#define HP 1000
+#define DAMAGE 100
 
 char ef_player[] = {};
 
@@ -13,7 +15,7 @@ struct entity entity_player =
 {
   .hp = HP,
   .current_hp = HP,
-  .damage = 5
+  .damage = DAMAGE
 };
 
 struct object object_player =
@@ -30,48 +32,10 @@ struct object object_player =
 int update_player( char input )
 {
   int x = 0, y = 0;
+  move_unit( &x, &y, input );
 
   switch ( input )
   {
-    case CENTER:
-      break;
-
-    case LEFT:
-      x--;
-      break;
-
-    case RIGHT:
-      x++;
-      break;
-
-    case UP:
-      y--;
-      break;
-
-    case DOWN:
-      y++;
-      break;
-
-    case LDOWN:
-      x--;
-      y++;
-      break;
-
-    case RDOWN:
-      y++;
-      x++;
-      break;
-
-    case LUP:
-      y--;
-      x--;
-      break;
-
-    case RUP:
-      x++;
-      y--;
-      break;
-
     case 'W':
       object_player.effects[B_BUFFED] = 1;
       break;

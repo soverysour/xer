@@ -14,6 +14,7 @@ void init_engine( void )
   if ( !running )
     return;
 
+  init_log();
   init_seed();
   init_logic();
   struct symbol *b = do_apply( &Owait );
@@ -25,6 +26,7 @@ void end_engine( const char *text )
 {
   if ( running )
   {
+    end_log();
     end_gui( text );
     running = 0;
   }

@@ -10,4 +10,9 @@ struct entity *get_entity( void );
 void give_entity( struct entity * );
 int absolute( int );
 int proc_unit( int, int );
+void move_unit( int *, int *, char );
+char get_direction( int, int, int, int );
+void init_log( void );
+void end_log( void );
+void logit( char * );
 #endif

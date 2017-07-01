@@ -6,6 +6,16 @@
 #include "player.h"
 #include "mapgen.h"
 
+#define hp_x 0
+#define hp_y 18
+#define wait_x 20
+#define wait_y 12
+#define level_x 0
+#define level_y 19
+#define ARRAY_WIDTH TERMINAL_WIDTH + 1
+#define DIAG 1
+#define STRAIGHT 0
+
 void silent_apply( struct object *a, struct symbol *b )
 {
   if ( a->id == ID_HUD )
@@ -15,8 +25,8 @@ void silent_apply( struct object *a, struct symbol *b )
       char *hold = calloc( 15, sizeof( char ) );
       sprintf( hold, "HP: %i(%i)", get_player()->entity->hp, get_player()->entity->current_hp );
       b->identity = hold;
-      b->x = 0;
-      b->y = 18;
+      b->x = hp_x;
+      b->y = hp_y;
       b->status = !EMPTY_SYMBOL;
       b->attribs = calloc( NR_ATTRIBS, sizeof( char ) );
       b->attribs[AT_BOLD] = 1;
@@ -29,8 +39,8 @@ void silent_apply( struct object *a, struct symbol *b )
       char *hold = calloc( 95, sizeof( char ) );
       sprintf( hold, "Press any key to continue..." );
       b->identity = hold;
-      b->x = 20;
-      b->y = 12;
+      b->x = wait_x;
+      b->y = wait_y;
       b->status = !EMPTY_SYMBOL;
       b->attribs = calloc( NR_ATTRIBS, sizeof( char ) );
       b->attribs[AT_BOLD] = 1;
@@ -43,8 +53,8 @@ void silent_apply( struct object *a, struct symbol *b )
       char *hold = calloc( 15, sizeof( char ) );
       sprintf( hold, "Level: %i", get_level() );
       b->identity = hold;
-      b->x = 0;
-      b->y = 19;
+      b->x = level_x;
+      b->y = level_y;
       b->status = !EMPTY_SYMBOL;
       b->attribs = calloc( NR_ATTRIBS, sizeof( char ) );
       b->attribs[AT_BOLD] = 1;
@@ -157,51 +167,88 @@ void clean_symbol( struct symbol *a )
   free( now );
 }
 
-int backtrack_fov( int diags, int straights, int targety, int targetx, int cury, int curx )
+char directions[ARRAY_WIDTH] = {};
+char *get_directions( void )
 {
-  if ( curx == targetx && cury == targety )
-    return 1;
+  return directions;
+}
 
-  if ( get_tile( cury, curx )->id == ID_WALL )
-    return 0;
+int verify_directions( int px, int py )
+{
+  int x = px, y = py;
+  int i = 0;
 
-  if ( diags == 0 && straights == 0 )
-    return 0;
+  while ( directions[i] )
+  {
+    move_unit( &x, &y, directions[i] );
 
-  if ( cury < 0 || cury > M_ROWS - 1 )
-    return 0;
+    if ( get_tile( y, x )->id == ID_WALL )
+    {
+      if ( !directions[i + 1] )
+        return 1;
 
-  if ( curx < 0 || curx > M_COLS - 1 )
-    return 0;
+      return 0;
+    }
 
-  if ( cury != targety && straights > 0 )
-    if ( backtrack_fov( diags,
-                        straights - 1,
-                        targety,
-                        targetx,
-                        cury - proc_unit( targety, cury ),
-                        curx )
-       )
+    i++;
+  }
+
+  return 1;
+}
+
+char btfov[ARRAY_WIDTH] = {};
+char *get_pathline( void )
+{
+  return btfov;
+}
+
+void btwrite( int isDiag, int px, int py, int x, int y, int suffix, int step, int spot )
+{
+  int xs = absolute( px - x );
+  int ys = absolute( py - y );
+  int dirr;
+
+  if ( xs > ys )
+    dirr = get_direction( px, 1, x, 1 );
+  else
+    dirr = get_direction( 1, py, 1, y );
+
+  if ( isDiag )
+  {
+    btfov[step] = DIAG;
+    directions[spot] = get_direction( px, py, x, y );
+
+    for ( int i = step + 1; i < spot + suffix + 1; i++ )
+      directions[i] = dirr;
+
+    return;
+  }
+
+  btfov[step] = STRAIGHT;
+  directions[spot] = dirr;
+}
+
+int backtrack_fov( int diags, int suffix, int leftover, int px, int py, int x, int y, int step, int spot )
+{
+  if ( leftover )
+    if ( !step || btfov[step - 1] != STRAIGHT )
+    {
+      btwrite( STRAIGHT, px, py, x, y, suffix, step, spot );
+
+      if ( backtrack_fov( diags, suffix, leftover - 1, px, py, x, y, step + 1, spot + 1 ) )
+        return 1;
+    }
+
+  if ( diags )
+  {
+    btwrite( DIAG, px, py, x, y, suffix, step, spot );
+
+    if ( backtrack_fov( diags - 1, suffix, leftover, px, py, x, y, step + 1, spot + suffix + 1 ) )
       return 1;
+  }
 
-  if ( curx != targetx && straights > 0 )
-    if ( backtrack_fov( diags,
-                        straights - 1,
-                        targety,
-                        targetx,
-                        cury,
-                        curx - proc_unit( targetx, curx ) )
-       )
-      return 1;
-
-  if ( cury != targety && curx != targetx && diags > 0 )
-    return backtrack_fov( diags - 1,
-                          straights,
-                          targety,
-                          targetx,
-                          cury - proc_unit( targety, cury ),
-                          curx - proc_unit( targetx, curx )
-                        );
+  if ( !leftover && !diags )
+    return verify_directions( px, py );
 
   return 0;
 }
@@ -210,9 +257,26 @@ int in_reach( int y, int x, int py, int px )
 {
   int xs = absolute( px - x );
   int ys = absolute( py - y );
+  int total = xs > ys ? xs : ys;
   int diags = xs > ys ? ys : xs;
   int straights = xs > ys ? xs - ys : ys - xs;
-  return backtrack_fov( diags, straights, y, x, py, px );
+  int suffix = diags > 0 ? straights / diags : straights;
+  int leftover = diags > 0 ? straights % diags : 0;
+
+  for ( int i = 0; i < ARRAY_WIDTH; i++ )
+    directions[i] = '\0';
+
+  if ( !diags || !straights )
+  {
+    char dirr = get_direction( px, py, x, y );
+
+    for ( int i = 0; i < total; i++ )
+      directions[i] = dirr;
+
+    return verify_directions( px, py );
+  }
+
+  return backtrack_fov( diags, suffix, leftover, px, py, x, y, 0, 0 );
 }
 
 void put_fov( void )
@@ -226,6 +290,7 @@ void put_fov( void )
 
   for ( int i = y - FOV_RADIUS; i < y + FOV_RADIUS + 1; i++ )
     for ( int j = x - FOV_RADIUS; j < x + FOV_RADIUS + 1; j++ )
-      if ( in_reach( i, j, y, x ) )
-        get_tile( i, j )->visibility = V_SEEN;
+      if ( i > -1 && j > -1 && i < M_ROWS && j < M_COLS && ( i != y || j != x ) )
+        if ( in_reach( i, j, y, x ) )
+          get_tile( i, j )->visibility = V_SEEN;
 }
