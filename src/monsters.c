@@ -38,14 +38,13 @@ void destroy_monster( struct object *monster )
     return;
   }
 
-  struct object *p = head_monster, *k;
+  struct object *p = head_monster;
 
   while ( p->next != monster )
     p = p->next;
 
-  k = p->next;
   p->next = p->next->next;
-  kill_monster( k );
+  kill_monster( monster );
 }
 
 void damage_monster( struct object *monster, int damage )

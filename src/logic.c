@@ -8,6 +8,7 @@
 struct object *Omap;
 struct object *Oplayer;
 struct object *Ohud;
+struct object *end_hud;
 
 char loaded = 0;
 
@@ -16,6 +17,7 @@ void init_logic( void )
   Omap = get_tile( 0, 0 );
   Oplayer = get_player();
   Ohud = &Ohp;
+  end_hud = &Olevel;
 }
 
 void go_next_level( void )
@@ -27,6 +29,7 @@ void slap_together( void )
 {
   get_tile( M_ROWS - 1, M_COLS - 1 )->next = Oplayer;
   Oplayer->next = Ohud;
+  end_hud->next = 0;
   struct object *k = Ohud;
 
   while ( k->next && k->next->id == ID_HUD )

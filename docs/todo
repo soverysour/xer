@@ -1,12 +1,7 @@
-## Change the mapgen algortihm, branch it out.
+Change the mapgen algortihm, branch it out.
 
->> Monsters sometimes stay white even after breaking LoS - related to 
->> bad pathing when breaking LoS.
-
->> Do proper fov and pathing, and directions.
-
-## Add the notion of "no update turns" - what happens when you go in 
-## a direction but hit a wall, thus not moving, thus not updating.
+Add the notion of "no update turns" - what happens when you go in 
+a direction but hit a wall, thus not moving, thus not updating.
 
 ---------------------------------------------
 ---------That was just refactoring-----------

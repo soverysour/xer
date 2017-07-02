@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd bin
-valgrind --leak-check=yes ./Xer
+valgrind $1 --leak-check=yes ./Xer
