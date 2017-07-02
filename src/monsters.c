@@ -4,7 +4,7 @@
 #include "player.h"
 #include "guiutils.h"
 
-#define MONSTER_COUNT 8
+#define MONSTER_COUNT 4
 #define MONSTER_FOV 2
 
 struct object *head_monster;
@@ -145,7 +145,7 @@ void update_monsters( void )
          absolute( monster->x - get_player()->x ) <= FOV_RADIUS
        )
     {
-      if ( in_reach( monster->y, monster->x, get_player()->y, get_player()->x ) )
+      if ( in_fov( monster->y, monster->x, get_player()->y, get_player()->x ) )
         monster->visibility = V_SEEN;
       else
         monster->visibility = V_UNSEEN;
@@ -166,7 +166,7 @@ void update_monsters( void )
         continue;
       }
 
-      if ( in_reach( monster->y, monster->x, get_player()->y, get_player()->x ) )
+      if ( in_fov( monster->y, monster->x, get_player()->y, get_player()->x ) )
         go_towards( monster );
     }
   }

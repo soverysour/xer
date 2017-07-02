@@ -30,6 +30,7 @@ configure_file (
   )
 
 set (gcc_flags 
+  -std=c11
   -g
   -O3
   -Wextra

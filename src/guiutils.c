@@ -167,116 +167,25 @@ void clean_symbol( struct symbol *a )
   free( now );
 }
 
-char directions[ARRAY_WIDTH] = {};
-char *get_directions( void )
+int in_fov( int y, int x)
 {
-  return directions;
-}
+  int px = get_player()->x, py = get_player()->y;
 
-int verify_directions( int px, int py )
-{
-  int x = px, y = py;
-  int i = 0;
+  if ( absolute( px - x ) <= 1 && absolute( py - y ) <= 1 )
+    return 1;
 
-  while ( directions[i] )
-  {
-    move_unit( &x, &y, directions[i] );
+  struct room *yes = find_inside(px, py);
+  if ( !yes )
+    yes = find_inside( px + 1, py + 1);
 
-    if ( get_tile( y, x )->id == ID_WALL )
-    {
-      if ( !directions[i + 1] )
-        return 1;
-
-      return 0;
-    }
-
-    i++;
-  }
-
-  return 1;
-}
-
-char btfov[ARRAY_WIDTH] = {};
-char *get_pathline( void )
-{
-  return btfov;
-}
-
-void btwrite( int isDiag, int px, int py, int x, int y, int suffix, int step, int spot )
-{
-  int xs = absolute( px - x );
-  int ys = absolute( py - y );
-  int dirr;
-
-  if ( xs > ys )
-    dirr = get_direction( px, 1, x, 1 );
-  else
-    dirr = get_direction( 1, py, 1, y );
-
-  if ( isDiag )
-  {
-    btfov[step] = DIAG;
-    directions[spot] = get_direction( px, py, x, y );
-
-    for ( int i = step + 1; i < spot + suffix + 1; i++ )
-      directions[i] = dirr;
-
-    return;
-  }
-
-  btfov[step] = STRAIGHT;
-  directions[spot] = dirr;
-}
-
-int backtrack_fov( int diags, int suffix, int leftover, int px, int py, int x, int y, int step, int spot )
-{
-  if ( leftover )
-    if ( !step || btfov[step - 1] != STRAIGHT )
-    {
-      btwrite( STRAIGHT, px, py, x, y, suffix, step, spot );
-
-      if ( backtrack_fov( diags, suffix, leftover - 1, px, py, x, y, step + 1, spot + 1 ) )
-        return 1;
-    }
-
-  if ( diags )
-  {
-    btwrite( DIAG, px, py, x, y, suffix, step, spot );
-
-    if ( backtrack_fov( diags - 1, suffix, leftover, px, py, x, y, step + 1, spot + suffix + 1 ) )
+  if ( yes ){
+    if ( x >= yes->x - 1 && x <= yes->x + yes->w &&
+         y >= yes->y - 1 && y <= yes->y + yes->h
+       )
       return 1;
   }
 
-  if ( !leftover && !diags )
-    return verify_directions( px, py );
-
   return 0;
-}
-
-int in_reach( int y, int x, int py, int px )
-{
-  int xs = absolute( px - x );
-  int ys = absolute( py - y );
-  int total = xs > ys ? xs : ys;
-  int diags = xs > ys ? ys : xs;
-  int straights = xs > ys ? xs - ys : ys - xs;
-  int suffix = diags > 0 ? straights / diags : straights;
-  int leftover = diags > 0 ? straights % diags : 0;
-
-  for ( int i = 0; i < ARRAY_WIDTH; i++ )
-    directions[i] = '\0';
-
-  if ( !diags || !straights )
-  {
-    char dirr = get_direction( px, py, x, y );
-
-    for ( int i = 0; i < total; i++ )
-      directions[i] = dirr;
-
-    return verify_directions( px, py );
-  }
-
-  return backtrack_fov( diags, suffix, leftover, px, py, x, y, 0, 0 );
 }
 
 void put_fov( void )
@@ -288,9 +197,16 @@ void put_fov( void )
 
   int x = get_player()->x, y = get_player()->y;
 
-  for ( int i = y - FOV_RADIUS; i < y + FOV_RADIUS + 1; i++ )
-    for ( int j = x - FOV_RADIUS; j < x + FOV_RADIUS + 1; j++ )
-      if ( i > -1 && j > -1 && i < M_ROWS && j < M_COLS && ( i != y || j != x ) )
-        if ( in_reach( i, j, y, x ) )
-          get_tile( i, j )->visibility = V_SEEN;
+  struct room *yes = find_inside(x, y);
+  if ( !yes )
+    yes = find_inside(x+1, y+1);
+
+  if ( yes ){
+    for ( int i = yes->x - 1; i <= yes->x + yes->w; i++ )
+      for ( int j = yes->y - 1; j <= yes->y + yes->h; j++ )
+        get_tile(j, i)->visibility = V_SEEN;
+  }
+  for ( int i = x - 1; i <= x + 1; i++ )
+    for ( int j = y - 1; j <= y + 1; j++ )
+      get_tile(j, i)->visibility = V_SEEN;
 }

@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "player.h"
 
-#define NR_ROOMS 17
+#define NR_ROOMS 8
 #define LAST_LEVEL 3
 
 struct room rooms[NR_ROOMS];
@@ -49,13 +49,13 @@ void random_room( int i )
 
   do
   {
-    rooms[i].w = get_rand ( 6 );
+    rooms[i].w = get_rand( 6 );
   }
   while ( rooms[i].w < 4 );
 
   do
   {
-    rooms[i].h = get_rand ( 5 );
+    rooms[i].h = get_rand( 5 );
   }
   while ( rooms[i].h < 2 );
 }
@@ -213,4 +213,15 @@ char get_level( void )
 struct room *get_rooms( void )
 {
   return rooms;
+}
+
+struct room *find_inside(int x, int y)
+{
+  for ( int i = 0; i < NR_ROOMS; i++ ){
+    if ( x >= rooms[i].x && x <= rooms[i].x + rooms[i].w &&
+         y >= rooms[i].y && y <= rooms[i].y + rooms[i].h
+       )
+      return rooms + i;
+  }
+  return 0;
 }

@@ -12,6 +12,10 @@ void init_log( void )
   logfile = fopen( "/home/sour/Repos/xer/bin/log.txt", "w" );
 }
 
+void logit (char *s){
+  fprintf(logfile, "%s", s);
+}
+
 void end_log( void )
 {
   fclose( logfile );
@@ -27,12 +31,12 @@ int absolute( int x )
 
 void init_seed( void )
 {
-  srandom( time ( NULL ) );
+  srand( time ( NULL ) );
 }
 
 int get_rand( int x )
 {
-  return random() % x + 1;
+  return rand() % x + 1;
 }
 
 struct object *get_object( void )
