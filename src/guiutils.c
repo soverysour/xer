@@ -176,9 +176,6 @@ int in_fov( int y, int x )
 
   struct room *yes = find_inside( px, py );
 
-  if ( !yes )
-    yes = find_inside( px + 1, py + 1 );
-
   if ( yes )
   {
     if ( x >= yes->x - 1 && x <= yes->x + yes->w &&
@@ -199,9 +196,6 @@ void put_fov( void )
 
   int x = get_player()->x, y = get_player()->y;
   struct room *yes = find_inside( x, y );
-
-  if ( !yes )
-    yes = find_inside( x + 1, y + 1 );
 
   if ( yes )
   {

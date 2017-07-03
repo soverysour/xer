@@ -14,10 +14,10 @@ struct object map[M_ROWS][M_COLS];
 
 int check_intersect( int i, int j )
 {
-  if ( rooms[i].x + rooms[i].w < rooms[j].x ||
-       rooms[j].x + rooms[j].w < rooms[i].x ||
-       rooms[i].y + rooms[i].h < rooms[j].y ||
-       rooms[j].y + rooms[j].h < rooms[i].y
+  if ( rooms[i].x + rooms[i].w + 1 < rooms[j].x ||
+       rooms[j].x + rooms[j].w + 1 < rooms[i].x ||
+       rooms[i].y + rooms[i].h + 1 < rooms[j].y ||
+       rooms[j].y + rooms[j].h + 1 < rooms[i].y
      )
     return 0;
 
@@ -96,7 +96,7 @@ void generate_rooms( void )
 
     do
     {
-      random_room( i, is_time(i) );
+      random_room( i, is_time( i ) );
     }
     while ( check_room( i ) );
 
@@ -133,50 +133,76 @@ void generate_rooms_in_map( void )
   for ( int i = 0; i < NR_ROOMS; i++ )
     for ( int j = rooms[i].y; j < rooms[i].y + rooms[i].h; j++ )
       for ( int k = rooms[i].x; k < rooms[i].x + rooms[i].w; k++ )
-      {
         map[j][k].id = Ofloor.id;
-      }
-}
-
-void path_rooms( int i, int j )
-{
-  int x1 = rooms[i].x + get_rand( rooms[i].w / 2 );
-  int x2 = rooms[j].x + get_rand( rooms[j].w / 2 );
-  int y1 = rooms[i].y + get_rand( rooms[i].h / 2 );
-  int y2 = rooms[j].y + get_rand( rooms[j].h / 2 );
-  int startx = x1 < x2 ? x1 : x2;
-  int endx   = x1 < x2 ? x2 : x1;
-  int starty = x1 < x2 ? y1 : y2;
-  int endy   = x1 < x2 ? y2 : y1;
-
-  while ( startx != endx ){
-    int maybe = get_rand(10);
-
-    if ( maybe < 3 && starty < endy )
-      starty++;
-    else if ( maybe < 3 && starty > endy )
-      starty--;
-
-    map[starty][startx].id = Ofloor.id;
-
-    startx++;
-  }
-
-  while ( starty != endy ){
-    if ( starty > endy )
-      starty--;
-    else
-      starty++;
-
-    map[starty][endx].id = Ofloor.id;
-      
-  }
 }
 
 void generate_paths( void )
 {
   for ( int i = 0; i < NR_ROOMS - 1; i++ )
-    path_rooms( i, i + 1 );
+  {
+    int x1 = rooms[i].x + get_rand( rooms[i].w / 2 );
+    int x2 = rooms[i + 1].x + get_rand( rooms[i + 1].w / 2 );
+    int y1 = rooms[i].y + get_rand( rooms[i].h / 2 );
+    int y2 = rooms[i + 1].y + get_rand( rooms[i + 1].h / 2 );
+    int startx = x1 < x2 ? x1 : x2;
+    int endx   = x1 < x2 ? x2 : x1;
+    int starty = x1 < x2 ? y1 : y2;
+    int endy   = x1 < x2 ? y2 : y1;
+
+    while ( startx != endx )
+    {
+      int maybe = get_rand( 10 );
+
+      if ( maybe < 3 && starty < endy )
+        starty++;
+      else if ( maybe < 3 && starty > endy )
+        starty--;
+
+      map[starty][startx].id = Ofloor.id;
+      startx++;
+    }
+
+    while ( starty != endy )
+    {
+      if ( starty > endy )
+        starty--;
+      else
+        starty++;
+
+      map[starty][endx].id = Ofloor.id;
+    }
+  }
+}
+
+void do_on(int i, int j, int which){
+  if ( i == 0 || j == 0 || i == M_ROWS - 1 || j == M_COLS - 1 )
+    return;
+
+  if ( which ){
+    if ( map[i][j].id == ID_FLOOR && map[i][j+1].id == ID_FLOOR ){
+      map[i][j].id = ID_WALL;
+    }
+  }
+  else {
+    if ( map[i][j].id == ID_FLOOR && map[i+1][j].id == ID_FLOOR ){
+      map[i][j].id = ID_WALL;
+    }
+  }
+}
+
+void choke_rooms(void)
+{
+  for ( int i = 0; i < NR_ROOMS; i++ )
+  {
+    for ( int j = rooms[i].x; j < rooms[i].x + rooms[i].w; j++ ){
+      do_on(rooms[i].y - 1, j, 1);
+      do_on(rooms[i].y + rooms[i].h, j, 1);
+    }
+    for ( int j = rooms[i].y; j < rooms[i].y + rooms[i].h; j++ ){
+      do_on(j, rooms[i].x - 1, 0);
+      do_on(j, rooms[i].x + rooms[i].w, 0);
+    }
+  }
 }
 
 void set_player( void )
@@ -207,6 +233,7 @@ int next_level( void )
   sort_rooms();
   generate_rooms_in_map();
   generate_paths();
+  choke_rooms();
   set_player();
   set_exit();
   return 0;
@@ -231,8 +258,8 @@ struct room *find_inside( int x, int y )
 {
   for ( int i = 0; i < NR_ROOMS; i++ )
   {
-    if ( x >= rooms[i].x && x <= rooms[i].x + rooms[i].w &&
-         y >= rooms[i].y && y <= rooms[i].y + rooms[i].h
+    if ( x >= rooms[i].x && x <= rooms[i].x + rooms[i].w - 1 &&
+         y >= rooms[i].y && y <= rooms[i].y + rooms[i].h - 1
        )
       return rooms + i;
   }

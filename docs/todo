@@ -1,6 +1,3 @@
-Change the mapgen algortihm, branch it out.
-  ->Choke room connections if wider than 1
-
 Add some more complex monster behaviour / pathing
   ->Backtrack path and remember it, like before
   ->Go after player accordingly.
