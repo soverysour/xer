@@ -8,7 +8,7 @@
 struct object *Omap;
 struct object *Oplayer;
 struct object *Ohud;
-struct object *end_hud;
+struct object *Oend_hud;
 
 char loaded = 0;
 
@@ -17,7 +17,7 @@ void init_logic( void )
   Omap = get_tile( 0, 0 );
   Oplayer = get_player();
   Ohud = &Ohp;
-  end_hud = &Olevel;
+  Oend_hud = &Olevel;
 }
 
 void go_next_level( void )
@@ -29,13 +29,7 @@ void slap_together( void )
 {
   get_tile( M_ROWS - 1, M_COLS - 1 )->next = Oplayer;
   Oplayer->next = Ohud;
-  end_hud->next = 0;
-  struct object *k = Ohud;
-
-  while ( k->next && k->next->id == ID_HUD )
-    k = k->next;
-
-  k->next = get_monsters();
+  Oend_hud->next = get_monsters();
 }
 
 struct object *logic_update( char input )
@@ -55,8 +49,15 @@ struct object *logic_update( char input )
     loaded = 1;
   }
 
-  if ( update_player( input ) )
+  int status = update_player( input );
+  if ( status > 0 )
     return &Owait;
+
+  if ( status < 0 ){
+    slap_together();
+    put_fov();
+    return Omap;
+  }
 
   slap_together();
   put_fov();

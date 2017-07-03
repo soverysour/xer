@@ -32,27 +32,33 @@ struct object object_player =
 int update_player( char input )
 {
   int x = 0, y = 0;
-  move_unit( &x, &y, input );
+  int has_moved = move_unit( &x, &y, input );
+  int is_input = has_moved;
 
-  switch ( input )
-  {
-    case 'W':
-      object_player.effects[B_BUFFED] = 1;
-      break;
+  if ( !has_moved )
+    switch ( input )
+    {
+      case 'W':
+        is_input = 1;
+        object_player.effects[B_BUFFED] = 1;
+        break;
 
-    case 'w':
-      object_player.effects[B_BUFFED] = 0;
-      break;
+      case 'w':
+        is_input = 1;
+        object_player.effects[B_BUFFED] = 0;
+        break;
 
-    case '>':
-      if ( get_tile( object_player.y, object_player.x )->id == ID_EXIT )
-      {
-        go_next_level();
-        return 1;
-      }
+      case '>':
+        if ( get_tile( object_player.y, object_player.x )->id == ID_EXIT )
+        {
+          go_next_level();
+          return 1;
+        }
+        break;
+    }
 
-      break;
-  }
+  if ( !is_input )
+    return -1;
 
   struct object *monster = get_monster( object_player.y + y, object_player.x + x );
 
@@ -63,8 +69,9 @@ int update_player( char input )
     else
       damage_monster( monster, object_player.entity->damage );
   }
-  else  if ( get_tile( object_player.y + y, object_player.x + x )->id != ID_WALL )
-  {
+  else if ( get_tile( object_player.y + y, object_player.x + x )->id == ID_WALL )
+    return -1;
+  else {
     object_player.x += x;
     object_player.y += y;
   }

@@ -1,10 +1,18 @@
 Change the mapgen algortihm, branch it out.
+  ->Make it so that paths occasionally move y axis too
+  ->Make two "sets" of rooms, some bigger, some smaller
+  ->Choke room connections if wider than 1
 
-Add the notion of "no update turns" - what happens when you go in 
-a direction but hit a wall, thus not moving, thus not updating.
+Add some more complex monster behaviour / pathing
+  ->Backtrack path and remember it, like before
+  ->Go after player accordingly.
+  ->Perhaps add more behaviours, e.g. one monster wanders, one follows,
+    one follows you the entire map.
+  ->Proper monster collision.
 
----------------------------------------------
----------That was just refactoring-----------
----------------------------------------------
+Make the 'W' ability actually a thing
+  ->Increase something
+  ->Has "chages"
 
-
+*Sometimes you may be "between two rooms". Make sure that either can't happen
+ or that both rooms are illuminated properly.

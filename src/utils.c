@@ -64,49 +64,50 @@ int proc_unit( int target, int source )
   return source > target ? 1 : -1;
 }
 
-void move_unit( int *x, int *y, char dir )
+int move_unit( int *x, int *y, char dir )
 {
   switch ( dir )
   {
     case CENTER:
-      break;
+      return 1;
 
     case LEFT:
       ( *x )--;
-      break;
+      return 1;
 
     case RIGHT:
       ( *x )++;
-      break;
+      return 1;
 
     case UP:
       ( *y )--;
-      break;
+      return 1;
 
     case DOWN:
       ( *y )++;
-      break;
+      return 1;
 
     case LDOWN:
       ( *x )--;
       ( *y )++;
-      break;
+      return 1;
 
     case RDOWN:
       ( *y )++;
       ( *x )++;
-      break;
+      return 1;
 
     case LUP:
       ( *y )--;
       ( *x )--;
-      break;
+      return 1;
 
     case RUP:
       ( *x )++;
       ( *y )--;
-      break;
+      return 1;
   }
+  return 0;
 }
 
 char get_direction( int px, int py, int x, int y )
