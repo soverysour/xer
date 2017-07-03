@@ -133,32 +133,43 @@ void generate_rooms_in_map( void )
     for ( int j = rooms[i].y; j < rooms[i].y + rooms[i].h; j++ )
       for ( int k = rooms[i].x; k < rooms[i].x + rooms[i].w; k++ )
       {
-        Ofloor.x = map[j][k].x;
-        Ofloor.y = map[j][k].y;
-        Ofloor.effects = map[j][k].effects;
-        Ofloor.next = map[j][k].next;
-        map[j][k] = Ofloor;
+        map[j][k].id = Ofloor.id;
       }
 }
 
 void path_rooms( int i, int j )
 {
-  int x1 = rooms[i].x + get_rand( rooms[i].w ) - 1;
-  int x2 = rooms[j].x + get_rand( rooms[j].w ) - 1;
-  int y1 = rooms[i].y + get_rand( rooms[i].h ) - 1;
-  int y2 = rooms[j].y + get_rand( rooms[j].h ) - 1;
+  int x1 = rooms[i].x + get_rand( rooms[i].w / 2 );
+  int x2 = rooms[j].x + get_rand( rooms[j].w / 2 );
+  int y1 = rooms[i].y + get_rand( rooms[i].h / 2 );
+  int y2 = rooms[j].y + get_rand( rooms[j].h / 2 );
   int startx = x1 < x2 ? x1 : x2;
   int endx   = x1 < x2 ? x2 : x1;
-  int starty = y1 < y2 ? y1 : y2;
-  int endy   = y1 < y2 ? y2 : y1;
-  int firsty = x1 < x2 ? y1 : y2;
-  int lastx  = x1 < x2 ? x2 : x1;
+  int starty = x1 < x2 ? y1 : y2;
+  int endy   = x1 < x2 ? y2 : y1;
 
-  for ( int k = startx; k <= endx; k++ )
-    map[firsty][k].id = Ofloor.id;
+  while ( startx != endx ){
+    int maybe = get_rand(10);
 
-  for ( int k = starty; k <= endy; k++ )
-    map[k][lastx].id = Ofloor.id;
+    if ( maybe < 3 && starty < endy )
+      starty++;
+    else if ( maybe < 3 && starty > endy )
+      starty--;
+
+    map[starty][startx].id = Ofloor.id;
+
+    startx++;
+  }
+
+  while ( starty != endy ){
+    if ( starty > endy )
+      starty--;
+    else
+      starty++;
+
+    map[starty][endx].id = Ofloor.id;
+      
+  }
 }
 
 void generate_paths( void )
