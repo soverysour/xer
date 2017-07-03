@@ -1,6 +1,4 @@
 Change the mapgen algortihm, branch it out.
-  ->Make it so that paths occasionally move y axis too
-  ->Make two "sets" of rooms, some bigger, some smaller
   ->Choke room connections if wider than 1
 
 Add some more complex monster behaviour / pathing

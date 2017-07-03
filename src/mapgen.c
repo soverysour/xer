@@ -42,22 +42,22 @@ int dist_room( struct room a, struct room b )
   return x + y;
 }
 
-void random_room( int i )
+void random_room( int i, int ind )
 {
   rooms[i].x = get_rand( M_COLS ) - 1;
   rooms[i].y = get_rand( M_ROWS ) - 1;
 
   do
   {
-    rooms[i].w = get_rand( 6 );
+    rooms[i].w = get_rand( 3 * ind );
   }
-  while ( rooms[i].w < 4 );
+  while ( rooms[i].w < 2 * ind );
 
   do
   {
-    rooms[i].h = get_rand( 5 );
+    rooms[i].h = get_rand( 2 * ind + ind / 2 );
   }
-  while ( rooms[i].h < 2 );
+  while ( rooms[i].h < ind );
 }
 
 void generate_map( void )
@@ -79,6 +79,7 @@ void generate_map( void )
     }
 }
 
+#define is_time(x) ( NR_ROOMS - x > NR_ROOMS / 2 - NR_ROOMS % 2 ? 2 : 3 )
 void generate_rooms( void )
 {
   for ( int i = 0; i < NR_ROOMS; i++ )
@@ -95,7 +96,7 @@ void generate_rooms( void )
 
     do
     {
-      random_room( i );
+      random_room( i, is_time(i) );
     }
     while ( check_room( i ) );
 
