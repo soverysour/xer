@@ -12,8 +12,9 @@ void init_log( void )
   logfile = fopen( "/home/sour/Repos/xer/bin/log.txt", "w" );
 }
 
-void logit (char *s){
-  fprintf(logfile, "%s", s);
+void logit ( char *s )
+{
+  fprintf( logfile, "%s", s );
 }
 
 void end_log( void )
@@ -107,6 +108,7 @@ int move_unit( int *x, int *y, char dir )
       ( *y )--;
       return 1;
   }
+
   return 0;
 }
 

@@ -167,18 +167,20 @@ void clean_symbol( struct symbol *a )
   free( now );
 }
 
-int in_fov( int y, int x)
+int in_fov( int y, int x )
 {
   int px = get_player()->x, py = get_player()->y;
 
   if ( absolute( px - x ) <= 1 && absolute( py - y ) <= 1 )
     return 1;
 
-  struct room *yes = find_inside(px, py);
-  if ( !yes )
-    yes = find_inside( px + 1, py + 1);
+  struct room *yes = find_inside( px, py );
 
-  if ( yes ){
+  if ( !yes )
+    yes = find_inside( px + 1, py + 1 );
+
+  if ( yes )
+  {
     if ( x >= yes->x - 1 && x <= yes->x + yes->w &&
          y >= yes->y - 1 && y <= yes->y + yes->h
        )
@@ -196,17 +198,19 @@ void put_fov( void )
         get_tile( i, j )->visibility = V_FOG;
 
   int x = get_player()->x, y = get_player()->y;
+  struct room *yes = find_inside( x, y );
 
-  struct room *yes = find_inside(x, y);
   if ( !yes )
-    yes = find_inside(x+1, y+1);
+    yes = find_inside( x + 1, y + 1 );
 
-  if ( yes ){
+  if ( yes )
+  {
     for ( int i = yes->x - 1; i <= yes->x + yes->w; i++ )
       for ( int j = yes->y - 1; j <= yes->y + yes->h; j++ )
-        get_tile(j, i)->visibility = V_SEEN;
+        get_tile( j, i )->visibility = V_SEEN;
   }
+
   for ( int i = x - 1; i <= x + 1; i++ )
     for ( int j = y - 1; j <= y + 1; j++ )
-      get_tile(j, i)->visibility = V_SEEN;
+      get_tile( j, i )->visibility = V_SEEN;
 }

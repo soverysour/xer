@@ -215,13 +215,15 @@ struct room *get_rooms( void )
   return rooms;
 }
 
-struct room *find_inside(int x, int y)
+struct room *find_inside( int x, int y )
 {
-  for ( int i = 0; i < NR_ROOMS; i++ ){
+  for ( int i = 0; i < NR_ROOMS; i++ )
+  {
     if ( x >= rooms[i].x && x <= rooms[i].x + rooms[i].w &&
          y >= rooms[i].y && y <= rooms[i].y + rooms[i].h
        )
       return rooms + i;
   }
+
   return 0;
 }

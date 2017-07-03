@@ -54,6 +54,7 @@ int update_player( char input )
           go_next_level();
           return 1;
         }
+
         break;
     }
 
@@ -71,7 +72,8 @@ int update_player( char input )
   }
   else if ( get_tile( object_player.y + y, object_player.x + x )->id == ID_WALL )
     return -1;
-  else {
+  else
+  {
     object_player.x += x;
     object_player.y += y;
   }

@@ -12,12 +12,21 @@ struct object *Oend_hud;
 
 char loaded = 0;
 
+enum
+{
+  STATE_WAIT,
+  STATE_GAME
+};
+
+char current_state;
+
 void init_logic( void )
 {
   Omap = get_tile( 0, 0 );
   Oplayer = get_player();
   Ohud = &Ohp;
   Oend_hud = &Olevel;
+  current_state = STATE_WAIT;
 }
 
 void go_next_level( void )
@@ -50,15 +59,26 @@ struct object *logic_update( char input )
   }
 
   int status = update_player( input );
-  if ( status > 0 )
-    return &Owait;
 
-  if ( status < 0 ){
+  if ( status > 0 )
+  {
+    current_state = STATE_WAIT;
+    return &Owait;
+  }
+
+  if ( status < 0 )
+  {
     slap_together();
     put_fov();
+
+    if ( current_state == STATE_WAIT )
+      update_monsters();
+
+    current_state = STATE_GAME;
     return Omap;
   }
 
+  current_state = STATE_GAME;
   slap_together();
   put_fov();
   update_monsters();
