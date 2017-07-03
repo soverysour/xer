@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "player.h"
 #include "mapgen.h"
+#include "monsters.h"
 
 #define hp_x 0
 #define hp_y 18
@@ -174,23 +175,33 @@ int in_fov( int y, int x )
   if ( absolute( px - x ) <= 1 && absolute( py - y ) <= 1 )
     return 1;
 
-  struct room *yes = find_inside( px, py );
+  struct room *yes = find_inside( px, py ), *no = find_inside(x, y);
 
-  if ( yes )
-  {
-    if ( x >= yes->x - 1 && x <= yes->x + yes->w &&
-         y >= yes->y - 1 && y <= yes->y + yes->h
-       )
-      return 1;
-  }
+  if ( yes == no )
+    return 1;
 
   return 0;
+}
+
+char steps[ARRAY_WIDTH] = {};
+char *get_directions(void){
+  return steps;
+}
+
+int in_path( int y, int x, int py, int px )
+{
+  for ( int i = 0; i < ARRAY_WIDTH; i++ )
+    steps[i] = CENTER;
+
+  return 1;//backtrack_fov( diags, straights, y, x, py, px, 0 );
 }
 
 void put_fov( void )
 {
   for ( int i = 0; i < M_ROWS; i++ )
     for ( int j = 0; j < M_COLS; j++ )
+      get_tile(i, j)->visibility = V_SEEN;
+      /*
       if ( get_tile( i, j )->visibility == V_SEEN )
         get_tile( i, j )->visibility = V_FOG;
 
@@ -207,4 +218,5 @@ void put_fov( void )
   for ( int i = x - 1; i <= x + 1; i++ )
     for ( int j = y - 1; j <= y + 1; j++ )
       get_tile( j, i )->visibility = V_SEEN;
+  */
 }

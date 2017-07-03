@@ -3,9 +3,9 @@
 #include "utils.h"
 #include "player.h"
 #include "guiutils.h"
+#include "utils.h"
 
 #define MONSTER_COUNT 4
-#define MONSTER_FOV 2
 
 struct object *head_monster;
 
@@ -114,59 +114,26 @@ void new_monsters( void )
   }
 }
 
-void go_towards( struct object *monster )
-{
-  int x = 0, y = 0;
-
-  if ( monster->x != get_player()->x )
-    x = proc_unit( monster->x, get_player()->x );
-
-  if ( monster->y != get_player()->y )
-    y = proc_unit( monster->y, get_player()->y );
-
-  if ( get_tile( monster->y + y, monster->x + x )->id == ID_WALL )
-  {
-    if ( get_tile( monster->y, monster->x + x )->id == ID_WALL )
-      x = 0;
-    else
-      y = 0;
-  }
-
-  monster->x += x;
-  monster->y += y;
-}
-
 void update_monsters( void )
 {
+  int px = get_player()->x, py = get_player()->y;
+
   for ( struct object *monster = head_monster; monster; monster = monster->next )
   {
-    if ( absolute( monster->y - get_player()->y ) <= FOV_RADIUS &&
-         absolute( monster->x - get_player()->x ) <= FOV_RADIUS
-       )
-    {
-      if ( in_fov( monster->y, monster->x, get_player()->y, get_player()->x ) )
-        monster->visibility = V_SEEN;
-      else
-        monster->visibility = V_UNSEEN;
-    }
+    if ( in_fov(monster->y, monster->x) )
+      monster->visibility = V_SEEN;
     else
       monster->visibility = V_UNSEEN;
 
-    if ( absolute( monster->y - get_player()->y ) <= MONSTER_FOV &&
-         absolute( monster->x - get_player()->x ) <= MONSTER_FOV
-       )
-    {
-      if (
-          absolute( monster->y - get_player()->y ) <= 1 &&
-          absolute( monster->x - get_player()->x ) <= 1
-      )
-      {
-        damage_player( monster->entity->damage );
-        continue;
-      }
+    if ( absolute(px - monster->x ) <= 1 && absolute(py - monster->y) <= 1)
+      damage_player(monster->entity->damage);
+    else if ( in_path(py, px, monster->y, monster->x) ){
+      int x = 0, y = 0;
 
-      if ( in_fov( monster->y, monster->x, get_player()->y, get_player()->x ) )
-        go_towards( monster );
+      move_unit(&x, &y, get_directions()[0]);
+
+      monster->x += x;
+      monster->y += y;
     }
   }
 }

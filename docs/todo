@@ -8,6 +8,3 @@ Add some more complex monster behaviour / pathing
 Make the 'W' ability actually a thing
   ->Increase something
   ->Has "chages"
-
-*Sometimes you may be "between two rooms". Make sure that either can't happen
- or that both rooms are illuminated properly.

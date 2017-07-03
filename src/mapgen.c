@@ -14,10 +14,10 @@ struct object map[M_ROWS][M_COLS];
 
 int check_intersect( int i, int j )
 {
-  if ( rooms[i].x + rooms[i].w + 1 < rooms[j].x ||
-       rooms[j].x + rooms[j].w + 1 < rooms[i].x ||
-       rooms[i].y + rooms[i].h + 1 < rooms[j].y ||
-       rooms[j].y + rooms[j].h + 1 < rooms[i].y
+  if ( rooms[i].x + rooms[i].w + 3 < rooms[j].x ||
+       rooms[j].x + rooms[j].w + 3 < rooms[i].x ||
+       rooms[i].y + rooms[i].h + 3 < rooms[j].y ||
+       rooms[j].y + rooms[j].h + 3 < rooms[i].y
      )
     return 0;
 
@@ -174,33 +174,37 @@ void generate_paths( void )
   }
 }
 
-void do_on(int i, int j, int which){
+void do_on( int i, int j, int which )
+{
   if ( i == 0 || j == 0 || i == M_ROWS - 1 || j == M_COLS - 1 )
     return;
 
-  if ( which ){
-    if ( map[i][j].id == ID_FLOOR && map[i][j+1].id == ID_FLOOR ){
+  if ( which )
+  {
+    if ( map[i][j].id == ID_FLOOR && map[i][j + 1].id == ID_FLOOR )
       map[i][j].id = ID_WALL;
-    }
   }
-  else {
-    if ( map[i][j].id == ID_FLOOR && map[i+1][j].id == ID_FLOOR ){
+  else
+  {
+    if ( map[i][j].id == ID_FLOOR && map[i + 1][j].id == ID_FLOOR )
       map[i][j].id = ID_WALL;
-    }
   }
 }
 
-void choke_rooms(void)
+void choke_rooms( void )
 {
   for ( int i = 0; i < NR_ROOMS; i++ )
   {
-    for ( int j = rooms[i].x; j < rooms[i].x + rooms[i].w; j++ ){
-      do_on(rooms[i].y - 1, j, 1);
-      do_on(rooms[i].y + rooms[i].h, j, 1);
+    for ( int j = rooms[i].x; j < rooms[i].x + rooms[i].w; j++ )
+    {
+      do_on( rooms[i].y - 1, j, 1 );
+      do_on( rooms[i].y + rooms[i].h, j, 1 );
     }
-    for ( int j = rooms[i].y; j < rooms[i].y + rooms[i].h; j++ ){
-      do_on(j, rooms[i].x - 1, 0);
-      do_on(j, rooms[i].x + rooms[i].w, 0);
+
+    for ( int j = rooms[i].y; j < rooms[i].y + rooms[i].h; j++ )
+    {
+      do_on( j, rooms[i].x - 1, 0 );
+      do_on( j, rooms[i].x + rooms[i].w, 0 );
     }
   }
 }
@@ -221,6 +225,39 @@ void set_exit( void )
   map[y][x].id = ID_EXIT;
 }
 
+char secondary[M_ROWS][M_COLS] = {};
+
+void touch(int y, int x){
+  if ( !secondary[y][x] )
+    if ( map[y][x].id == ID_FLOOR ){
+      secondary[y][x] = 1;
+
+      touch(y - 1, x);
+      touch(y + 1, x);
+      touch(y, x - 1);
+      touch(y, x + 1);
+      touch(y - 1, x - 1);
+      touch(y + 1, x - 1);
+      touch(y - 1, x + 1);
+      touch(y + 1, x + 1);
+    }
+}
+
+int improper(void){
+  for ( int i = 0; i < M_ROWS; i++ )
+    for ( int j = 0; j < M_COLS; j++ )
+      secondary[i][j] = 0;
+
+  touch(rooms[0].y, rooms[0].x);
+
+  for ( int i = 0; i < M_ROWS; i++ )
+    for ( int j = 0; j < M_COLS; j++ )
+      if ( map[i][j].id == ID_FLOOR && !secondary[i][j] )
+        return 1;
+
+  return 0;
+}
+
 int next_level( void )
 {
   level++;
@@ -228,12 +265,17 @@ int next_level( void )
   if ( level > LAST_LEVEL )
     return 1;
 
+start:
   generate_map();
   generate_rooms();
   sort_rooms();
   generate_rooms_in_map();
   generate_paths();
   choke_rooms();
+
+  if ( improper() )
+    goto start;
+
   set_player();
   set_exit();
   return 0;
