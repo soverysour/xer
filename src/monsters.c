@@ -120,18 +120,17 @@ void update_monsters( void )
 
   for ( struct object *monster = head_monster; monster; monster = monster->next )
   {
-    if ( in_fov(monster->y, monster->x) )
+    if ( in_fov( monster->y, monster->x ) )
       monster->visibility = V_SEEN;
     else
       monster->visibility = V_UNSEEN;
 
-    if ( absolute(px - monster->x ) <= 1 && absolute(py - monster->y) <= 1)
-      damage_player(monster->entity->damage);
-    else if ( in_path(py, px, monster->y, monster->x) ){
+    if ( absolute( px - monster->x ) <= 1 && absolute( py - monster->y ) <= 1 )
+      damage_player( monster->entity->damage );
+    else if ( in_path( py, px, monster->y, monster->x ) )
+    {
       int x = 0, y = 0;
-
-      move_unit(&x, &y, get_directions()[0]);
-
+      move_unit( &x, &y, get_directions()[0] );
       monster->x += x;
       monster->y += y;
     }

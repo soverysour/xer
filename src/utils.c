@@ -148,35 +148,46 @@ char get_direction( int px, int py, int x, int y )
   return CENTER;
 }
 
-char alias_input( char *input ){
-  switch(*input){
+char alias_input( char *input )
+{
+  switch ( *input )
+  {
     case VI_CENTER:
       *input = CENTER;
       break;
+
     case VI_LEFT:
       *input = LEFT;
       break;
+
     case VI_RIGHT:
       *input = RIGHT;
       break;
+
     case VI_UP:
       *input = UP;
       break;
+
     case VI_DOWN:
       *input = DOWN;
       break;
+
     case VI_LUP:
       *input = LUP;
       break;
+
     case VI_RUP:
       *input = RUP;
       break;
+
     case VI_LDOWN:
       *input = LDOWN;
       break;
+
     case VI_RDOWN:
       *input = RDOWN;
       break;
   }
+
   return CENTER;
 }

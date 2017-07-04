@@ -100,10 +100,17 @@ void silent_apply( struct object *a, struct symbol *b )
       b->identity[1] = '\0';
       break;
 
+    case ID_DOOR:
+      b->identity = calloc( 2, sizeof( char ) );
+      b->identity[0] = '+';
+      b->identity[1] = '\0';
+      break;
+
     case ID_EXIT:
       b->identity = calloc( 2, sizeof( char ) );
       b->identity[0] = '>';
       b->identity[1] = '\0';
+      break;
   }
 
   b->attribs = calloc( NR_ATTRIBS, sizeof( char ) );
@@ -175,7 +182,7 @@ int in_fov( int y, int x )
   if ( absolute( px - x ) <= 1 && absolute( py - y ) <= 1 )
     return 1;
 
-  struct room *yes = find_inside( px, py ), *no = find_inside(x, y);
+  struct room *yes = find_inside( px, py ), *no = find_inside( x, y );
 
   if ( yes == no )
     return 1;
@@ -184,7 +191,8 @@ int in_fov( int y, int x )
 }
 
 char steps[ARRAY_WIDTH] = {};
-char *get_directions(void){
+char *get_directions( void )
+{
   return steps;
 }
 

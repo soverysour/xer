@@ -43,10 +43,9 @@ void slap_together( void )
 }
 
 struct object *logic_update( char _input )
-{ 
+{
   char input = _input;
-
-  alias_input(&input);
+  alias_input( &input );
 
   if ( get_player()->entity->hp < 1 )
     return &Odead;

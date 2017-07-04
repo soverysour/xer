@@ -15,19 +15,25 @@ struct object Odead =
   .id = ID_DEAD
 };
 
-char Ewallfloor[NR_BUFFS] = {};
+char Ewallfloordoor[NR_BUFFS] = {};
 char Ehud[NR_BUFFS] = { 1 };
 
 struct object Owall =
 {
   .id = ID_WALL,
-  .effects = Ewallfloor
+  .effects = Ewallfloordoor
 };
 
 struct object Ofloor =
 {
   .id = ID_FLOOR,
-  .effects = Ewallfloor
+  .effects = Ewallfloordoor
+};
+
+struct object Odoor =
+{
+  .id = ID_DOOR,
+  .effects = Ewallfloordoor
 };
 
 struct object Owait =

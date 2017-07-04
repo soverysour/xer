@@ -9,6 +9,10 @@
 #define HP 1000
 #define DAMAGE 100
 
+#define START_POWER 'W'
+#define END_POWER 'w'
+#define GO_NEXT '>'
+
 char ef_player[] = {};
 
 struct entity entity_player =
@@ -38,17 +42,17 @@ int update_player( char input )
   if ( !has_moved )
     switch ( input )
     {
-      case 'W':
+      case START_POWER:
         is_input = 1;
         object_player.effects[B_BUFFED] = 1;
         break;
 
-      case 'w':
+      case END_POWER:
         is_input = 1;
         object_player.effects[B_BUFFED] = 0;
         break;
 
-      case '>':
+      case GO_NEXT:
         if ( get_tile( object_player.y, object_player.x )->id == ID_EXIT )
         {
           go_next_level();

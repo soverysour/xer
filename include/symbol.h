@@ -3,7 +3,7 @@
 
 #define NR_ATTRIBS 11
 #define NR_COLORS 8
-#define NR_IDS 5
+#define NR_IDS 6
 #define NR_BUFFS 1
 #define NR_VISIBILITY 3
 #define EMPTY_SYMBOL 0
@@ -11,7 +11,7 @@
 #define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 24
 
-#define M_ROWS 18
+#define M_ROWS TERMINAL_HEIGHT - 6
 #define M_COLS 80
 
 #define POS_HP 18
@@ -90,6 +90,7 @@ enum ids
   ID_MONSTER,
   ID_WALL,
   ID_FLOOR,
+  ID_DOOR,
   ID_EXIT,
   ID_HUD
 };

@@ -181,18 +181,30 @@ void do_on( int i, int j, int which )
 
   if ( which )
   {
-    if ( map[i][j].id == ID_FLOOR && map[i][j + 1].id == ID_FLOOR )
-      map[i][j].id = ID_WALL;
+    if ( map[i][j].id == ID_FLOOR )
+    {
+      if ( map[i][j + 1].id == ID_FLOOR )
+        map[i][j].id = ID_WALL;
+      else
+        map[i][j].id = ID_DOOR;
+    }
   }
   else
   {
-    if ( map[i][j].id == ID_FLOOR && map[i + 1][j].id == ID_FLOOR )
-      map[i][j].id = ID_WALL;
+    if ( map[i][j].id == ID_FLOOR )
+    {
+      if ( map[i + 1][j].id == ID_FLOOR )
+        map[i][j].id = ID_WALL;
+      else
+        map[i][j].id = ID_DOOR;
+    }
   }
 }
 
 void choke_rooms( void )
 {
+  //add +1 to both upper bounds of the loops to have '+' doors show up in end corners of rooms
+  //something else may happen(?)
   for ( int i = 0; i < NR_ROOMS; i++ )
   {
     for ( int j = rooms[i].x; j < rooms[i].x + rooms[i].w; j++ )
@@ -227,32 +239,30 @@ void set_exit( void )
 
 char secondary[M_ROWS][M_COLS] = {};
 
-void touch(int y, int x){
+void touch( int y, int x )
+{
   if ( !secondary[y][x] )
-    if ( map[y][x].id == ID_FLOOR ){
+    if ( map[y][x].id != ID_WALL )
+    {
       secondary[y][x] = 1;
 
-      touch(y - 1, x);
-      touch(y + 1, x);
-      touch(y, x - 1);
-      touch(y, x + 1);
-      touch(y - 1, x - 1);
-      touch(y + 1, x - 1);
-      touch(y - 1, x + 1);
-      touch(y + 1, x + 1);
+      for ( int i = -1; i < 2; i++ )
+        for ( int j = -1; j < 2; j++ )
+          touch( y + i, x + j );
     }
 }
 
-int improper(void){
+int improper( void )
+{
   for ( int i = 0; i < M_ROWS; i++ )
     for ( int j = 0; j < M_COLS; j++ )
       secondary[i][j] = 0;
 
-  touch(rooms[0].y, rooms[0].x);
+  touch( rooms[0].y, rooms[0].x );
 
   for ( int i = 0; i < M_ROWS; i++ )
     for ( int j = 0; j < M_COLS; j++ )
-      if ( map[i][j].id == ID_FLOOR && !secondary[i][j] )
+      if ( map[i][j].id != ID_WALL && !secondary[i][j] )
         return 1;
 
   return 0;
