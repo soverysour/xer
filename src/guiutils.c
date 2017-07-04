@@ -13,9 +13,6 @@
 #define wait_y 12
 #define level_x 0
 #define level_y 19
-#define ARRAY_WIDTH TERMINAL_WIDTH + 1
-#define DIAG 1
-#define STRAIGHT 0
 
 void silent_apply( struct object *a, struct symbol *b )
 {
@@ -133,6 +130,11 @@ void silent_apply( struct object *a, struct symbol *b )
       break;
   }
 
+  if ( a->id == ID_MONSTER && a->entity->monster_type == MONSTER_ROOMIE ){
+    b->attribs[AT_DIM] = 1;
+    b->attribs[AT_BOLD] = 1;
+  }
+
   b->y = a->y;
   b->x = a->x;
 }
@@ -188,20 +190,6 @@ int in_fov( int y, int x )
     return 1;
 
   return 0;
-}
-
-char steps[ARRAY_WIDTH] = {};
-char *get_directions( void )
-{
-  return steps;
-}
-
-int in_path( int y, int x, int py, int px )
-{
-  for ( int i = 0; i < ARRAY_WIDTH; i++ )
-    steps[i] = CENTER;
-
-  return 1;//backtrack_fov( diags, straights, y, x, py, px, 0 );
 }
 
 void put_fov( void )

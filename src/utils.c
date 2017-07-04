@@ -14,7 +14,7 @@ void init_log( void )
 
 void logit ( char *s )
 {
-  fprintf( logfile, "%s", s );
+  fprintf( logfile, "%s\n", s );
 }
 
 void end_log( void )
@@ -62,7 +62,7 @@ void give_entity( struct entity *k )
 
 int proc_unit( int target, int source )
 {
-  return source > target ? 1 : -1;
+  return source > target ? -1 : (source < target ? 1 : 0);
 }
 
 int move_unit( int *x, int *y, char dir )
@@ -112,7 +112,7 @@ int move_unit( int *x, int *y, char dir )
   return 0;
 }
 
-char get_direction( int px, int py, int x, int y )
+char get_direction( int y, int x, int py, int px )
 {
   if ( x == px && y == py )
     return CENTER;

@@ -74,7 +74,14 @@ void kill_monsters( void )
   give_object( current );
 }
 
-void plonk_monster( struct object *m, int y, int x, int h, int w )
+void reset_interval(struct object *m){
+  if ( m->entity->monster_type == MONSTER_RANDOM )
+    m->entity->update_interval = MONSTER_RANDOM_INTERVAL;
+  else if ( m->entity->monster_type == MONSTER_ROOMIE )
+    m->entity->update_interval = MONSTER_ROOMIE_INTERVAL;
+}
+
+void plonk_monster( struct object *m, int y, int x, int h, int w, int type )
 {
   int tx, ty;
 
@@ -93,8 +100,11 @@ void plonk_monster( struct object *m, int y, int x, int h, int w )
   m->entity = get_entity();
   m->entity->hp = 11;
   m->entity->damage = 2;
+  m->entity->radius = 5;
+  m->entity->monster_type = type;
 }
 
+#define is_time(x) (x >= MONSTER_COUNT - MONSTER_COUNT / 2 - MONSTER_COUNT % 2 ? MONSTER_RANDOM : MONSTER_ROOMIE )
 void new_monsters( void )
 {
   kill_monsters();
@@ -104,7 +114,7 @@ void new_monsters( void )
 
   for ( int i = 0; i < MONSTER_COUNT; i++ )
   {
-    plonk_monster( current_monster, x[i].y, x[i].x, x[i].h, x[i].w );
+    plonk_monster( current_monster, x[i].y, x[i].x, x[i].h, x[i].w, is_time(i) );
 
     if ( i == MONSTER_COUNT - 1 )
       break;
@@ -127,13 +137,45 @@ void update_monsters( void )
 
     if ( absolute( px - monster->x ) <= 1 && absolute( py - monster->y ) <= 1 )
       damage_player( monster->entity->damage );
-    else if ( in_path( py, px, monster->y, monster->x ) )
-    {
-      int x = 0, y = 0;
-      move_unit( &x, &y, get_directions()[0] );
-      monster->x += x;
-      monster->y += y;
+    else if ( !monster->entity->update_interval ) {
+      if ( monster->entity->monster_type == MONSTER_RANDOM ){
+        char dirs[8] = {};
+        int pos = 0;
+        for ( int i = -1; i < 2; i++ )
+          for ( int j = -1; j < 2; j++ )
+            if ( i && j && get_tile(monster->y + i, monster->x + j)->id != ID_WALL &&
+                 !get_monster(monster->y + i, monster->x + j) 
+               ){
+              dirs[pos] = get_direction(monster->y + i, monster->x + j, monster->y, monster->x);
+              pos++;
+            }
+        int which = get_rand(pos);
+
+        move_unit(&monster->x, &monster->y, dirs[which-1]);
+        reset_interval(monster);
+      }
+      else if ( monster->entity->monster_type == MONSTER_ROOMIE ){
+        char dirs[8] = {};
+        int pos = 0;
+        for ( int i = -1; i < 2; i++ )
+          for ( int j = -1; j < 2; j++ )
+            if ( i && j && get_tile(monster->y + i, monster->x + j)->id != ID_WALL && 
+                 find_inside(monster->y, monster->x) == find_inside(monster->y + i, monster->x + j) &&
+                 !get_monster(monster->y + i, monster->x + j)
+               ){
+              dirs[pos] = get_direction(monster->y + i, monster->x + j, monster->y, monster->x);
+              pos++;
+            }
+        int which = get_rand(pos);
+
+        move_unit(&monster->x, &monster->y, dirs[which-1]);
+        reset_interval(monster);
+      }
     }
+    else {
+      monster->entity->update_interval--;
+    }
+
   }
 }
 

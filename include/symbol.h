@@ -37,6 +37,9 @@
 #define CENTER '5'
 #define VI_CENTER '.'
 
+#define MONSTER_RANDOM_INTERVAL 2
+#define MONSTER_ROOMIE_INTERVAL 3
+
 struct room
 {
   int x, y;
@@ -107,11 +110,19 @@ enum visibility
   V_SEEN
 };
 
+enum monster_types {
+  MONSTER_ROOMIE,
+  MONSTER_RANDOM
+};
+
 struct entity
 {
   int hp;
   int current_hp;
   int damage;
+  int radius;
+  int monster_type;
+  int update_interval;
 };
 
 struct object
