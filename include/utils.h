@@ -11,6 +11,7 @@ void give_entity( struct entity * );
 int absolute( int );
 int proc_unit( int, int );
 int move_unit( int *, int *, char );
+char alias_input(char*);
 char get_direction( int, int, int, int );
 void init_log( void );
 void end_log( void );

@@ -4,6 +4,7 @@
 #include "mapgen.h"
 #include "monsters.h"
 #include "guiutils.h"
+#include "utils.h"
 
 struct object *Omap;
 struct object *Oplayer;
@@ -41,8 +42,12 @@ void slap_together( void )
   Oend_hud->next = get_monsters();
 }
 
-struct object *logic_update( char input )
-{
+struct object *logic_update( char _input )
+{ 
+  char input = _input;
+
+  alias_input(&input);
+
   if ( get_player()->entity->hp < 1 )
     return &Odead;
 

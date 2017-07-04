@@ -19,14 +19,23 @@
 #define POS_WAIT 12
 
 #define DOWN '2'
+#define VI_DOWN 'j'
 #define LEFT '4'
+#define VI_LEFT 'h'
 #define	RIGHT '6'
+#define VI_RIGHT 'l'
 #define UP '8'
+#define VI_UP 'k'
 #define LDOWN '1'
+#define VI_LDOWN 'b'
 #define RDOWN '3'
+#define VI_RDOWN 'n'
 #define LUP '7'
+#define VI_LUP 'y'
 #define RUP '9'
+#define VI_RUP 'u'
 #define CENTER '5'
+#define VI_CENTER '.'
 
 struct room
 {

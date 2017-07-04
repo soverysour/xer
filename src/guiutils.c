@@ -200,8 +200,6 @@ void put_fov( void )
 {
   for ( int i = 0; i < M_ROWS; i++ )
     for ( int j = 0; j < M_COLS; j++ )
-      get_tile(i, j)->visibility = V_SEEN;
-      /*
       if ( get_tile( i, j )->visibility == V_SEEN )
         get_tile( i, j )->visibility = V_FOG;
 
@@ -218,5 +216,4 @@ void put_fov( void )
   for ( int i = x - 1; i <= x + 1; i++ )
     for ( int j = y - 1; j <= y + 1; j++ )
       get_tile( j, i )->visibility = V_SEEN;
-  */
 }
