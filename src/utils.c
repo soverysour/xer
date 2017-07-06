@@ -5,21 +5,11 @@
 #include "symbol.h"
 #include "mapgen.h"
 
-FILE *logfile;
-
-void init_log( void )
-{
-  logfile = fopen( "/home/sour/Repos/xer/bin/log.txt", "w" );
-}
-
 void logit ( char *s )
 {
+  FILE *logfile = fopen( "/home/sour/Repos/xer/bin/log", "a" );
   fprintf( logfile, "%s\n", s );
-}
-
-void end_log( void )
-{
-  fclose( logfile );
+  fclose(logfile);
 }
 
 int absolute( int x )

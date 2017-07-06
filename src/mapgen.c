@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "symbol.h"
 #include "standard_objects.h"
 #include "main.h"
@@ -306,12 +308,12 @@ struct room *get_rooms( void )
   return rooms;
 }
 
-struct room *find_inside( int x, int y )
+struct room *find_inside( int y, int x )
 {
   for ( int i = 0; i < NR_ROOMS; i++ )
   {
-    if ( x >= rooms[i].x && x <= rooms[i].x + rooms[i].w - 1 &&
-         y >= rooms[i].y && y <= rooms[i].y + rooms[i].h - 1
+    if ( x >= rooms[i].x && x < rooms[i].x + rooms[i].w &&
+         y >= rooms[i].y && y < rooms[i].y + rooms[i].h
        )
       return rooms + i;
   }

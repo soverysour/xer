@@ -5,6 +5,12 @@
 #include "guiutils.h"
 #include "utils.h"
 
+#define MONSTER_RANDOM_INTERVAL 2
+#define MONSTER_ROOMIE_INTERVAL 3
+#define MONSTER_STALK_INTERVAL 0
+
+#define MONSTER_STALK_RADIUS (M_ROWS * M_COLS)
+
 #define MONSTER_COUNT 4
 
 struct object *head_monster;
@@ -75,10 +81,17 @@ void kill_monsters( void )
 }
 
 void reset_interval(struct object *m){
-  if ( m->entity->monster_type == MONSTER_RANDOM )
-    m->entity->update_interval = MONSTER_RANDOM_INTERVAL;
-  else if ( m->entity->monster_type == MONSTER_ROOMIE )
-    m->entity->update_interval = MONSTER_ROOMIE_INTERVAL;
+  switch ( m->entity->monster_type ){
+    case MONSTER_ROOMIE:
+      m->entity->update_interval = MONSTER_ROOMIE_INTERVAL;
+      break;
+    case MONSTER_RANDOM:
+      m->entity->update_interval = MONSTER_RANDOM_INTERVAL;
+      break;
+    case MONSTER_STALK:
+      m->entity->update_interval = MONSTER_STALK_INTERVAL;
+      break;
+  }
 }
 
 void plonk_monster( struct object *m, int y, int x, int h, int w, int type )
@@ -100,11 +113,14 @@ void plonk_monster( struct object *m, int y, int x, int h, int w, int type )
   m->entity = get_entity();
   m->entity->hp = 11;
   m->entity->damage = 2;
-  m->entity->radius = 5;
   m->entity->monster_type = type;
+
+  if ( type == MONSTER_STALK )
+    m->entity->radius = MONSTER_STALK_RADIUS;
 }
 
-#define is_time(x) (x >= MONSTER_COUNT - MONSTER_COUNT / 2 - MONSTER_COUNT % 2 ? MONSTER_RANDOM : MONSTER_ROOMIE )
+#define is_t(x) (x >= MONSTER_COUNT - MONSTER_COUNT / 2 - MONSTER_COUNT % 2 ? MONSTER_RANDOM : MONSTER_ROOMIE )
+#define is_time(y) (y == 0 ? MONSTER_STALK : is_t(y))
 void new_monsters( void )
 {
   kill_monsters();
@@ -130,11 +146,6 @@ void update_monsters( void )
 
   for ( struct object *monster = head_monster; monster; monster = monster->next )
   {
-    if ( in_fov( monster->y, monster->x ) )
-      monster->visibility = V_SEEN;
-    else
-      monster->visibility = V_UNSEEN;
-
     if ( absolute( px - monster->x ) <= 1 && absolute( py - monster->y ) <= 1 )
       damage_player( monster->entity->damage );
     else if ( !monster->entity->update_interval ) {
@@ -143,7 +154,7 @@ void update_monsters( void )
         int pos = 0;
         for ( int i = -1; i < 2; i++ )
           for ( int j = -1; j < 2; j++ )
-            if ( i && j && get_tile(monster->y + i, monster->x + j)->id != ID_WALL &&
+            if ( (i || j) && get_tile(monster->y + i, monster->x + j)->id != ID_WALL &&
                  !get_monster(monster->y + i, monster->x + j) 
                ){
               dirs[pos] = get_direction(monster->y + i, monster->x + j, monster->y, monster->x);
@@ -152,14 +163,14 @@ void update_monsters( void )
         int which = get_rand(pos);
 
         move_unit(&monster->x, &monster->y, dirs[which-1]);
-        reset_interval(monster);
+        monster->entity->update_interval = MONSTER_RANDOM_INTERVAL;
       }
       else if ( monster->entity->monster_type == MONSTER_ROOMIE ){
         char dirs[8] = {};
         int pos = 0;
         for ( int i = -1; i < 2; i++ )
           for ( int j = -1; j < 2; j++ )
-            if ( i && j && get_tile(monster->y + i, monster->x + j)->id != ID_WALL && 
+            if ( (i || j) && get_tile(monster->y + i, monster->x + j)->id != ID_WALL && 
                  find_inside(monster->y, monster->x) == find_inside(monster->y + i, monster->x + j) &&
                  !get_monster(monster->y + i, monster->x + j)
                ){
@@ -169,13 +180,26 @@ void update_monsters( void )
         int which = get_rand(pos);
 
         move_unit(&monster->x, &monster->y, dirs[which-1]);
-        reset_interval(monster);
+        monster->entity->update_interval = MONSTER_ROOMIE_INTERVAL;
+      }
+      else if ( monster->entity->monster_type == MONSTER_STALK ){
+        if ( calculate_path(py, px, monster->y, monster->x, monster->entity->radius) )
+          move_unit(&monster->x, &monster->y, get_directions()[0]);
+        monster->entity->update_interval = MONSTER_STALK_INTERVAL;
       }
     }
     else {
       monster->entity->update_interval--;
     }
 
+    if ( monster->entity->monster_type == MONSTER_STALK )
+      monster->visibility = V_SEEN;
+    else {
+      if ( in_fov( monster->y, monster->x, py, px ) )
+        monster->visibility = V_SEEN;
+      else
+        monster->visibility = V_UNSEEN;
+    }
   }
 }
 

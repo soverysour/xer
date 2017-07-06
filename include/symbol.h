@@ -7,12 +7,15 @@
 #define NR_BUFFS 1
 #define NR_VISIBILITY 3
 #define EMPTY_SYMBOL 0
+#define NR_MONSTER_TYPES 3
 
 #define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 24
 
-#define M_ROWS TERMINAL_HEIGHT - 6
+#define M_ROWS (TERMINAL_HEIGHT - 6)
 #define M_COLS 80
+
+#define MAX_PATH (M_ROWS * M_COLS)
 
 #define POS_HP 18
 #define POS_LEVEL 19
@@ -36,9 +39,6 @@
 #define VI_RUP 'u'
 #define CENTER '5'
 #define VI_CENTER '.'
-
-#define MONSTER_RANDOM_INTERVAL 2
-#define MONSTER_ROOMIE_INTERVAL 3
 
 struct room
 {
@@ -112,7 +112,8 @@ enum visibility
 
 enum monster_types {
   MONSTER_ROOMIE,
-  MONSTER_RANDOM
+  MONSTER_RANDOM,
+  MONSTER_STALK
 };
 
 struct entity
