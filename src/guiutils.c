@@ -130,7 +130,8 @@ void silent_apply( struct object *a, struct symbol *b )
       break;
   }
 
-  if ( a->id == ID_MONSTER && a->entity->monster_type == MONSTER_STALK ){
+  if ( a->id == ID_MONSTER && a->entity->monster_type == MONSTER_STALK )
+  {
     b->attribs[AT_DIM] = 1;
     b->attribs[AT_BOLD] = 1;
   }
@@ -177,7 +178,8 @@ void clean_symbol( struct symbol *a )
   free( now );
 }
 
-struct node_path {
+struct node_path
+{
   char path_so_far[MAX_PATH];
   int size;
   int y, x;
@@ -189,36 +191,37 @@ struct node_path *to_check, *to_grab;
 char visit_map[M_ROWS][M_COLS] = {};
 char saved_path[MAX_PATH] = {};
 
-struct node_path *create_node(void){
-  return calloc(1, sizeof(struct node_path));
+struct node_path *create_node( void )
+{
+  return calloc( 1, sizeof( struct node_path ) );
 }
 
-void destroy_node(struct node_path *n){
-  free(n);
+void destroy_node( struct node_path *n )
+{
+  free( n );
 }
 
-void add_direction(struct node_path *which, char dir){
+void add_direction( struct node_path *which, char dir )
+{
   which->path_so_far[which->size] = dir;
   which->size++;
 }
 
-void destroy_grab(void){
-  to_check = to_grab;
-  to_grab = 0;
-}
-
-void pop_check(void){
+void pop_check( void )
+{
   struct node_path *n = to_check;
   to_check = to_check->next;
-  destroy_node(n);
+  destroy_node( n );
 }
 
-void kill_list(struct node_path *l){
+void kill_list( struct node_path *l )
+{
   if ( !l )
     return;
 
-  if ( !l->next ){
-    destroy_node(l);
+  if ( !l->next )
+  {
+    destroy_node( l );
     return;
   }
 
@@ -234,15 +237,18 @@ void kill_list(struct node_path *l){
   free( now );
 }
 
-void harvest(struct node_path *n){
+void harvest( struct node_path *n )
+{
   visit_map[n->y][n->x] = 1;
 
   for ( int i = -1; i < 2; i++ )
     for ( int j = -1; j < 2; j++ )
-      if ( i || j ){
-        if ( !visit_map[n->y + i][n->x + j] && get_tile(n->y + i, n->x + j)->id != ID_WALL && 
+      if ( i || j )
+      {
+        if ( !visit_map[n->y + i][n->x + j] && get_tile( n->y + i, n->x + j )->id != ID_WALL &&
              !get_monster( n->y + i, n->x + j )
-           ){
+           )
+        {
           struct node_path *new_node = create_node();
           new_node->y = n->y + i;
           new_node->x = n->x + j;
@@ -251,22 +257,23 @@ void harvest(struct node_path *n){
           for ( int k = 0; k < MAX_PATH && n->path_so_far[k]; k++ )
             new_node->path_so_far[k] = n->path_so_far[k];
 
-          new_node->path_so_far[n->size] = get_direction(n->y + i, n->x + j, n->y, n->x);
-
+          new_node->path_so_far[n->size] = get_direction( n->y + i, n->x + j, n->y, n->x );
           new_node->next = to_grab;
           to_grab = new_node;
         }
       }
 }
 
-void set_solution(struct node_path *s){
+void set_solution( struct node_path *s )
+{
   for ( int i = 0; i < s->size; i++ )
     saved_path[i] = s->path_so_far[i];
 
   saved_path[s->size] = CENTER;
 }
 
-int calculate_path(int y, int x, int py, int px, int _max_dist){
+int calculate_path( int y, int x, int py, int px, int _max_dist )
+{
   saved_path[0] = CENTER;
 
   if ( y == py && x == px )
@@ -283,27 +290,35 @@ int calculate_path(int y, int x, int py, int px, int _max_dist){
   to_grab->y = py;
   to_grab->size = 0;
 
-  while ( max_dist ){
-    destroy_grab();
-    for ( struct node_path *n = to_check; n; n = n->next ){
-      if ( n->x == x && n->y == y ){
-        set_solution(n);
-        kill_list(to_check);
-        kill_list(to_grab);
+  while ( max_dist )
+  {
+    to_check = to_grab;
+    to_grab = 0;
+
+    for ( struct node_path *n = to_check; n; n = n->next )
+    {
+      if ( n->x == x && n->y == y )
+      {
+        set_solution( n );
+        kill_list( to_check );
+        kill_list( to_grab );
         return 1;
       }
-      harvest(n);
+
+      harvest( n );
     }
-    kill_list(to_check);
+
+    kill_list( to_check );
     max_dist--;
   }
 
-  kill_list(to_check);
-  kill_list(to_grab);
+  kill_list( to_check );
+  kill_list( to_grab );
   return 0;
 }
 
-char *get_directions(void){
+char *get_directions( void )
+{
   return saved_path;
 }
 
@@ -324,8 +339,7 @@ void put_fov( void )
 {
   for ( int i = 0; i < M_ROWS; i++ )
     for ( int j = 0; j < M_COLS; j++ )
-      get_tile(i, j)->visibility = V_SEEN;
-/*      if ( get_tile( i, j )->visibility == V_SEEN )
+      if ( get_tile( i, j )->visibility == V_SEEN )
         get_tile( i, j )->visibility = V_FOG;
 
   int x = get_player()->x, y = get_player()->y;
@@ -341,5 +355,4 @@ void put_fov( void )
   for ( int i = x - 1; i <= x + 1; i++ )
     for ( int j = y - 1; j <= y + 1; j++ )
       get_tile( j, i )->visibility = V_SEEN;
-  */
 }

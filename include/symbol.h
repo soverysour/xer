@@ -110,7 +110,8 @@ enum visibility
   V_SEEN
 };
 
-enum monster_types {
+enum monster_types
+{
   MONSTER_ROOMIE,
   MONSTER_RANDOM,
   MONSTER_STALK

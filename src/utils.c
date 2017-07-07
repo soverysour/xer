@@ -9,7 +9,7 @@ void logit ( char *s )
 {
   FILE *logfile = fopen( "/home/sour/Repos/xer/bin/log", "a" );
   fprintf( logfile, "%s\n", s );
-  fclose(logfile);
+  fclose( logfile );
 }
 
 int absolute( int x )
@@ -52,7 +52,7 @@ void give_entity( struct entity *k )
 
 int proc_unit( int target, int source )
 {
-  return source > target ? -1 : (source < target ? 1 : 0);
+  return source > target ? -1 : ( source < target ? 1 : 0 );
 }
 
 int move_unit( int *x, int *y, char dir )
