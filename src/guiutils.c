@@ -229,12 +229,12 @@ void kill_list( struct node_path *l )
 
   while ( forward )
   {
-    free( now );
+    destroy_node( now );
     now = forward;
     forward = forward->next;
   }
 
-  free( now );
+  destroy_node( now );
 }
 
 void harvest( struct node_path *n )
@@ -246,7 +246,7 @@ void harvest( struct node_path *n )
       if ( i || j )
       {
         if ( !visit_map[n->y + i][n->x + j] && get_tile( n->y + i, n->x + j )->id != ID_WALL &&
-             !get_monster( n->y + i, n->x + j )
+             !get_monster( n->y + i, n->x + j, 0 )
            )
         {
           struct node_path *new_node = create_node();
@@ -280,6 +280,9 @@ int calculate_path( int y, int x, int py, int px, int _max_dist )
     return 1;
 
   int max_dist = _max_dist < 1 ? MAX_PATH : _max_dist;
+
+  if ( absolute(py - y) < max_dist || absolute(px - x) < max_dist )
+    return 0;
 
   for ( int i = 0; i < M_ROWS; i++ )
     for ( int j = 0; j < M_COLS; j++ )

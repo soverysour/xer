@@ -11,19 +11,19 @@
 
 #define MONSTER_STALK_RADIUS 90
 
-#define MONSTER_COUNT 4
+#define MONSTER_COUNT 23
 
 struct object *head_monster;
 
 char effects[NR_BUFFS] = {};
 
-struct object *get_monster( int y, int x )
+struct object *get_monster( int y, int x, struct object *omit)
 {
   if ( !head_monster )
     return 0;
 
   for ( struct object *current = head_monster; current; current = current->next )
-    if ( current->x == x && current->y == y )
+    if ( current->x == x && current->y == y && omit != current )
       return current;
 
   return 0;
@@ -89,7 +89,9 @@ void plonk_monster( struct object *m, int y, int x, int h, int w, int type )
     tx = x + get_rand( w ) - 1;
     ty = y + get_rand( h ) - 1;
   }
-  while ( tx == get_player()->x && ty == get_player()->y );
+  while ( tx == get_player()->x && ty == get_player()->y &&
+          !get_monster(ty, tx, 0)
+        );
 
   m->x = tx;
   m->y = ty;
@@ -115,7 +117,8 @@ void new_monsters( void )
 
   for ( int i = 0; i < MONSTER_COUNT; i++ )
   {
-    plonk_monster( current_monster, x[i].y, x[i].x, x[i].h, x[i].w, is_time( i ) );
+    int j = i % NR_ROOMS;
+    plonk_monster( current_monster, x[j].y, x[j].x, x[j].h, x[j].w, is_time( i ) );
 
     if ( i == MONSTER_COUNT - 1 )
       break;
@@ -123,6 +126,24 @@ void new_monsters( void )
     current_monster->next = get_object();
     current_monster = current_monster->next;
   }
+}
+
+void move_random(struct object *monster){
+  char dirs[8] = {};
+  int pos = 0;
+
+  for ( int i = -1; i < 2; i++ )
+    for ( int j = -1; j < 2; j++ )
+      if ( ( i || j ) && get_tile( monster->y + i, monster->x + j )->id != ID_WALL &&
+             !get_monster( monster->y + i, monster->x + j, 0 )
+         )
+      {
+        dirs[pos] = get_direction( monster->y + i, monster->x + j, monster->y, monster->x );
+        pos++;
+      }
+
+      int which = get_rand( pos );
+      move_unit( &monster->x, &monster->y, dirs[which - 1] );
 }
 
 void update_monsters( void )
@@ -137,21 +158,7 @@ void update_monsters( void )
     {
       if ( !monster->entity->update_interval )
       {
-        char dirs[8] = {};
-        int pos = 0;
-
-        for ( int i = -1; i < 2; i++ )
-          for ( int j = -1; j < 2; j++ )
-            if ( ( i || j ) && get_tile( monster->y + i, monster->x + j )->id != ID_WALL &&
-                 !get_monster( monster->y + i, monster->x + j )
-               )
-            {
-              dirs[pos] = get_direction( monster->y + i, monster->x + j, monster->y, monster->x );
-              pos++;
-            }
-
-        int which = get_rand( pos );
-        move_unit( &monster->x, &monster->y, dirs[which - 1] );
+        move_random(monster);
         monster->entity->update_interval = MONSTER_RANDOM_INTERVAL;
       }
       else
@@ -163,28 +170,25 @@ void update_monsters( void )
 
       if ( x == y && x )
       {
-        monster->y += proc_unit( py, monster->y );
-        monster->x += proc_unit( px, monster->x );
+        int fx = monster->x + proc_unit(px, monster->x);
+        int fy = monster->y + proc_unit(py, monster->y);
+
+        if ( get_monster(fy, fx, monster) ){
+          if ( !get_monster(fy, monster->x, monster ) )
+            monster->y = fy;
+          else if ( !get_monster(monster->y, fx, monster) )
+            monster->x = fx;
+        }
+        else {
+          monster->y = fy;
+          monster->x = fx;
+        }
+        
         monster->entity->update_interval = MONSTER_ROOMIE_INTERVAL;
       }
       else if ( !monster->entity->update_interval )
       {
-        char dirs[8] = {};
-        int pos = 0;
-
-        for ( int i = -1; i < 2; i++ )
-          for ( int j = -1; j < 2; j++ )
-            if ( ( i || j ) && get_tile( monster->y + i, monster->x + j )->id != ID_WALL &&
-                 find_inside( monster->y, monster->x ) == find_inside( monster->y + i, monster->x + j ) &&
-                 !get_monster( monster->y + i, monster->x + j )
-               )
-            {
-              dirs[pos] = get_direction( monster->y + i, monster->x + j, monster->y, monster->x );
-              pos++;
-            }
-
-        int which = get_rand( pos );
-        move_unit( &monster->x, &monster->y, dirs[which - 1] );
+        move_random(monster);
         monster->entity->update_interval = MONSTER_ROOMIE_INTERVAL;
       }
       else

@@ -9,6 +9,8 @@
 #define EMPTY_SYMBOL 0
 #define NR_MONSTER_TYPES 3
 
+#define NR_ROOMS 7
+
 #define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 24
 

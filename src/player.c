@@ -65,7 +65,7 @@ int update_player( char input )
   if ( !is_input )
     return -1;
 
-  struct object *monster = get_monster( object_player.y + y, object_player.x + x );
+  struct object *monster = get_monster( object_player.y + y, object_player.x + x, 0 );
 
   if ( monster )
   {
