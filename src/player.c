@@ -6,8 +6,8 @@
 #include "main.h"
 #include "utils.h"
 
-#define HP 1000
-#define DAMAGE 100
+#define HP 18
+#define DAMAGE 1
 
 #define START_POWER 'W'
 #define END_POWER 'w'

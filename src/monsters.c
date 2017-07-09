@@ -11,7 +11,7 @@
 
 #define MONSTER_STALK_RADIUS 90
 
-#define MONSTER_COUNT 23
+#define MONSTER_COUNT 9
 
 struct object *head_monster;
 
@@ -99,15 +99,15 @@ void plonk_monster( struct object *m, int y, int x, int h, int w, int type )
   m->visibility = V_UNSEEN;
   m->effects = effects;
   m->entity = get_entity();
-  m->entity->hp = 11;
-  m->entity->damage = 2;
+  m->entity->hp = 2;
+  m->entity->damage = 1;
   m->entity->monster_type = type;
 
   if ( type == MONSTER_STALK )
     m->entity->radius = MONSTER_STALK_RADIUS;
 }
 
-#define is_time(x) (x >= MONSTER_COUNT - MONSTER_COUNT / 2 - MONSTER_COUNT % 2 ? MONSTER_RANDOM : MONSTER_ROOMIE )
+#define is_time(x) (x > 2 ? MONSTER_RANDOM : MONSTER_ROOMIE )
 void new_monsters( void )
 {
   kill_monsters();

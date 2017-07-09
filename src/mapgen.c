@@ -6,7 +6,7 @@
 #include "utils.h"
 #include "player.h"
 
-#define LAST_LEVEL 3
+#define LAST_LEVEL 7
 
 struct room rooms[NR_ROOMS];
 
