@@ -9,8 +9,6 @@
 #define HP 18
 #define DAMAGE 1
 
-#define START_POWER 'W'
-#define END_POWER 'w'
 #define GO_NEXT '>'
 
 char ef_player[] = {};
@@ -42,16 +40,6 @@ int update_player( char input )
   if ( !has_moved )
     switch ( input )
     {
-      case START_POWER:
-        is_input = 1;
-        object_player.effects[B_BUFFED] = 1;
-        break;
-
-      case END_POWER:
-        is_input = 1;
-        object_player.effects[B_BUFFED] = 0;
-        break;
-
       case GO_NEXT:
         if ( get_tile( object_player.y, object_player.x )->id == ID_EXIT )
         {
@@ -68,12 +56,7 @@ int update_player( char input )
   struct object *monster = get_monster( object_player.y + y, object_player.x + x, 0 );
 
   if ( monster )
-  {
-    if ( object_player.effects[B_BUFFED] )
-      damage_monster( monster, object_player.entity->damage * 2 );
-    else
-      damage_monster( monster, object_player.entity->damage );
-  }
+    damage_monster( monster, object_player.entity->damage );
   else if ( get_tile( object_player.y + y, object_player.x + x )->id == ID_WALL )
     return -1;
   else
