@@ -1,0 +1,9 @@
+<map id="src/player.c" name="src/player.c">
+<area shape="rect" id="node2" href="$symbol_8h.html" title="symbol.h" alt="" coords="5,80,80,107"/>
+<area shape="rect" id="node3" href="$mapgen_8h.html" title="mapgen.h" alt="" coords="105,80,183,107"/>
+<area shape="rect" id="node4" href="$standard__objects_8h.html" title="standard_objects.h" alt="" coords="207,80,339,107"/>
+<area shape="rect" id="node5" href="$monsters_8h.html" title="monsters.h" alt="" coords="363,80,450,107"/>
+<area shape="rect" id="node6" href="$logic_8h.html" title="logic.h" alt="" coords="474,80,534,107"/>
+<area shape="rect" id="node7" href="$main_8h.html" title="main.h" alt="" coords="559,80,620,107"/>
+<area shape="rect" id="node8" href="$utils_8h.html" title="utils.h" alt="" coords="645,80,702,107"/>
+</map>

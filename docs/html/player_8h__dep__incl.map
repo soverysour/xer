@@ -1,0 +1,6 @@
+<map id="include/player.h" name="include/player.h">
+<area shape="rect" id="node2" href="$guiutils_8c.html" title="src/guiutils.c" alt="" coords="5,80,101,107"/>
+<area shape="rect" id="node3" href="$logic_8c.html" title="src/logic.c" alt="" coords="125,80,208,107"/>
+<area shape="rect" id="node4" href="$mapgen_8c.html" title="src/mapgen.c" alt="" coords="232,80,333,107"/>
+<area shape="rect" id="node5" href="$monsters_8c.html" title="src/monsters.c" alt="" coords="357,80,467,107"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="include/standard_objects.h" name="include/standard_objects.h">
+<area shape="rect" id="node2" href="$logic_8c.html" title="src/logic.c" alt="" coords="5,80,88,107"/>
+<area shape="rect" id="node3" href="$main_8c.html" title="src/main.c" alt="" coords="112,80,195,107"/>
+<area shape="rect" id="node4" href="$mapgen_8c.html" title="src/mapgen.c" alt="" coords="219,80,320,107"/>
+<area shape="rect" id="node5" href="$player_8c.html" title="src/player.c" alt="" coords="344,80,435,107"/>
+</map>

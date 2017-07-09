@@ -1,0 +1,11 @@
+<map id="include/symbol.h" name="include/symbol.h">
+<area shape="rect" id="node2" href="$gui_8c.html" title="src/gui.c" alt="" coords="5,80,77,107"/>
+<area shape="rect" id="node3" href="$guiutils_8c.html" title="src/guiutils.c" alt="" coords="101,80,197,107"/>
+<area shape="rect" id="node4" href="$logic_8c.html" title="src/logic.c" alt="" coords="221,80,304,107"/>
+<area shape="rect" id="node5" href="$main_8c.html" title="src/main.c" alt="" coords="328,80,411,107"/>
+<area shape="rect" id="node6" href="$mapgen_8c.html" title="src/mapgen.c" alt="" coords="435,80,536,107"/>
+<area shape="rect" id="node7" href="$monsters_8c.html" title="src/monsters.c" alt="" coords="560,80,669,107"/>
+<area shape="rect" id="node8" href="$player_8c.html" title="src/player.c" alt="" coords="693,80,784,107"/>
+<area shape="rect" id="node9" href="$standard__objects_8c.html" title="src/standard_objects.c" alt="" coords="808,80,963,107"/>
+<area shape="rect" id="node10" href="$utils_8c.html" title="src/utils.c" alt="" coords="987,80,1066,107"/>
+</map>
