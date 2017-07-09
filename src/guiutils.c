@@ -281,7 +281,7 @@ int calculate_path( int y, int x, int py, int px, int _max_dist )
 
   int max_dist = _max_dist < 1 ? MAX_PATH : _max_dist;
 
-  if ( absolute(py - y) < max_dist || absolute(px - x) < max_dist )
+  if ( absolute( py - y ) < max_dist || absolute( px - x ) < max_dist )
     return 0;
 
   for ( int i = 0; i < M_ROWS; i++ )

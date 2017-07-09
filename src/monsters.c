@@ -17,7 +17,7 @@ struct object *head_monster;
 
 char effects[NR_BUFFS] = {};
 
-struct object *get_monster( int y, int x, struct object *omit)
+struct object *get_monster( int y, int x, struct object *omit )
 {
   if ( !head_monster )
     return 0;
@@ -90,7 +90,7 @@ void plonk_monster( struct object *m, int y, int x, int h, int w, int type )
     ty = y + get_rand( h ) - 1;
   }
   while ( tx == get_player()->x && ty == get_player()->y &&
-          !get_monster(ty, tx, 0)
+          !get_monster( ty, tx, 0 )
         );
 
   m->x = tx;
@@ -128,22 +128,23 @@ void new_monsters( void )
   }
 }
 
-void move_random(struct object *monster){
+void move_random( struct object *monster )
+{
   char dirs[8] = {};
   int pos = 0;
 
   for ( int i = -1; i < 2; i++ )
     for ( int j = -1; j < 2; j++ )
       if ( ( i || j ) && get_tile( monster->y + i, monster->x + j )->id != ID_WALL &&
-             !get_monster( monster->y + i, monster->x + j, 0 )
+           !get_monster( monster->y + i, monster->x + j, 0 )
          )
       {
         dirs[pos] = get_direction( monster->y + i, monster->x + j, monster->y, monster->x );
         pos++;
       }
 
-      int which = get_rand( pos );
-      move_unit( &monster->x, &monster->y, dirs[which - 1] );
+  int which = get_rand( pos );
+  move_unit( &monster->x, &monster->y, dirs[which - 1] );
 }
 
 void update_monsters( void )
@@ -158,7 +159,7 @@ void update_monsters( void )
     {
       if ( !monster->entity->update_interval )
       {
-        move_random(monster);
+        move_random( monster );
         monster->entity->update_interval = MONSTER_RANDOM_INTERVAL;
       }
       else
@@ -170,25 +171,27 @@ void update_monsters( void )
 
       if ( x == y && x )
       {
-        int fx = monster->x + proc_unit(px, monster->x);
-        int fy = monster->y + proc_unit(py, monster->y);
+        int fx = monster->x + proc_unit( px, monster->x );
+        int fy = monster->y + proc_unit( py, monster->y );
 
-        if ( get_monster(fy, fx, monster) ){
-          if ( !get_monster(fy, monster->x, monster ) )
+        if ( get_monster( fy, fx, monster ) )
+        {
+          if ( !get_monster( fy, monster->x, monster ) )
             monster->y = fy;
-          else if ( !get_monster(monster->y, fx, monster) )
+          else if ( !get_monster( monster->y, fx, monster ) )
             monster->x = fx;
         }
-        else {
+        else
+        {
           monster->y = fy;
           monster->x = fx;
         }
-        
+
         monster->entity->update_interval = MONSTER_ROOMIE_INTERVAL;
       }
       else if ( !monster->entity->update_interval )
       {
-        move_random(monster);
+        move_random( monster );
         monster->entity->update_interval = MONSTER_ROOMIE_INTERVAL;
       }
       else
