@@ -4,9 +4,9 @@ set (project_name Xer)
 
 project (${project_name})
 
-set (version_major 0)
+set (version_major 1)
 set (version_minor 0)
-set (version_patch 1)
+set (version_patch 0)
 
 set (root_dir ${PROJECT_SOURCE_DIR})
 set (include_dir ${root_dir}/include)
