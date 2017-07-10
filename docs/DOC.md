@@ -7,6 +7,7 @@ se joaca intr-un terminal sau emulator de terminal.
 # Instalare #
 
 Dependente:
+
    \- Un sistem cu access la libraria Ncurses ( Linux, *BSD, macOS, **NU** Windows )
 
    \- CMake ( build tool-ul folosit )
