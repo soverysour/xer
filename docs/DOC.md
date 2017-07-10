@@ -4,16 +4,16 @@ Xer este un joc de tipul [roguelike](https://en.wikipedia.org/wiki/Roguelike) si
 toate nivelele, prin nivele generate intamplator si monstri pozitionati intamplator, cu comportamente diferite. Jocul 
 se joaca intr-un terminal sau emulator de terminal.
 
-# Instalare # 
+# Instalare #
 
 Dependente:
-   - Un sistem cu access la libraria Ncurses ( Linux, *BSD, macOS, **NU** Windows )
-   - CMake ( build tool-ul folosit )
-   - GCC ( compiler-ul folosit, Clang nu a fost testat suficient ) 
-   - git ( optional, pentru clonarea repositoriului )
-   - valgrind ( optional, pentru verificarea scurgerilor de memorie, etc ale programului )
-   - astyle ( optional, pentru stilizarea surselor )
-   - doxygen ( pentru a genera documentatie bazata pe codul sursa )
+   \- Un sistem cu access la libraria Ncurses ( Linux, *BSD, macOS, **NU** Windows )
+   \- CMake ( build tool-ul folosit )
+   \- GCC ( compiler-ul folosit, Clang nu a fost testat suficient ) 
+   \- git ( optional, pentru clonarea repositoriului )
+   \- valgrind ( optional, pentru verificarea scurgerilor de memorie, etc ale programului )
+   \- astyle ( optional, pentru stilizarea surselor )
+   \- doxygen ( pentru a genera documentatie bazata pe codul sursa )
 
 \* Valgrind, astyle si doxygen au fost folosite deja.
 
