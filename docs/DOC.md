@@ -8,12 +8,19 @@ se joaca intr-un terminal sau emulator de terminal.
 
 Dependente:
    \- Un sistem cu access la libraria Ncurses ( Linux, *BSD, macOS, **NU** Windows )
+
    \- CMake ( build tool-ul folosit )
+
    \- GCC ( compiler-ul folosit, Clang nu a fost testat suficient ) 
+
    \- git ( optional, pentru clonarea repositoriului )
+
    \- valgrind ( optional, pentru verificarea scurgerilor de memorie, etc ale programului )
+
    \- astyle ( optional, pentru stilizarea surselor )
+
    \- doxygen ( pentru a genera documentatie bazata pe codul sursa )
+
 
 \* Valgrind, astyle si doxygen au fost folosite deja.
 
